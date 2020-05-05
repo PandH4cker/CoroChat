@@ -1,1 +1,5 @@
 /build
+com/corochat/app/client/verticles
+com/corochat/app/client/Client.java
+com/corochat/app/client/ThreadedClient.java
+server/
