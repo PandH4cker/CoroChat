@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -17,10 +18,13 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+    /** Main Screen **/
     @FXML
     private AnchorPane anchRoot;
     @FXML
@@ -29,30 +33,42 @@ public class LoginController implements Initializable {
     private Circle btnReduce;
     @FXML
     private StackPane pnlStack;
-    @FXML
-    private Pane pnlSignUp;
-    @FXML
-    private ImageView btnBack;
-    @FXML
-    private TextField tfSignUpEmail;
-    @FXML
-    private Button btnGetStarted;
+    /** Sign In Screen **/
     @FXML
     private Pane pnlSignIn;
     @FXML
     private TextField tfEmail;
-    @FXML
-    private PasswordField tfPassword;
     @FXML
     private Button btnSignIn;
     @FXML
     private Button btnSignUp;
     @FXML
     private Label lblForgot;
+    @FXML
+    private PasswordField tfPassword;
+    /** Sign Up Screen **/
+    @FXML
+    private Pane pnlSignUp;
+    @FXML
+    private ImageView btnBack;
+    @FXML
+    private TextField tfSignUpFirstName;
+    @FXML
+    private Button btnGetStarted;
+    @FXML
+    private TextField tfSignUpLastName;
+    @FXML
+    private TextField tfSignUpPseudo;
+    @FXML
+    private TextField tfSignUpEmail;
+    @FXML
+    private TextField tfSignUpPassword;
+    /** Forgot Password Screen **/
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        this.btnSignIn.setDisable(true);
+        this.btnGetStarted.setDisable(true);
     }
 
     @FXML
@@ -89,7 +105,7 @@ public class LoginController implements Initializable {
 
     public void handleLabelForgotAction(MouseEvent event) {
         if (event.getSource() == this.lblForgot) {
-            
+
         }
     }
 
@@ -104,5 +120,15 @@ public class LoginController implements Initializable {
         if (event.getSource() == this.lblForgot) {
             this.lblForgot.setTextFill(Paint.valueOf("#948e8e"));
         }
+    }
+
+    public void handleBackHover(MouseEvent event) {
+        if (event.getSource() == this.btnBack)
+            this.btnBack.setImage(new Image(Paths.get("src/main/resources/images/backHover.png").toUri().toString()));
+    }
+
+    public void handleBackExited(MouseEvent event) {
+        if (event.getSource() == this.btnBack)
+            this.btnBack.setImage(new Image(Paths.get("src/main/resources/images/back.png").toUri().toString()));
     }
 }
