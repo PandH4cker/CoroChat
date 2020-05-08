@@ -62,8 +62,32 @@ public class LoginController implements Initializable {
     @FXML
     private TextField tfSignUpEmail;
     @FXML
-    private TextField tfSignUpPassword;
-    /** Forgot Password Screen **/
+    private PasswordField pfPassword;
+    @FXML
+    private PasswordField pfRepeatPassword;
+    /** Forgot Password Screen First **/
+    @FXML
+    private TextField tfForgotPasswordEmail;
+    @FXML
+    private Button btnForgotPasswordFirstContinue;
+    /** Forgot Password Screen Second **/
+    @FXML
+    private ImageView btnForgotPasswordSecondBack;
+    @FXML
+    private TextField tfVerificationCode;
+    @FXML
+    private Label lblSendItBack;
+    @FXML
+    private Button btnForgotPasswordSecondContinue;
+    /** Forgot Password Screen Third **/
+    @FXML
+    private ImageView btnForgotPasswordThirdBack;
+    @FXML
+    private PasswordField pfNewPassword;
+    @FXML
+    private PasswordField pfRepeatNewPassword;
+    @FXML
+    private Button btnFinish;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -131,6 +155,4 @@ public class LoginController implements Initializable {
         if (event.getSource() == this.btnBack)
             this.btnBack.setImage(new Image(Paths.get("src/main/resources/images/back.png").toUri().toString()));
     }
-
-    //Test @GIGABITE
 }
