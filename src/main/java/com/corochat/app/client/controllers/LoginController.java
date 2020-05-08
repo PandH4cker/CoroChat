@@ -132,5 +132,5 @@ public class LoginController implements Initializable {
             this.btnBack.setImage(new Image(Paths.get("src/main/resources/images/back.png").toUri().toString()));
     }
 
-    //Test @GigaBite
+    //Test @GIGABITE
 }
