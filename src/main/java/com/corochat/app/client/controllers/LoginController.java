@@ -131,4 +131,6 @@ public class LoginController implements Initializable {
         if (event.getSource() == this.btnBack)
             this.btnBack.setImage(new Image(Paths.get("src/main/resources/images/back.png").toUri().toString()));
     }
+
+    //Test @GigaBite
 }
