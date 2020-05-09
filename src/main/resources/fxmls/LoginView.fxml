@@ -43,20 +43,6 @@
          <center>
             <StackPane fx:id="pnlStack" prefHeight="592.0" prefWidth="510.0" BorderPane.alignment="CENTER">
                <children>
-                  <Pane fx:id="pnlSignIn" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;">
-                     <children>
-                        <TextField fx:id="tfEmail" layoutX="125.0" layoutY="181.0" prefHeight="40.0" prefWidth="325.0" promptText="Email" />
-                        <PasswordField fx:id="tfPassword" layoutX="125.0" layoutY="260.0" prefHeight="40.0" prefWidth="325.0" promptText="Password" />
-                        <Button fx:id="btnSignIn" layoutX="297.0" layoutY="332.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="154.0" styleClass="signin-button" stylesheets="@../styles/style.css" text="Sign In" />
-                        <Button fx:id="btnSignUp" layoutX="122.0" layoutY="470.0" mnemonicParsing="false" onMouseClicked="#handleSignUpAction" prefHeight="50.0" prefWidth="329.0" styleClass="signup-button" stylesheets="@../styles/style.css" text="Don't have an account? Sign Up" />
-                        <Label fx:id="lblForgot" layoutX="122.0" layoutY="338.0" onMouseClicked="#handleLabelForgotAction" onMouseEntered="#handleLabelForgotHover" onMouseExited="#handleLabelForgotExited" styleClass="forgot-label" text="Forgot Password?" textFill="#948e8e" />
-                        <Label fx:id="lblSignIn" layoutX="125.0" layoutY="131.0" text="Sign In">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
                   <Pane fx:id="pnlForgotPasswordFirst" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: fff;">
                      <children>
                         <Label fx:id="lblSignIn1" layoutX="91.0" layoutY="168.0" text="Forgot Password">
@@ -67,24 +53,11 @@
                         <TextField fx:id="tfForgotPasswordEmail" layoutX="91.0" layoutY="286.0" prefHeight="40.0" prefWidth="395.0" promptText="Email" />
                         <Text layoutX="91.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Place your email here we will send you a code to change your password." wrappingWidth="400.0" />
                         <Button fx:id="btnForgotPasswordFirstContinue" layoutX="331.0" layoutY="347.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="154.0" styleClass="signin-button" stylesheets="@../styles/style.css" text="Continue" />
-                     </children>
-                  </Pane>
-                  <Pane fx:id="pnlForgotPasswordSecond" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: fff;">
-                     <children>
-                        <Label fx:id="lblSignIn11" layoutX="49.0" layoutY="149.0" text="Forgot Password">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="tfVerificationCode" layoutX="50.0" layoutY="237.0" prefHeight="40.0" prefWidth="430.0" promptText="Verification Code" />
-                        <Text layoutX="50.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the code received by email." wrappingWidth="400.0" />
-                        <Button fx:id="btnForgotPasswordSecondContinue" layoutX="331.0" layoutY="293.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="154.0" styleClass="signin-button" stylesheets="@../styles/style.css" text="Continue" />
-                        <ImageView fx:id="btnForgotPasswordSecondBack" fitHeight="30.0" fitWidth="50.0" layoutX="50.0" layoutY="87.0" onMouseClicked="#handleBackAction" onMouseEntered="#handleBackHover" onMouseExited="#handleBackExited" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="btnForgotPasswordFirstBack" fitHeight="30.0" fitWidth="50.0" layoutX="61.0" layoutY="95.0" onMouseClicked="#handleBackAction" onMouseEntered="#handleBackHover" onMouseExited="#handleBackExited" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/back.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="lblSendItBack" layoutX="86.0" layoutY="305.0" text="Did not receive? Send it back." />
                      </children>
                   </Pane>
                   <Pane fx:id="pnlForgotPasswordThird" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: fff;">
@@ -104,6 +77,38 @@
                         <PasswordField fx:id="pfRepeatNewPassword" layoutX="50.0" layoutY="278.0" prefHeight="39.0" prefWidth="431.0" promptText="Repeat new password" />
                      </children>
                   </Pane>
+                  <Pane fx:id="pnlForgotPasswordSecond" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: fff;">
+                     <children>
+                        <Label fx:id="lblSignIn11" layoutX="49.0" layoutY="149.0" text="Forgot Password">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfVerificationCode" layoutX="50.0" layoutY="237.0" prefHeight="40.0" prefWidth="430.0" promptText="Verification Code" />
+                        <Text layoutX="50.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the code received by email." wrappingWidth="400.0" />
+                        <Button fx:id="btnForgotPasswordSecondContinue" layoutX="331.0" layoutY="293.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="154.0" styleClass="signin-button" stylesheets="@../styles/style.css" text="Continue" />
+                        <ImageView fx:id="btnForgotPasswordSecondBack" fitHeight="30.0" fitWidth="50.0" layoutX="50.0" layoutY="87.0" onMouseClicked="#handleBackAction" onMouseEntered="#handleBackHover" onMouseExited="#handleBackExited" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/back.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="lblSendItBack" layoutX="65.0" layoutY="305.0" onMouseEntered="#handleLabelHover" onMouseExited="#handleLabelExited" text="Did not receive? Send it back." />
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pnlSignIn" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;">
+                     <children>
+                        <TextField fx:id="tfEmail" layoutX="125.0" layoutY="181.0" onKeyTyped="#handleSignInEnable" prefHeight="40.0" prefWidth="325.0" promptText="Email" />
+                        <PasswordField fx:id="pfPassword" layoutX="125.0" layoutY="260.0" onKeyTyped="#handleSignInEnable" prefHeight="40.0" prefWidth="325.0" promptText="Password" />
+                        <Button fx:id="btnSignIn" layoutX="297.0" layoutY="332.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="154.0" styleClass="signin-button" stylesheets="@../styles/style.css" text="Sign In" />
+                        <Button fx:id="btnSignUp" layoutX="122.0" layoutY="470.0" mnemonicParsing="false" onMouseClicked="#handleSignUpAction" prefHeight="50.0" prefWidth="329.0" styleClass="signup-button" stylesheets="@../styles/style.css" text="Don't have an account? Sign Up" />
+                        <Label fx:id="lblForgot" layoutX="122.0" layoutY="338.0" onMouseClicked="#handleLabelForgotAction" onMouseEntered="#handleLabelHover" onMouseExited="#handleLabelExited" styleClass="forgot-label" text="Forgot Password?" textFill="#948e8e" />
+                        <Label fx:id="lblSignIn" layoutX="125.0" layoutY="131.0" text="Sign In">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
                   <Pane fx:id="pnlSignUp" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;">
                      <children>
                         <ImageView fx:id="btnBack" fitHeight="30.0" fitWidth="50.0" layoutX="93.0" layoutY="85.0" onMouseClicked="#handleBackAction" onMouseEntered="#handleBackHover" onMouseExited="#handleBackExited" pickOnBounds="true" preserveRatio="true">
@@ -111,18 +116,18 @@
                               <Image url="@../images/back.png" />
                            </image>
                         </ImageView>
-                        <TextField fx:id="tfSignUpFirstName" layoutX="120.0" layoutY="181.0" prefHeight="40.0" prefWidth="325.0" promptText="First Name" />
+                        <TextField fx:id="tfSignUpFirstName" layoutX="120.0" layoutY="181.0" onKeyTyped="#handleGetStartedEnable" prefHeight="40.0" prefWidth="325.0" promptText="First Name" />
                         <Button fx:id="btnGetStarted" layoutX="293.0" layoutY="491.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="154.0" styleClass="signin-button" stylesheets="@../styles/style.css" text="Get Started" />
                         <Label fx:id="lblSignUp" layoutX="123.0" layoutY="131.0" text="Sign Up">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tfSignUpLastName" layoutX="120.0" layoutY="231.0" prefHeight="40.0" prefWidth="325.0" promptText="Last Name" />
-                        <TextField fx:id="tfSignUpPseudo" layoutX="120.0" layoutY="281.0" prefHeight="40.0" prefWidth="325.0" promptText="Pseudo" />
-                        <TextField fx:id="tfSignUpEmail" layoutX="120.0" layoutY="331.0" prefHeight="40.0" prefWidth="325.0" promptText="Email" />
-                        <PasswordField fx:id="pfPassword" layoutX="120.0" layoutY="381.0" prefHeight="40.0" prefWidth="325.0" promptText="Password" />
-                        <PasswordField fx:id="pfRepeatPassword" layoutX="120.0" layoutY="431.0" prefHeight="40.0" prefWidth="325.0" promptText="Repeat password" />
+                        <TextField fx:id="tfSignUpLastName" layoutX="120.0" layoutY="231.0" onKeyTyped="#handleGetStartedEnable" prefHeight="40.0" prefWidth="325.0" promptText="Last Name" />
+                        <TextField fx:id="tfSignUpPseudo" layoutX="120.0" layoutY="281.0" onKeyTyped="#handleGetStartedEnable" prefHeight="40.0" prefWidth="325.0" promptText="Pseudo" />
+                        <TextField fx:id="tfSignUpEmail" layoutX="120.0" layoutY="331.0" onKeyTyped="#handleGetStartedEnable" prefHeight="40.0" prefWidth="325.0" promptText="Email" />
+                        <PasswordField fx:id="pfSignUpPassword" layoutX="120.0" layoutY="381.0" onKeyTyped="#handleGetStartedEnable" prefHeight="40.0" prefWidth="325.0" promptText="Password" />
+                        <PasswordField fx:id="pfRepeatPassword" layoutX="120.0" layoutY="431.0" onKeyTyped="#handleGetStartedEnable" prefHeight="40.0" prefWidth="325.0" promptText="Repeat password" />
                      </children>
                   </Pane>
                </children>
