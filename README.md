@@ -2,4 +2,27 @@
 ---
 ## Authors: <br /> <br /> Raphael Dray, Thierry Khamphousone, Alexandre De Sevin, Diane Martin, Eythan Dahan, Boris Houessou
 ---
+> This program is a desktop application. <br />
+> It integrates the client and the server which are communicating each other through HTTP Routes. <br />
+> The client fetches and posts data from/to the server which returns JSON-Encoded responses.
+> The client is a Skype-Like application.
 
+> It's written in __Java programming language including some libraries like so:__
++ [Vertx.x](https://vertx.io/)
++ [Retrofit 2](https://square.github.io/retrofit/)
++ [RxJava 2](https://github.com/ReactiveX/RxJava)
++ [JDBC Oracle DB](https://www.oracle.com/fr/database/technologies/appdev/jdbc.html)
++ [Java FX 11](https://openjfx.io/)
++ [JUnit 5](https://junit.org/junit5/)
++ [Animate FX](https://typhon0.github.io/AnimateFX/)
+
+
+---
+## Last Release Version: 0.0.1
+### Changelog:
+> #### Version 0.0.1
+> Added LoginView fxml created with SceneBuilder 2.0, the design of the Login view. <br />
+> Added Utils to handle email validation and password complexity and helpers for JavaFX. <br />
+> Added UserModel to instantiate it in further.
+> Added LoginView JavaFX java class screen.
+> Added LoginController to handle actions on the LoginView.
