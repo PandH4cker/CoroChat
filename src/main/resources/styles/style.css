@@ -1,0 +1,53 @@
+.linear-grad
+{
+    -fx-background-color: linear-gradient(to bottom left, #6F4CBB, #431FA0);
+}
+
+.signin-button
+{
+    -fx-background-color: #6F4CBB;
+    -fx-text-fill: #FFFFFF;
+}
+
+.signin-button:hover
+{
+    -fx-text-fill: #431FA0;
+    -fx-cursor: hand;
+}
+
+.signin-button:pressed
+{
+    -fx-text-fill: #371897;
+}
+
+.signup-button
+{
+    -fx-background-color: #D5CBEB;
+    -fx-background-radius: 5;
+    -fx-text-fill: #371897;
+    -fx-border-color: #6F4CBB;
+    -fx-border-radius: 5;
+}
+
+.signup-button:hover
+{
+    -fx-background-color: #E4EEFD;
+    -fx-cursor: hand;
+}
+
+.signup-button:pressed
+{
+    -fx-background-color: #E4EEFD;
+    -fx-background-radius: 20;
+}
+
+.circle-button:hover
+{
+    -fx-cursor: hand;
+}
+
+.forgot-label:hover
+{
+    -fx-cursor: hand;
+    -fx-text-fill: cyan;
+}
