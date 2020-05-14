@@ -9,15 +9,17 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public abstract class AbstractCorochatDatabase {
+    private static Connection databaseConnection;
+
     public abstract UserDao userDao();
 
-    public static volatile Connection INSTANCE = null;
+    public static volatile AbstractCorochatDatabase INSTANCE = null;
 
     public static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
     private static final String USERNAME = "c##corochat";
     private static final String PASSWORD = "corochat";
 
-    public static synchronized Connection getInstance() {
+    public static synchronized AbstractCorochatDatabase getInstance(AbstractCorochatDatabase databaseImplementation) {
         if (INSTANCE == null)
             synchronized (AbstractCorochatDatabase.class) {
                 if (INSTANCE == null) {
@@ -27,7 +29,8 @@ public abstract class AbstractCorochatDatabase {
                         properties.put("user", USERNAME);
                         properties.put("password", PASSWORD);
                         properties.put("defaultRowPrefetch", "20");
-                        INSTANCE = DriverManager.getConnection(DB_URL, properties);
+                        databaseConnection = DriverManager.getConnection(DB_URL, properties);
+                        INSTANCE = databaseImplementation;
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
