@@ -38,4 +38,8 @@ public abstract class AbstractCorochatDatabase {
             }
         return INSTANCE;
     }
+
+    public static Connection getDatabaseConnection() {
+        return databaseConnection;
+    }
 }
