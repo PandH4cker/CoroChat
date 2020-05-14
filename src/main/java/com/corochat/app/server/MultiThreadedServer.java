@@ -17,6 +17,11 @@ public class MultiThreadedServer {
     private static Set<String> names = new HashSet<>();
     private static Set<PrintWriter> writers = new HashSet<>();
 
+    /**
+     * Constructor
+     * @param host
+     * @param port
+     */
     public MultiThreadedServer(final String host, final int port) {
         this.host = host;
         try {
