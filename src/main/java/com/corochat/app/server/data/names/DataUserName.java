@@ -8,4 +8,5 @@ public final class DataUserName {
     public static final String COL_PSEUDO = "pseudo";
     public static final String COL_EMAIL = "email";
     public static final String COL_HASHED_PASSWORD = "hashed_password";
+    public static final String COL_ACTIVE = "active";
 }

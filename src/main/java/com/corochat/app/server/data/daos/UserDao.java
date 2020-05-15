@@ -2,9 +2,11 @@ package com.corochat.app.server.data.daos;
 
 import com.corochat.app.client.models.UserModel;
 
+import java.util.ArrayList;
+
 public interface UserDao {
-    UserModel getAll();
-    UserModel getAllLimited(int limit);
+    ArrayList<UserModel> getAll();
+    ArrayList<UserModel> getAllLimited(int limit);
     UserModel getUserById(int id);
 
     void inactiveAll();

@@ -2,7 +2,9 @@ package com.corochat.app.server.data;
 
 import com.corochat.app.client.models.UserModel;
 import com.corochat.app.server.data.daos.UserDao;
+import com.corochat.app.server.data.implementations.CorochatDatabase;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,18 +20,18 @@ public class UserRepository {
         this.executorService = executorService;
     }
 
-    public static UserRepository getInstance(AbstractCorochatDatabase databaseImplementation) {
+    public static UserRepository getInstance() {
         if (INSTANCE == null)
             synchronized (UserRepository.class) {
                 if (INSTANCE == null) {
-                    AbstractCorochatDatabase database = AbstractCorochatDatabase.getInstance(databaseImplementation);
+                    CorochatDatabase database = CorochatDatabase.getInstance();
                     INSTANCE = new UserRepository(database.userDao(), Executors.newSingleThreadExecutor());
                 }
             }
         return INSTANCE;
     }
 
-    public UserModel getUsers(int limit) {
+    public ArrayList<UserModel> getUsers(int limit) {
         if (limit > 0)
             return this.userDao.getAllLimited(limit);
         return this.userDao.getAll();

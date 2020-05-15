@@ -9,13 +9,13 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public abstract class AbstractCorochatDatabase {
-    private static Connection databaseConnection;
+    protected static Connection databaseConnection;
 
     public abstract UserDao userDao();
 
-    public static volatile AbstractCorochatDatabase INSTANCE = null;
+    private static volatile AbstractCorochatDatabase INSTANCE = null;
 
-    public static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
+    private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
     private static final String USERNAME = "c##corochat";
     private static final String PASSWORD = "corochat";
 
@@ -37,9 +37,5 @@ public abstract class AbstractCorochatDatabase {
                 }
             }
         return INSTANCE;
-    }
-
-    public static Connection getDatabaseConnection() {
-        return databaseConnection;
     }
 }
