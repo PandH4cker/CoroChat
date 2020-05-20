@@ -8,6 +8,7 @@ public class UserModel {
     private String pseudo;
     private String email;
     private String hashedPassword;
+    private boolean active;
 
     public UserModel(final String firstName,
                      final String lastName,
@@ -19,6 +20,19 @@ public class UserModel {
         this.pseudo = pseudo;
         this.email = email;
         this.hashedPassword = hashedPassword;
+        this.active = true;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", pseudo='" + pseudo + '\'' +
+                ", email='" + email + '\'' +
+                ", hashedPassword='" + hashedPassword + '\'' +
+                ", active=" + active +
+                '}';
     }
 
     @Override
@@ -76,5 +90,13 @@ public class UserModel {
 
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
+    }
+
+    public boolean isActive() {
+        return this.active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
