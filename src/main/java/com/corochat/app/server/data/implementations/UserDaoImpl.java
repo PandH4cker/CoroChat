@@ -75,13 +75,13 @@ public final class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public UserModel getUserById(int id) {
+    public UserModel getUserByEmail(String givenEmail) {
         final String sql = "SELECT * " +
                            "FROM " + DataUserName.TABLE_NAME +
-                           " WHERE " + DataUserName.COL_ID + " = ?";
+                           " WHERE " + DataUserName.COL_EMAIL + " = ?";
         try {
             final PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, givenEmail);
 
             final ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {

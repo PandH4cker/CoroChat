@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public interface UserDao {
     ArrayList<UserModel> getAll();
     ArrayList<UserModel> getAllLimited(int limit);
-    UserModel getUserById(int id);
+    UserModel getUserByEmail(String email);
 
     void inactiveAll();
     void insert(UserModel user);

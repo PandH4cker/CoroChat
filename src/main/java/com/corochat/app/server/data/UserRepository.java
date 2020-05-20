@@ -37,9 +37,9 @@ public class UserRepository {
         return this.userDao.getAll();
     }
 
-    public UserModel getUser(int id) {
+    public UserModel getUser(String email) {
         try {
-            return this.executorService.submit(() -> this.userDao.getUserById(id)).get();
+            return this.executorService.submit(() -> this.userDao.getUserByEmail(email)).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;

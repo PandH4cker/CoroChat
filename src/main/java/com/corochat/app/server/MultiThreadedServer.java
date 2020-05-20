@@ -7,14 +7,12 @@ import java.net.PortUnreachableException;
 import java.net.ServerSocket;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MultiThreadedServer {
     private static final int DEFAULT_PORT = 8080;
     private int port;
     private String host;
-    private static Set<String> names = new HashSet<>();
+    private static Set<String> emails = new HashSet<>();
     private static Set<PrintWriter> writers = new HashSet<>();
 
     /**
@@ -39,8 +37,8 @@ public class MultiThreadedServer {
         return this.port;
     }
 
-    public static Set<String> getNames() {
-        return names;
+    public static Set<String> getEmails() {
+        return emails;
     }
 
     public static Set<PrintWriter> getWriters() {
@@ -51,9 +49,8 @@ public class MultiThreadedServer {
         MultiThreadedServer server = new MultiThreadedServer("localhost", 4444);
         System.out.println("Listening on port " + server.actualPort());
         try(ServerSocket listener = new ServerSocket(server.actualPort())) {
-            while (true) {
-                new Thread(new ClientHandler(listener.accept())).start();
-            }
+            //noinspection InfiniteLoopStatement
+            while (true) new Thread(new ClientHandler(listener.accept())).start();
         }
     }
 }

@@ -1,5 +1,9 @@
 package com.corochat.app.client;
 
+import com.corochat.app.client.models.UserModel;
+import com.google.gson.Gson;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -21,7 +25,14 @@ class doReceive extends Thread {
 
     public void run()
     {
-        while(in.hasNextLine()){
+        String command = "";
+        command += "/login ";
+        command += new Gson().toJson(new UserModel(null, null, null, "dray@et.esiea.fr", "Mazgan"));
+        out.println(command);
+        while(in.hasNextLine()) {
+            System.out.println(in.nextLine());
+        }
+        /*while(in.hasNextLine()){
             String line = in.nextLine();
             if (line.startsWith("SUBMITNAME")) {
                 System.out.print("Submit Name : ");
@@ -37,7 +48,7 @@ class doReceive extends Thread {
             } else if (line.startsWith("MESSAGE")) {
                 System.out.println(" ---- "+ line.substring(8) + "\n");
             }
-        }
+        }*/
     }
 }
 
