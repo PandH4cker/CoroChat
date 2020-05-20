@@ -8,18 +8,27 @@
 > The client is a Skype-Like application.
 
 > It's written in __Java programming language including some libraries like so:__
-+ [Vertx.x](https://vertx.io/)
-+ [Retrofit 2](https://square.github.io/retrofit/)
 + [RxJava 2](https://github.com/ReactiveX/RxJava)
 + [JDBC Oracle DB](https://www.oracle.com/fr/database/technologies/appdev/jdbc.html)
 + [Java FX 11](https://openjfx.io/)
 + [JUnit 5](https://junit.org/junit5/)
 + [Animate FX](https://typhon0.github.io/AnimateFX/)
++ [JBcrypt](https://www.mindrot.org/projects/jBCrypt/)
++ [Gson](https://github.com/google/gson)
 
 
 ---
-## Last Release Version: 0.0.1
+## Last Release Version: 0.0.2
 ### Changelog:
+> #### Version 0.0.2
+> Added UserDao interface containing abstract sql methods to interact with the DB. <br />
+> Added DataUserName class containing the names of the user columns and the table name. <br />
+> Added AbstractCorochatDatabase defining abstract dao method and connecting the server to the Oracle DB by the Singleton design pattern. <br />
+> Added UserRepository in order to interact asynchronously with the Oracle DB for the user table. <br />
+> Implemented UserDao and AbstractCorochatDatabase:
+> * UserDaoImpl implements UserDao sql methods to interact with the Oracle DB user table.
+> * CorochatDatabase extends AbstractCorochatDatabase with a Singleton design pattern and use himself as an implementation for instantiating a database.
+---
 > #### Version 0.0.1
 > Added LoginView fxml created with SceneBuilder 2.0, the design of the Login view. <br />
 > Added Utils to handle email validation and password complexity and helpers for JavaFX. <br />
