@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane fx:id="anchRoot" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.corochat.app.client.controllers.ChatController">
+   <children>
+      <BorderPane layoutY="-2.0" prefHeight="400.0" prefWidth="600.0">
+         <children>
+             <HBox layoutX="14.0" layoutY="14.0" prefHeight="15.0" spacing="5.0">
+                 <children>
+                     <Circle fx:id="btnClose" fill="#fc5d57" onMouseClicked="#handleCloseAction" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
+                     <Circle fx:id="btnReduce" fill="#fdbb2d" onMouseClicked="#handleReduceAction" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
+                     <Circle fill="#27c941" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" visible="false" />
+                 </children>
+             </HBox>
+         </children>
+         <center>
+            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane fx:id="pnlChat" prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
