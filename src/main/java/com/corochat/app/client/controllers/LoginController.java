@@ -21,10 +21,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+    private Pane currentPane;
+    private Socket socket;
+
     /** Main Screen **/
     @FXML
     private AnchorPane anchRoot;
@@ -145,13 +149,14 @@ public class LoginController implements Initializable {
     }
 
     private void backAction(final Pane pane) {
-        pane.toFront();
-        new FadeInLeftBig(pane).play();
+        new ZoomOutRight(this.currentPane).play();
+        this.currentPane = pane;
     }
 
     private void inAction(final Pane pane) {
         pane.toFront();
-        new FadeInRightBig(pane).play();
+        new ZoomInRight(pane).play();
+        this.currentPane = pane;
     }
 
     @FXML
@@ -244,5 +249,9 @@ public class LoginController implements Initializable {
                 }
             } else this.btnGetStarted.setDisable(true);
         }
+    }
+
+    public void handleLogInAction(MouseEvent mouseEvent) {
+        //TODO
     }
 }

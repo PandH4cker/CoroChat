@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;
 
 public class LinkSetter {
-    private static final String COLOR_LINK = "#0000EE";
+    private static final String COLOR_LINK = "#000000";
     private static final String COLOR_BASIS = "#948e8e";
 
     public static void setAsLink(final Label label) {
