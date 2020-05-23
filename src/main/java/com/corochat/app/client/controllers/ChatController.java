@@ -2,23 +2,32 @@ package com.corochat.app.client.controllers;
 
 import animatefx.animation.ZoomOutDown;
 import com.corochat.app.client.models.UserModel;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -42,17 +51,27 @@ public class ChatController implements Initializable {
     private Button btnEmoji;
     @FXML
     private TextArea txtMsg;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox textBox;
+    @FXML
+    private AnchorPane chatPane;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.pnlChat.toFront();
         for(Node text : emojiList.getChildren()){
             text.setOnMouseClicked(event -> {
-                txtMsg.setText(txtMsg.getText()+" "+((Text)text).getText());
+                if(txtMsg.getText().equals(""))
+                    txtMsg.setText(txtMsg.getText()+""+((Text)text).getText());
+                else
+                    txtMsg.setText(txtMsg.getText()+" "+((Text)text).getText());
                 emojiList.setVisible(false);
             });
         }
+
+        scrollPane.vvalueProperty().bind(textBox.heightProperty());
     }
 
     @FXML
@@ -80,11 +99,29 @@ public class ChatController implements Initializable {
     }
 
     public void handleSendAction(ActionEvent actionEvent) {
-        if(txtMsg.getText().equals(""))return;
-        System.out.println(txtMsg.getText());
-        txtMsg.selectAll();
-        txtMsg.requestFocus();
+
+        System.out.println(txtMsg.getText().trim());
+
+        Text text=new Text(txtMsg.getText());
+        text.setFill(Color.BLACK);
+        text.getStyleClass().add("message");
+        TextFlow flow=new TextFlow();
+
+        flow.getChildren().add(text);
+        flow.setMaxWidth(200);
+
+        HBox hbox=new HBox(12);
+
+        flow.getStyleClass().add("textFlow");
+        hbox.setAlignment(Pos.BOTTOM_RIGHT);
+        hbox.getChildren().add(flow);
+
+        hbox.getStyleClass().add("hbox");
+        textBox.toFront();
+        Platform.runLater(() -> textBox.getChildren().addAll(hbox));
+
         txtMsg.setText("");
+        txtMsg.requestFocus();
     }
 
     public void handleEnterKey(KeyEvent keyEvent) {

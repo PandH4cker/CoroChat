@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="1007.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.corochat.app.client.controllers.LoginController">
+<AnchorPane fx:id="anchRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="592.0" prefWidth="1007.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.corochat.app.client.controllers.LoginController">
    <children>
       <BorderPane prefHeight="592.0" prefWidth="1007.0" style="-fx-background-color: #fff;">
          <left>
@@ -42,7 +39,7 @@
                         <Font name="Rockwell Italic" size="13.0" />
                      </font>
                   </Label>
-                  <Line endX="100.0" layoutX="157.0" layoutY="494.0" startX="-100.0" stroke="WHITE" strokeLineCap="ROUND" />
+                  <Line endX="105.0" layoutX="157.0" layoutY="494.0" startX="-100.0" stroke="WHITE" strokeLineCap="ROUND" />
                </children>
             </Pane>
          </left>
