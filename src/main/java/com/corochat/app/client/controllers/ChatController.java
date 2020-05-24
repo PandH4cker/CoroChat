@@ -91,7 +91,7 @@ public class ChatController implements Initializable {
     }
 
     public void handleEmojiAction(ActionEvent actionEvent) {
-        emojiList.setVisible(emojiList.isVisible());
+        emojiList.setVisible(!emojiList.isVisible());
     }
 
     public void handleSendAction(ActionEvent actionEvent) {
@@ -127,5 +127,9 @@ public class ChatController implements Initializable {
             txtMsg.requestFocus();
             txtMsg.setText("");
         }
+    }
+
+    public void HandleLogoutAction(MouseEvent event) {
+
     }
 }
