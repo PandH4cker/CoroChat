@@ -1,7 +1,6 @@
 package com.corochat.app.client.views;
 
 import animatefx.animation.*;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,7 +10,7 @@ import javafx.stage.StageStyle;
 
 import java.nio.file.Paths;
 
-public class ChatView extends Application {
+public class ChatView {
     private double xOffset = 0;
     private double yOffset = 0;
 
@@ -31,11 +30,7 @@ public class ChatView extends Application {
         });
 
         stage.show();
-        new ZoomInUp(root).play();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+        new FadeInUp(root).play();
     }
 
     private void handleMousePressed(MouseEvent mouseEvent) {

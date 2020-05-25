@@ -1,6 +1,7 @@
 package com.corochat.app.client.controllers;
 
 import animatefx.animation.*;
+import com.corochat.app.client.views.ChatView;
 import com.corochat.app.utils.setters.ImageSetter;
 import com.corochat.app.utils.setters.LinkSetter;
 import com.corochat.app.utils.validations.EmailValidator;
@@ -8,6 +9,7 @@ import com.corochat.app.utils.validations.PasswordValidator;
 import com.corochat.app.utils.validations.StringContaining;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -26,6 +28,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
+    private ChatView chatView;
     private Pane currentPane;
     private Socket socket;
 
@@ -101,6 +104,11 @@ public class LoginController implements Initializable {
     private PasswordField pfRepeatNewPassword;
     @FXML
     private Button btnFinish;
+
+
+    public LoginController() {
+        this.chatView = new ChatView();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -252,6 +260,11 @@ public class LoginController implements Initializable {
     }
 
     public void handleLogInAction(MouseEvent mouseEvent) {
-        //TODO
+        try {
+            ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
+            this.chatView.start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

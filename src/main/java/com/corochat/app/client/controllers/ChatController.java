@@ -2,15 +2,22 @@ package com.corochat.app.client.controllers;
 
 import animatefx.animation.ZoomOutDown;
 import com.corochat.app.client.models.UserModel;
+import com.corochat.app.client.views.ChatView;
+import com.corochat.app.client.views.LoginView;
+import com.corochat.app.utils.setters.LinkSetter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -23,17 +30,15 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
-import java.io.IOException;
 import java.net.URL;
-import java.rmi.NotBoundException;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
     private String username="userModel";
+    private ChatView chatView;
+    private LoginView loginView;
 
     @FXML
     private AnchorPane anchRoot;
@@ -50,6 +55,8 @@ public class ChatController implements Initializable {
     @FXML
     private Button btnEmoji;
     @FXML
+    private ImageView btnlogout;
+    @FXML
     private TextArea txtMsg;
     @FXML
     private ScrollPane scrollPane;
@@ -58,6 +65,9 @@ public class ChatController implements Initializable {
     @FXML
     private AnchorPane chatPane;
 
+    public ChatController() {
+        this.loginView = new LoginView();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -131,5 +141,38 @@ public class ChatController implements Initializable {
             txtMsg.requestFocus();
             txtMsg.setText("");
         }
+    }
+
+    public void HandleLogoutAction(MouseEvent mouseEvent) {
+        ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
+        try {
+            this.loginView.start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleSendHoverEntered(MouseEvent mouseEvent) {
+        btnSend.setCursor(Cursor.HAND);
+    }
+
+    public void handleSendHoverExited(MouseEvent mouseEvent) {
+        btnSend.setCursor(Cursor.DEFAULT);
+    }
+
+    public void handleEmojiHoverEntered(MouseEvent mouseEvent) {
+        btnEmoji.setCursor(Cursor.HAND);
+    }
+
+    public void handleEmojiHoverExited(MouseEvent mouseEvent) {
+        btnEmoji.setCursor(Cursor.DEFAULT);
+    }
+
+    public void handleLogoutHoverEntered(MouseEvent mouseEvent) {
+        btnlogout.setCursor(Cursor.HAND);
+    }
+
+    public void handleLogoutHoverExited(MouseEvent mouseEvent) {
+        btnlogout.setCursor(Cursor.DEFAULT);
     }
 }

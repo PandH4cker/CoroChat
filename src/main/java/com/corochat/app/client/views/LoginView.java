@@ -31,7 +31,7 @@ public class LoginView extends Application {
         });
 
         stage.show();
-        new ZoomInUp(root).play();
+        new FadeInDown(root).play();
     }
 
     public static void main(String[] args) {
