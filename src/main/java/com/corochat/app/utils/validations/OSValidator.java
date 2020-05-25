@@ -1,9 +1,9 @@
 package com.corochat.app.utils.validations;
 
-public class OsValidator {
+public class OSValidator {
     private static final String OS = System.getProperty("os.name").toLowerCase();
 
     public static boolean isMac(){
-        return OS.indexOf("mac") >= 0;
+        return OS.contains("mac");
     }
 }

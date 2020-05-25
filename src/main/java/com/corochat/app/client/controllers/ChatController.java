@@ -101,11 +101,7 @@ public class ChatController implements Initializable {
     }
 
     public void handleEmojiAction(ActionEvent actionEvent) {
-        if(emojiList.isVisible()){
-            emojiList.setVisible(false);
-        }else {
-            emojiList.setVisible(true);
-        }
+        emojiList.setVisible(!emojiList.isVisible());
     }
 
     public void handleSendAction(ActionEvent actionEvent) {

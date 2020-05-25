@@ -1,9 +1,5 @@
 package com.corochat.app.client;
 
-import com.corochat.app.client.models.UserModel;
-import com.google.gson.Gson;
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;

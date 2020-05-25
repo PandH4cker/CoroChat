@@ -17,11 +17,8 @@ public class doSent extends Thread {
         this.inp = inp ;
     }
 
-    public void run()
-    {
-        while(true){
-            out.println(inp.nextLine());
-        }
+    public void run() {
+        while(true) out.println(inp.nextLine());
     }
 }
 
