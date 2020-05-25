@@ -310,7 +310,7 @@ public class LoginController implements Initializable {
                     UserModel userRetrieved = new Gson().fromJson(successMessage, new TypeToken<UserModel>(){}.getType());
                     try {
                         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
-                        this.chatView.start(new Stage(), userRetrieved, this.socket);
+                        this.chatView.start(new Stage(), userRetrieved, this.socket, out);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -361,7 +361,7 @@ public class LoginController implements Initializable {
                     String successMessage = response.substring(16);
                     try {
                         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
-                        this.chatView.start(new Stage(), user, this.socket);
+                        this.chatView.start(new Stage(), user, this.socket, out);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

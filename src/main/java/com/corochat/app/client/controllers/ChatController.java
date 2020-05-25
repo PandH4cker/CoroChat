@@ -4,6 +4,7 @@ import animatefx.animation.ZoomOutDown;
 import com.corochat.app.client.views.ChatView;
 import com.corochat.app.client.views.LoginView;
 import com.corochat.app.server.handlers.ClientHandler;
+import com.google.gson.internal.$Gson$Types;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -79,7 +81,20 @@ public class ChatController implements Initializable {
                 Scanner in = new Scanner(ChatView.getSocket().getInputStream());
                 while(true) {
                     if(in.hasNextLine()){
-                        sendAction(in.nextLine());
+                        String message = in.nextLine();
+                        if(message.startsWith("MESSAGE")) {
+                            String userMessage = message.substring(8);
+                            String[] splittedUserMessage = userMessage.split(" ", 2);
+                            String pseudo = splittedUserMessage[0];
+                            if(pseudo.contains(":"))
+                                pseudo = pseudo.substring(0,pseudo.length()-1);
+                            userMessage = splittedUserMessage[1];
+                            System.out.println(pseudo);
+                            System.out.println(ChatView.getUserModel().getPseudo());
+
+                            if(!pseudo.equals(ChatView.getUserModel().getPseudo()))
+                                sendAction(pseudo+" "+userMessage, false);
+                        }
                     }
                 }
             } catch (IOException e) {
@@ -109,7 +124,7 @@ public class ChatController implements Initializable {
         emojiList.setVisible(!emojiList.isVisible());
     }
 
-    public void sendAction(String message){
+    public void sendAction(String message, boolean tqtfelicia){
         Text text=new Text(message); //on get le text de l'user
         text.setFill(Color.WHITE);
         Text date=new Text(new SimpleDateFormat("HH:mm").format(new Date())); //on get le text de l'user
@@ -121,11 +136,16 @@ public class ChatController implements Initializable {
         BorderPane borderPane3 = new BorderPane();
         VBox vBox = new VBox(text);
         HBox hBox = new HBox(date);
+
+        if(tqtfelicia)  //c'est moi
+            borderPane1.setRight(borderPane2);
+        else
+            borderPane1.setLeft(borderPane2);
+
         hBox.setAlignment(Pos.BOTTOM_RIGHT);
         vBox.setAlignment(Pos.TOP_LEFT);
         textFlow.setStyle("-fx-border-color:black;-fx-border-radius:2px;-fx-background-color:green");
 
-        borderPane1.setRight(borderPane2);
         borderPane2.setCenter(textFlow);
         textFlow.getChildren().add(borderPane3);
         borderPane3.setCenter(vBox);
@@ -135,7 +155,8 @@ public class ChatController implements Initializable {
 
     public void handleSendAction(ActionEvent actionEvent) {
         System.out.println(txtMsg.getText().trim());
-        sendAction(txtMsg.getText());
+        sendAction(txtMsg.getText(), true);
+        ChatView.getOut().println(txtMsg.getText()); //parle sur le server
         txtMsg.setText("");
         txtMsg.requestFocus();
     }

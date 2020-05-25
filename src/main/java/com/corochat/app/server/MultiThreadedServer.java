@@ -12,7 +12,7 @@ public class MultiThreadedServer {
     private static final int DEFAULT_PORT = 8080;
     private int port;
     private String host;
-    private static Set<String> emails = new HashSet<>();
+    private static Set<String> pseudos = new HashSet<>();
     private static Set<PrintWriter> writers = new HashSet<>();
 
     /**
@@ -37,8 +37,8 @@ public class MultiThreadedServer {
         return this.port;
     }
 
-    public static Set<String> getEmails() {
-        return emails;
+    public static Set<String> getPseudos() {
+        return pseudos;
     }
 
     public static Set<PrintWriter> getWriters() {

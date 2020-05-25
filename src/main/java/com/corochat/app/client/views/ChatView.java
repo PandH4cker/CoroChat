@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.file.Paths;
 
@@ -17,10 +18,12 @@ public class ChatView {
     private double yOffset = 0;
     private static UserModel userModel;
     private static Socket socket;
+    private static PrintWriter out;
 
-    public void start(Stage stage, UserModel user, Socket socketo) throws Exception {
+    public void start(Stage stage, UserModel user, Socket socketo, PrintWriter outo) throws Exception {
         userModel = user;
         socket = socketo;
+        out = outo;
         Parent root = FXMLLoader.load(Paths.get("src/main/resources/fxmls/ChatView.fxml").toUri().toURL());
         stage.setTitle("CoroChat");
 
@@ -50,5 +53,9 @@ public class ChatView {
 
     public static UserModel getUserModel() {
         return userModel;
+    }
+
+    public static PrintWriter getOut() {
+        return out;
     }
 }

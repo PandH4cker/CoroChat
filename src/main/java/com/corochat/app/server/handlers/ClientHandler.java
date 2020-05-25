@@ -14,7 +14,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientHandler implements Runnable {
-    private String email;
+    private String pseudo;
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
@@ -42,7 +42,7 @@ public class ClientHandler implements Runnable {
                         String success = new Gson().toJson(fetchedUser);
                         this.out.println("/displaySuccess " + success);
                         System.out.println(fetchedUser.getFirstName() + " is connected");
-                        this.email=fetchedUser.getEmail();
+                        this.pseudo =fetchedUser.getPseudo();
                     } else {
                         String error = new Gson().toJson("Wrong email or password!");
                         this.out.println("/displayError " + error);
@@ -56,7 +56,7 @@ public class ClientHandler implements Runnable {
                         String success = new Gson().toJson("Account created");
                         this.out.println("/displaySuccess " + success);
                         System.out.println(user.getFirstName() + " is connected");
-                        this.email=user.getEmail();
+                        this.pseudo =user.getPseudo();
                     } else {
                         String error = new Gson().toJson("User already exists");
                         this.out.println("/displayError " + error);
@@ -68,38 +68,38 @@ public class ClientHandler implements Runnable {
                 }
             }
 
-
-            synchronized (MultiThreadedServer.getEmails()) {
-                if (!this.email.equals("") &&
-                    !MultiThreadedServer.getEmails().contains(this.email) &&
-                    EmailValidator.isValid(this.email)) {
-                    MultiThreadedServer.getEmails().add(this.email);
+            synchronized (MultiThreadedServer.getPseudos()) {
+                if (!this.pseudo.equals("") &&
+                    !MultiThreadedServer.getPseudos().contains(this.pseudo) &&
+                    EmailValidator.isValid(this.pseudo)) {
+                    MultiThreadedServer.getPseudos().add(this.pseudo);
                 }
             }
 
             for (PrintWriter writer : MultiThreadedServer.getWriters()) {
-                writer.println("MESSAGE " + this.email + " has joined the chat.");
+                writer.println("MESSAGE " + this.pseudo + " has joined the chat.");
             }
-            System.out.println(this.email + " has joined the chat.");
+            System.out.println(this.pseudo + " has joined the chat.");
             MultiThreadedServer.getWriters().add(this.out);
 
             while (true) {
                 String input = this.in.nextLine();
+                System.out.println(input);
                 if (input.toLowerCase().startsWith("/quit"))
                     return;
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println("MESSAGE " + this.email + ": " + input);
+                    writer.println("MESSAGE " + this.pseudo + ": " + input);
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             if (this.out != null)
                 MultiThreadedServer.getWriters().remove(this.out);
-            if (this.email != null) {
-                System.out.println(this.email + " is leaving.");
-                MultiThreadedServer.getEmails().remove(this.email);
+            if (this.pseudo != null) {
+                System.out.println(this.pseudo + " is leaving.");
+                MultiThreadedServer.getPseudos().remove(this.pseudo);
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println("MESSAGE " + this.email + " has left.");
+                    writer.println("MESSAGE " + this.pseudo + " has left.");
             }
             try {
                 this.socket.close();
