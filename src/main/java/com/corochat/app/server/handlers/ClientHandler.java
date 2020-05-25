@@ -31,44 +31,52 @@ public class ClientHandler implements Runnable {
             this.in = new Scanner(socket.getInputStream());
             this.out = new PrintWriter(socket.getOutputStream(), true);
 
-            while (this.in.hasNextLine()) {
+            if (this.in.hasNextLine()) {
                 String command = this.in.nextLine();
                 if (command.toLowerCase().startsWith("/login")) {
                     String userCredentials = command.substring(7);
-                    UserModel givenUser = new Gson().fromJson(userCredentials, new TypeToken<UserModel>(){}.getType());
+                    UserModel givenUser = new Gson().fromJson(userCredentials, new TypeToken<UserModel>() {
+                    }.getType());
                     UserModel fetchedUser = this.userRepository.getUser(givenUser.getEmail());
                     if (fetchedUser != null && BCrypt.checkpw(givenUser.getHashedPassword(), fetchedUser.getHashedPassword())) {
-                            this.out.println("Welcome back " + fetchedUser.getFirstName() + "!");
+                        String success = new Gson().toJson(fetchedUser);
+                        this.out.println("/displaySuccess " + success);
+                        System.out.println(fetchedUser.getFirstName() + " is connected");
+                        this.email=fetchedUser.getEmail();
                     } else {
-                        out.println("Wrong email or password!");
+                        String error = new Gson().toJson("Wrong email or password!");
+                        this.out.println("/displayError " + error);
                         return;
                     }
                 } else if (command.toLowerCase().startsWith("/signup")) {
                     String userInfo = command.substring(8);
-                    UserModel user = new Gson().fromJson(userInfo, new TypeToken<UserModel>(){}.getType());
-                    this.userRepository.insertUser(user);
-                    this.out.println("Welcome " + user.getFirstName() + " you just signed up!");
+                    UserModel user = new Gson().fromJson(userInfo, new TypeToken<UserModel>() {
+                    }.getType());
+                    if (this.userRepository.insertUser(user)) {
+                        String success = new Gson().toJson("Account created");
+                        this.out.println("/displaySuccess " + success);
+                        System.out.println(user.getFirstName() + " is connected");
+                        this.email=user.getEmail();
+                    } else {
+                        String error = new Gson().toJson("User already exists");
+                        this.out.println("/displayError " + error);
+                    }
                 } else {
-                    out.println("You must be logged first !");
+                    String error = new Gson().toJson("Please login first");
+                    this.out.println("/displayError " + error);
                     return;
                 }
-
-                /*out.println("SUBMITNAME");
-                this.email = in.nextLine();
-                if (email == null)
-                    return;
-                synchronized (MultiThreadedServer.getEmails()) {
-                    if (!this.email.equals("") &&
-                        !MultiThreadedServer.getEmails().contains(this.email) &&
-                        EmailValidator.isValid(this.email)) {
-                        MultiThreadedServer.getEmails().add(this.email);
-                        System.out.println("Thread " + Thread.currentThread().getName());
-                        break;
-                    }
-                }*/
             }
 
-            /*out.println("NAMEACCEPTED " + this.email);
+
+            synchronized (MultiThreadedServer.getEmails()) {
+                if (!this.email.equals("") &&
+                    !MultiThreadedServer.getEmails().contains(this.email) &&
+                    EmailValidator.isValid(this.email)) {
+                    MultiThreadedServer.getEmails().add(this.email);
+                }
+            }
+
             for (PrintWriter writer : MultiThreadedServer.getWriters()) {
                 writer.println("MESSAGE " + this.email + " has joined the chat.");
             }
@@ -81,7 +89,7 @@ public class ClientHandler implements Runnable {
                     return;
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
                     writer.println("MESSAGE " + this.email + ": " + input);
-            }*/
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

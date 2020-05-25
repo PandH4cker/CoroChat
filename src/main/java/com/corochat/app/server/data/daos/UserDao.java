@@ -10,6 +10,6 @@ public interface UserDao {
     UserModel getUserByEmail(String email);
 
     void inactiveAll();
-    void insert(UserModel user);
+    boolean insert(UserModel user);
     void update(int id, String hashedPassword);
 }

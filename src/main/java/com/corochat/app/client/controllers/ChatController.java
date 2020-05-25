@@ -1,43 +1,37 @@
 package com.corochat.app.client.controllers;
 
 import animatefx.animation.ZoomOutDown;
-import com.corochat.app.client.models.UserModel;
 import com.corochat.app.client.views.ChatView;
 import com.corochat.app.client.views.LoginView;
-import com.corochat.app.utils.setters.LinkSetter;
+import com.corochat.app.server.handlers.ClientHandler;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
+import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class ChatController implements Initializable {
-    private String username="userModel";
-    private ChatView chatView;
     private LoginView loginView;
 
     @FXML
@@ -61,7 +55,7 @@ public class ChatController implements Initializable {
     @FXML
     private ScrollPane scrollPane;
     @FXML
-    private VBox textBox;
+    private VBox vBox;
     @FXML
     private AnchorPane chatPane;
 
@@ -80,8 +74,19 @@ public class ChatController implements Initializable {
                 emojiList.setVisible(false);
             });
         }
-
-        scrollPane.vvalueProperty().bind(textBox.heightProperty());
+        new Thread(() -> {
+            try {
+                Scanner in = new Scanner(ChatView.getSocket().getInputStream());
+                while(true) {
+                    if(in.hasNextLine()){
+                        sendAction(in.nextLine());
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        scrollPane.vvalueProperty().bind(vBox.heightProperty());
     }
 
     @FXML
@@ -104,39 +109,48 @@ public class ChatController implements Initializable {
         emojiList.setVisible(!emojiList.isVisible());
     }
 
-    public void handleSendAction(ActionEvent actionEvent) {
+    public void sendAction(String message){
+        Text text=new Text(message); //on get le text de l'user
+        text.setFill(Color.WHITE);
+        Text date=new Text(new SimpleDateFormat("HH:mm").format(new Date())); //on get le text de l'user
+        date.setFill(Color.WHITE);
 
+        TextFlow textFlow = new TextFlow();
+        BorderPane borderPane1 = new BorderPane();
+        BorderPane borderPane2 = new BorderPane();
+        BorderPane borderPane3 = new BorderPane();
+        VBox vBox = new VBox(text);
+        HBox hBox = new HBox(date);
+        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+        vBox.setAlignment(Pos.TOP_LEFT);
+        textFlow.setStyle("-fx-border-color:black;-fx-border-radius:2px;-fx-background-color:green");
+
+        borderPane1.setRight(borderPane2);
+        borderPane2.setCenter(textFlow);
+        textFlow.getChildren().add(borderPane3);
+        borderPane3.setCenter(vBox);
+        borderPane3.setBottom(hBox);
+        Platform.runLater(() -> this.vBox.getChildren().add(borderPane1));
+    }
+
+    public void handleSendAction(ActionEvent actionEvent) {
         System.out.println(txtMsg.getText().trim());
+        sendAction(txtMsg.getText());
+        txtMsg.setText("");
+        txtMsg.requestFocus();
+    }
+
+    public void handleEnterKey(KeyEvent keyEvent) {
+       /* System.out.println(txtMsg.getText().trim());
+        if(keyEvent.getKey == ENTER.KEY)
 
         Text text=new Text(txtMsg.getText());
         text.setFill(Color.BLACK);
         text.getStyleClass().add("message");
         TextFlow flow=new TextFlow();
 
-        flow.getChildren().add(text);
-        flow.setMaxWidth(200);
-
-        HBox hbox=new HBox(12);
-
-        flow.getStyleClass().add("textFlow");
-        hbox.setAlignment(Pos.BOTTOM_RIGHT);
-        hbox.getChildren().add(flow);
-
-        hbox.getStyleClass().add("hbox");
-        textBox.toFront();
-        Platform.runLater(() -> textBox.getChildren().addAll(hbox));
-
         txtMsg.setText("");
-        txtMsg.requestFocus();
-    }
-
-    public void handleEnterKey(KeyEvent keyEvent) {
-        if(keyEvent.getCode() == KeyCode.ENTER) {
-            System.out.println(txtMsg.getText().trim());
-            txtMsg.selectAll();
-            txtMsg.requestFocus();
-            txtMsg.setText("");
-        }
+        txtMsg.requestFocus();*/
     }
 
     public void HandleLogoutAction(MouseEvent mouseEvent) {
@@ -152,23 +166,11 @@ public class ChatController implements Initializable {
         btnSend.setCursor(Cursor.HAND);
     }
 
-    public void handleSendHoverExited(MouseEvent mouseEvent) {
-        btnSend.setCursor(Cursor.DEFAULT);
-    }
-
     public void handleEmojiHoverEntered(MouseEvent mouseEvent) {
         btnEmoji.setCursor(Cursor.HAND);
     }
 
-    public void handleEmojiHoverExited(MouseEvent mouseEvent) {
-        btnEmoji.setCursor(Cursor.DEFAULT);
-    }
-
     public void handleLogoutHoverEntered(MouseEvent mouseEvent) {
         btnlogout.setCursor(Cursor.HAND);
-    }
-
-    public void handleLogoutHoverExited(MouseEvent mouseEvent) {
-        btnlogout.setCursor(Cursor.DEFAULT);
     }
 }

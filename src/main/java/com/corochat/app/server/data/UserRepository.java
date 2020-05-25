@@ -46,8 +46,13 @@ public class UserRepository {
         }
     }
 
-    public void insertUser(UserModel user) {
-        this.executorService.execute(() -> this.userDao.insert(user));
+    public boolean insertUser(UserModel user) {
+        try {
+            return this.executorService.submit(() -> this.userDao.insert(user)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void inactiveAll() {

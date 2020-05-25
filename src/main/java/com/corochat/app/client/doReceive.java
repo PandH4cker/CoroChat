@@ -13,6 +13,7 @@ public class doReceive extends Thread {
     private PrintWriter out;
     private Scanner inp;
     private boolean loggedIN;
+    private String command;
 
     public doReceive(Socket socket, Scanner in, PrintWriter out , Scanner inp) {
         this.socket = socket;
@@ -22,15 +23,34 @@ public class doReceive extends Thread {
         this.loggedIN = false;
     }
 
+    public doReceive(Socket socket, Scanner in, PrintWriter out, String command) {
+        this.socket = socket;
+        this.in = in;
+        this.out = out;
+        this.loggedIN = false;
+        this.command = command;
+    }
+
     public void run()
     {
-        String command = "";
-        command += "/login ";
-        command += new Gson().toJson(new UserModel(null, null, null, "dray@et.esiea.fr", "Mazgan"));
-        out.println(command);
+       // this.command = "";
+       // command += "/login ";
+        // command += new Gson().toJson(new UserModel(null, null, null, "dray@et.esiea.fr", "Mazgan"));
+        out.println(command); //envoyer la commande au server
         while(in.hasNextLine()) {
-            System.out.println(in.nextLine());
+            String response = in.nextLine();
+            System.out.println(response);
+
+            if(response.startsWith("/displaySuccess")){
+
+            }else{
+
+            }
         }
+
+
+
+
         /*while(in.hasNextLine()){
             String line = in.nextLine();
             if (line.startsWith("SUBMITNAME")) {
