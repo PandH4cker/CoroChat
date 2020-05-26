@@ -79,7 +79,7 @@ public class ClientHandler implements Runnable {
             for (PrintWriter writer : MultiThreadedServer.getWriters()) {
                 writer.println("MESSAGE " + this.pseudo + " has joined the chat.");
             }
-            System.out.println(this.pseudo + " has joined the chat.");
+            System.out.println(this.pseudo.substring(0, this.pseudo.length()-1) + " has joined the chat.");
             MultiThreadedServer.getWriters().add(this.out);
 
             while (true) {
@@ -99,7 +99,7 @@ public class ClientHandler implements Runnable {
                 System.out.println(this.pseudo + " is leaving.");
                 MultiThreadedServer.getPseudos().remove(this.pseudo);
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println("MESSAGE " + this.pseudo + " has left.");
+                    writer.println("MESSAGE " + this.pseudo.substring(0, this.pseudo.length()-1) + " has left.");
             }
             try {
                 this.socket.close();

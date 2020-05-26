@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -93,7 +94,7 @@ public class ChatController implements Initializable {
                             System.out.println(ChatView.getUserModel().getPseudo());
 
                             if(!pseudo.equals(ChatView.getUserModel().getPseudo()))
-                                sendAction(pseudo+" "+userMessage, false);
+                                sendAction(pseudo+": "+userMessage, false);
                         }
                     }
                 }
@@ -137,14 +138,18 @@ public class ChatController implements Initializable {
         VBox vBox = new VBox(text);
         HBox hBox = new HBox(date);
 
-        if(tqtfelicia)  //c'est moi
+        this.vBox.setPadding(new Insets(20, 20, 20, 20));
+        this.vBox.setSpacing(20);
+        if(tqtfelicia) {  //current user
             borderPane1.setRight(borderPane2);
-        else
+            textFlow.getStyleClass().add("feliciaText");
+        }
+        else {
             borderPane1.setLeft(borderPane2);
-
+            textFlow.getStyleClass().add("notFeliciaText");
+        }
         hBox.setAlignment(Pos.BOTTOM_RIGHT);
         vBox.setAlignment(Pos.TOP_LEFT);
-        textFlow.setStyle("-fx-border-color:black;-fx-border-radius:2px;-fx-background-color:green");
 
         borderPane2.setCenter(textFlow);
         textFlow.getChildren().add(borderPane3);
@@ -176,6 +181,12 @@ public class ChatController implements Initializable {
 
     public void HandleLogoutAction(MouseEvent mouseEvent) {
         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
+        try {
+           PrintWriter out = new PrintWriter(ChatView.getSocket().getOutputStream(), true);
+            out.println("/quit");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try {
             this.loginView.start(new Stage());
         } catch (Exception e) {
