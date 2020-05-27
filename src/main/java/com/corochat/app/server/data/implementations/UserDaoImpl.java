@@ -3,6 +3,7 @@ package com.corochat.app.server.data.implementations;
 import com.corochat.app.client.models.UserModel;
 import com.corochat.app.server.data.AbstractCorochatDatabase;
 import com.corochat.app.server.data.daos.UserDao;
+import com.corochat.app.server.data.exception.AlreadyExistsException;
 import com.corochat.app.server.data.names.DataUserName;
 
 import java.sql.*;
@@ -115,27 +116,15 @@ public final class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void insert(UserModel user) {
-        final String sql = "BEGIN " +
-                           "INSERT INTO " + DataUserName.TABLE_NAME + " (" +
+    public boolean insert(UserModel user) throws AlreadyExistsException{
+        final String sql = "INSERT INTO " + DataUserName.TABLE_NAME + " (" +
                            DataUserName.COL_FIRST_NAME + ", " +
                            DataUserName.COL_LAST_NAME + ", " +
                            DataUserName.COL_PSEUDO + ", " +
                            DataUserName.COL_EMAIL + ", " +
                            DataUserName.COL_HASHED_PASSWORD + ", " +
                            DataUserName.COL_ACTIVE + ") " +
-                           "VALUES (?,?,?,?,?,1); " +
-                           "EXCEPTION " +
-                                "WHEN dup_val_on_index THEN " +
-                                    "UPDATE " + DataUserName.TABLE_NAME +
-                                        " SET " +
-                                           DataUserName.COL_FIRST_NAME + " = ?," +
-                                           DataUserName.COL_LAST_NAME + " = ?," +
-                                           DataUserName.COL_PSEUDO + " = ?," +
-                                           DataUserName.COL_EMAIL + " = ?," +
-                                           DataUserName.COL_HASHED_PASSWORD + " = ?, " +
-                                           DataUserName.COL_ACTIVE + " = 1; " +
-                           "END;";
+                           "VALUES (?,?,?,?,?,1)";
         try {
             final PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
             preparedStatement.setString(1, user.getFirstName());
@@ -143,19 +132,21 @@ public final class UserDaoImpl implements UserDao {
             preparedStatement.setString(3, user.getPseudo());
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setString(5, user.getHashedPassword());
-            preparedStatement.setString(6, user.getFirstName());
-            preparedStatement.setString(7, user.getLastName());
-            preparedStatement.setString(8, user.getPseudo());
-            preparedStatement.setString(9, user.getEmail());
-            preparedStatement.setString(10, user.getHashedPassword());
 
             int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0)
+            if (rowsInserted > 0){
                 System.out.println("A new user has been inserted successfully.");
+                return true;
+            }
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            String errorMessage = e.getMessage();
+            if(errorMessage.contains("PSEUDO"))
+                throw new AlreadyExistsException("Pseudo already exists");
+            else
+                throw new AlreadyExistsException("Email already exists");
         }
+        return false;
     }
 
     @Override

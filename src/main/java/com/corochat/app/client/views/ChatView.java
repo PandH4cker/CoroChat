@@ -1,7 +1,7 @@
 package com.corochat.app.client.views;
 
 import animatefx.animation.*;
-import javafx.application.Application;
+import com.corochat.app.client.models.UserModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,14 +9,22 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.nio.file.Paths;
 
-public class LoginView extends Application {
+public class ChatView {
     private double xOffset = 0;
     private double yOffset = 0;
+    private static UserModel userModel;
+    private static Socket socket;
+    private static PrintWriter out;
 
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Paths.get("src/main/resources/fxmls/LoginView.fxml").toUri().toURL());
+    public void start(Stage stage, UserModel user, Socket socketo, PrintWriter outo) throws Exception {
+        userModel = user;
+        socket = socketo;
+        out = outo;
+        Parent root = FXMLLoader.load(Paths.get("src/main/resources/fxmls/ChatView.fxml").toUri().toURL());
         stage.setTitle("CoroChat");
 
         Scene scene = new Scene(root);
@@ -31,15 +39,23 @@ public class LoginView extends Application {
         });
 
         stage.show();
-        new FadeInDown(root).play();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+        new FadeInUp(root).play();
     }
 
     private void handleMousePressed(MouseEvent mouseEvent) {
         this.xOffset = mouseEvent.getSceneX();
         this.yOffset = mouseEvent.getSceneY();
+    }
+
+    public static Socket getSocket() {
+        return socket;
+    }
+
+    public static UserModel getUserModel() {
+        return userModel;
+    }
+
+    public static PrintWriter getOut() {
+        return out;
     }
 }

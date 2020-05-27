@@ -16,6 +16,17 @@
 + [JBcrypt](https://www.mindrot.org/projects/jBCrypt/)
 + [Gson](https://github.com/google/gson)
 
+---
+
+####note: to be able to launch the LoginView, you must configure javaFX
+Go to:  Run > Edit configuration > LoginView > VM option
+
+Inside the VM option text zone, add the location of the javaFX library as the example below:
+
+> --module-path \
+> /Path/To/javafx-sdk-11.0.2/lib \
+> --add-modules \
+> javafx.controls,javafx.fxml
 
 ---
 ## Last Release Version: 0.0.2

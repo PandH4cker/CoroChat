@@ -12,9 +12,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class ClientHandler implements Runnable {
-    private String email;
+    private String pseudo;
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
@@ -31,67 +32,91 @@ public class ClientHandler implements Runnable {
             this.in = new Scanner(socket.getInputStream());
             this.out = new PrintWriter(socket.getOutputStream(), true);
 
-            while (this.in.hasNextLine()) {
+            if (this.in.hasNextLine()) {
                 String command = this.in.nextLine();
                 if (command.toLowerCase().startsWith("/login")) {
                     String userCredentials = command.substring(7);
-                    UserModel givenUser = new Gson().fromJson(userCredentials, new TypeToken<UserModel>(){}.getType());
+                    UserModel givenUser = new Gson().fromJson(userCredentials, new TypeToken<UserModel>() {
+                    }.getType());
                     UserModel fetchedUser = this.userRepository.getUser(givenUser.getEmail());
                     if (fetchedUser != null && BCrypt.checkpw(givenUser.getHashedPassword(), fetchedUser.getHashedPassword())) {
-                            this.out.println("Welcome back " + fetchedUser.getFirstName() + "!");
+                        String success = new Gson().toJson(fetchedUser);
+                        this.out.println("/displaySuccess " + success);
+                        System.out.println(fetchedUser.getFirstName() + " is connected");
+                        this.pseudo =fetchedUser.getPseudo();
                     } else {
-                        out.println("Wrong email or password!");
+                        String error = new Gson().toJson("Wrong email or password!");
+                        this.out.println("/displayError " + error);
                         return;
                     }
                 } else if (command.toLowerCase().startsWith("/signup")) {
                     String userInfo = command.substring(8);
-                    UserModel user = new Gson().fromJson(userInfo, new TypeToken<UserModel>(){}.getType());
-                    this.userRepository.insertUser(user);
-                    this.out.println("Welcome " + user.getFirstName() + " you just signed up!");
+                    UserModel user = new Gson().fromJson(userInfo, new TypeToken<UserModel>() {
+                    }.getType());
+
+                    try {
+                        this.userRepository.insertUser(user);
+                        String success = new Gson().toJson("Account created");
+                        this.out.println("/displaySuccess " + success);
+                        System.out.println(user.getFirstName() + " is connected");
+                        this.pseudo =user.getPseudo();
+                    } catch (InterruptedException | ExecutionException e) {
+                        String error = new Gson().toJson(e.getMessage().split(":",2)[1].trim());
+                        this.out.println("/displayError " + error);
+
+                        return;
+                    }
+
+                    /*if (this.userRepository.insertUser(user)) {
+                        String success = new Gson().toJson("Account created");
+                        this.out.println("/displaySuccess " + success);
+                        System.out.println(user.getFirstName() + " is connected");
+                        this.pseudo =user.getPseudo();
+                    } else {
+                        String error = new Gson().toJson("User already exists");
+                        this.out.println("/displayError " + error);
+                        return;
+                    }*/
                 } else {
-                    out.println("You must be logged first !");
+                    String error = new Gson().toJson("Please login first");
+                    this.out.println("/displayError " + error);
                     return;
                 }
-
-                /*out.println("SUBMITNAME");
-                this.email = in.nextLine();
-                if (email == null)
-                    return;
-                synchronized (MultiThreadedServer.getEmails()) {
-                    if (!this.email.equals("") &&
-                        !MultiThreadedServer.getEmails().contains(this.email) &&
-                        EmailValidator.isValid(this.email)) {
-                        MultiThreadedServer.getEmails().add(this.email);
-                        System.out.println("Thread " + Thread.currentThread().getName());
-                        break;
-                    }
-                }*/
             }
 
-            /*out.println("NAMEACCEPTED " + this.email);
+            synchronized (MultiThreadedServer.getPseudos()) {
+                if (!this.pseudo.equals("") &&
+                    !MultiThreadedServer.getPseudos().contains(this.pseudo) &&
+                    EmailValidator.isValid(this.pseudo)) {
+                    MultiThreadedServer.getPseudos().add(this.pseudo);
+                }
+            }
+
             for (PrintWriter writer : MultiThreadedServer.getWriters()) {
-                writer.println("MESSAGE " + this.email + " has joined the chat.");
+                writer.println("MESSAGE " + this.pseudo + " has joined the chat.");
             }
-            System.out.println(this.email + " has joined the chat.");
+            System.out.println(this.pseudo.substring(0, this.pseudo.length()-1) + " has joined the chat.");
             MultiThreadedServer.getWriters().add(this.out);
 
             while (true) {
                 String input = this.in.nextLine();
+                System.out.println(input);
                 if (input.toLowerCase().startsWith("/quit"))
                     return;
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println("MESSAGE " + this.email + ": " + input);
-            }*/
+                    writer.println("MESSAGE " + this.pseudo + ": " + input);
+            }
         } catch (IOException e) {
             e.printStackTrace();
+            //coucou ici
         } finally {
             if (this.out != null)
                 MultiThreadedServer.getWriters().remove(this.out);
-            if (this.email != null) {
-                System.out.println(this.email + " is leaving.");
-                MultiThreadedServer.getEmails().remove(this.email);
+            if (this.pseudo != null) {
+                System.out.println(this.pseudo + " is leaving.");
+                MultiThreadedServer.getPseudos().remove(this.pseudo);
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println("MESSAGE " + this.email + " has left.");
+                    writer.println("MESSAGE " + this.pseudo.substring(0, this.pseudo.length()-1) + " has left.");
             }
             try {
                 this.socket.close();
