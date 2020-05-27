@@ -1,9 +1,11 @@
 package com.corochat.app.client.controllers;
 
 import animatefx.animation.ZoomOutDown;
+import com.corochat.app.client.communication.ClientCommand;
 import com.corochat.app.client.views.ChatView;
 import com.corochat.app.client.views.LoginView;
 import com.corochat.app.server.handlers.ClientHandler;
+import com.corochat.app.server.handlers.ServerCommand;
 import com.google.gson.internal.$Gson$Types;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -35,7 +37,6 @@ import java.util.*;
 
 public class ChatController implements Initializable {
     private LoginView loginView;
-    private List<String> arrayList;
 
     @FXML
     private AnchorPane anchRoot;
@@ -64,7 +65,6 @@ public class ChatController implements Initializable {
 
     public ChatController() {
         this.loginView = new LoginView();
-        this.arrayList = new ArrayList<>();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ChatController implements Initializable {
                 Scanner in = new Scanner(ChatView.getSocket().getInputStream());
                 while(true){
                     String message=in.nextLine();
-                    if(message.startsWith("MESSAGE")) {
+                    if(message.startsWith(ServerCommand.MESSAGE.getCommand())) {
                         String userMessage = message.substring(8);
                         String[] splittedUserMessage = userMessage.split(" ", 2);
                         String pseudo = splittedUserMessage[0];
@@ -92,6 +92,10 @@ public class ChatController implements Initializable {
                         userMessage = splittedUserMessage[1].replace("\t","\n");
                         if(!pseudo.equals(ChatView.getUserModel().getPseudo()))
                             sendAction(pseudo+": "+userMessage, false);
+                    } else if(message.startsWith(ServerCommand.CONNECT.getCommand())){
+                        //TODO ajouter dans la liste
+                    } else {
+                        //TODO supprimer de la liste
                     }
                 }
             } catch (IOException e) {
@@ -185,7 +189,7 @@ public class ChatController implements Initializable {
         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
         try {
            PrintWriter out = new PrintWriter(ChatView.getSocket().getOutputStream(), true);
-            out.println("/quit");
+            out.println(ClientCommand.QUIT.getCommand());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,10 @@
 package com.corochat.app.client.controllers;
 
 import animatefx.animation.*;
+import com.corochat.app.client.communication.ClientCommand;
 import com.corochat.app.client.models.UserModel;
 import com.corochat.app.client.views.ChatView;
+import com.corochat.app.server.handlers.ServerCommand;
 import com.corochat.app.utils.setters.ImageSetter;
 import com.corochat.app.utils.setters.LinkSetter;
 import com.corochat.app.utils.validations.EmailValidator;
@@ -294,7 +296,7 @@ public class LoginController implements Initializable {
         String password = this.pfPassword.getText();
 
         UserModel user = new UserModel(null, null, null, email, password);
-        String command = "/login "+new Gson().toJson(user);
+        String command = ClientCommand.LOGIN.getCommand()+" "+new Gson().toJson(user);
         try {
             this.socket = new Socket("localhost", 4444);
             Scanner in = new Scanner(socket.getInputStream());
@@ -303,8 +305,8 @@ public class LoginController implements Initializable {
             out.println(command); //envoyer la commande au server
             if(in.hasNextLine()) {
                 String response = in.nextLine();
-                if(response.startsWith("/displaySuccess")) {
-                    String successMessage = response.substring(16);
+                if(response.startsWith(ServerCommand.DISPLAY_SUCCESS.getCommand())) {
+                    String successMessage = response.substring(14);
                     UserModel userRetrieved = new Gson().fromJson(successMessage, new TypeToken<UserModel>(){}.getType());
                     try {
                         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
@@ -312,8 +314,8 @@ public class LoginController implements Initializable {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else if(response.startsWith("/displayError")){
-                    String errorMessage = response.substring(14);
+                }else if(response.startsWith(ServerCommand.DISPLAY_ERROR.getCommand())){
+                    String errorMessage = response.substring(12);
                 }else{
                     System.out.println("ça s'est mal passé Felicia :'(");
                 }
@@ -347,7 +349,7 @@ public class LoginController implements Initializable {
         String password = this.pfSignUpPassword.getText();
         password = BCrypt.hashpw(password,BCrypt.gensalt());
         UserModel user = new UserModel(firstName, lastName, pseudo, email, password);
-        String command = "/signup "+new Gson().toJson(user);
+        String command = ClientCommand.SIGNUP.getCommand()+" "+new Gson().toJson(user);
         try {
             this.socket = new Socket("localhost", 4444);
             Scanner in = new Scanner(socket.getInputStream());
@@ -355,16 +357,16 @@ public class LoginController implements Initializable {
             out.println(command); //envoyer la commande au server
             if(in.hasNextLine()) {
                 String response = in.nextLine();
-                if(response.startsWith("/displaySuccess")) {
-                    String successMessage = response.substring(16);
+                if(response.startsWith(ServerCommand.DISPLAY_SUCCESS.getCommand())) {
+                    String successMessage = response.substring(14);
                     try {
                         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
                         this.chatView.start(new Stage(), user, this.socket, out);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else if(response.startsWith("/displayError")){
-                    String errorMessage = response.substring(14);
+                }else if(response.startsWith(ServerCommand.DISPLAY_ERROR.getCommand())){
+                    String errorMessage = response.substring(12);
                     //TODO afficher message dans le terminal, puis plus tard dans une textview
 
                     Alert alert=new Alert(AlertType.ERROR);
