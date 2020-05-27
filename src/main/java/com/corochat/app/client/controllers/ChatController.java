@@ -64,7 +64,7 @@ public class ChatController implements Initializable {
 
     public ChatController() {
         this.loginView = new LoginView();
-        this.arrayList = new ArrayList();
+        this.arrayList = new ArrayList<>();
     }
 
     @Override
@@ -81,33 +81,15 @@ public class ChatController implements Initializable {
         new Thread(() -> {
             try {
                 Scanner in = new Scanner(ChatView.getSocket().getInputStream());
-                String message;
-                while(true/*in.hasNextLine()*/){
-                    if(arrayList.isEmpty())
-                        message = in.nextLine();
-                    else
-                        message = arrayList.get(0);
-
+                while(true){
+                    String message=in.nextLine();
                     if(message.startsWith("MESSAGE")) {
-                        String userMessage = message.substring(8);//remove MESSAGE
-
-                        if (arrayList.size() > 0) {
-                            for (int i = 1; i < this.arrayList.size(); i++){
-                                userMessage = userMessage + this.arrayList.get(i);
-                                System.out.println("test "+userMessage);
-                            }
-                            this.arrayList.clear();
-                        }
-                        System.out.println("Message complet : "+ userMessage);
-
+                        String userMessage = message.substring(8);
                         String[] splittedUserMessage = userMessage.split(" ", 2);
                         String pseudo = splittedUserMessage[0];
                         if(pseudo.contains(":"))
                             pseudo = pseudo.substring(0,pseudo.length()-1);
-                        userMessage = splittedUserMessage[1];
-                        //System.out.println(pseudo);
-                        //System.out.println(ChatView.getUserModel().getPseudo());
-
+                        userMessage = splittedUserMessage[1].replace("\t","\n");
                         if(!pseudo.equals(ChatView.getUserModel().getPseudo()))
                             sendAction(pseudo+": "+userMessage, false);
                     }
@@ -135,32 +117,49 @@ public class ChatController implements Initializable {
         }
     }
 
+    @FXML
     public void handleEmojiAction(ActionEvent actionEvent) {
         emojiList.setVisible(!emojiList.isVisible());
     }
 
-    public void sendAction(String message, boolean tqtfelicia){
-        Text text=new Text(message); //on get le text de l'user
-        text.setFill(Color.WHITE);
-        Text date=new Text(new SimpleDateFormat("HH:mm").format(new Date())); //on get le text de l'user
+    private void sendAction(String message, boolean tqtfelicia){
+        Text date=new Text(new SimpleDateFormat("HH:mm").format(new Date()));
         date.setFill(Color.WHITE);
 
         TextFlow textFlow = new TextFlow();
         BorderPane borderPane1 = new BorderPane();
         BorderPane borderPane2 = new BorderPane();
         BorderPane borderPane3 = new BorderPane();
-        VBox vBox = new VBox(text);
+        VBox vBox = null;
         HBox hBox = new HBox(date);
 
         this.vBox.setPadding(new Insets(20, 20, 20, 20));
         this.vBox.setSpacing(20);
         if(tqtfelicia) {  //current user
+            Text text=new Text(message); //on get le text de l'user
+            text.setFill(Color.WHITE);
+            vBox = new VBox(text);
             borderPane1.setRight(borderPane2);
             textFlow.getStyleClass().add("feliciaText");
         }
         else {
+            String[] splittedMessage = message.split(" ", 2);
+            splittedMessage[0]=splittedMessage[0].substring(0,splittedMessage[0].length()-1);
+            splittedMessage[1]=splittedMessage[1].trim();
+
+            Text text=new Text(splittedMessage[1]);
+            text.setFill(Color.WHITE);
+
+            Text pseudoText = new Text(splittedMessage[0]);
+            pseudoText.setFill(Color.WHITE);
+            HBox hBoxPseudo = new HBox(pseudoText);
+
+            vBox = new VBox(text);
+
             borderPane1.setLeft(borderPane2);
             textFlow.getStyleClass().add("notFeliciaText");
+            hBoxPseudo.setAlignment(Pos.TOP_LEFT);
+            borderPane3.setTop(hBoxPseudo);
         }
         hBox.setAlignment(Pos.BOTTOM_RIGHT);
         vBox.setAlignment(Pos.TOP_LEFT);
@@ -172,25 +171,16 @@ public class ChatController implements Initializable {
         Platform.runLater(() -> this.vBox.getChildren().add(borderPane1));
     }
 
+    @FXML
     public void handleSendAction(ActionEvent actionEvent) {
-        System.out.println(txtMsg.getText().trim());
         sendAction(txtMsg.getText(), true);
+        txtMsg.setText(txtMsg.getText().replace("\n","\t"));
         ChatView.getOut().println(txtMsg.getText()); //parle sur le server
         txtMsg.setText("");
         txtMsg.requestFocus();
     }
 
-    public void handleEnterKey(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
-            if(this.arrayList.isEmpty())
-                this.arrayList.add("MESSAGE "+txtMsg.getText()+"\t"); //ajout du message : MESSAGE
-            else
-                this.arrayList.add(txtMsg.getText()+"\t");
-        }
-
-     //   if(keyEvent.getCode()) touche suppr text
-    }
-
+    @FXML
     public void HandleLogoutAction(MouseEvent mouseEvent) {
         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
         try {
@@ -206,14 +196,17 @@ public class ChatController implements Initializable {
         }
     }
 
+    @FXML
     public void handleSendHoverEntered(MouseEvent mouseEvent) {
         btnSend.setCursor(Cursor.HAND);
     }
 
+    @FXML
     public void handleEmojiHoverEntered(MouseEvent mouseEvent) {
         btnEmoji.setCursor(Cursor.HAND);
     }
 
+    @FXML
     public void handleLogoutHoverEntered(MouseEvent mouseEvent) {
         btnlogout.setCursor(Cursor.HAND);
     }

@@ -17,7 +17,7 @@
                         <VBox fx:id="vBox" alignment="TOP_RIGHT" prefHeight="536.0" prefWidth="897.0" />
                      </content>
                   </ScrollPane>
-                  <TextArea fx:id="txtMsg" accessibleRole="PARENT" layoutX="163.0" layoutY="629.0" onKeyPressed="#handleEnterKey" prefHeight="43.0" prefWidth="602.0" promptText="Type your message" wrapText="true" />
+                  <TextArea fx:id="txtMsg" accessibleRole="PARENT" layoutX="163.0" layoutY="629.0" prefHeight="43.0" prefWidth="602.0" promptText="Type your message" wrapText="true" />
                   <Button fx:id="btnSend" accessibleRole="PARENT" layoutX="793.0" layoutY="636.0" mnemonicParsing="false" onAction="#handleSendAction" onMouseEntered="#handleSendHoverEntered" prefHeight="30.0" prefWidth="34.0" />
                   <Button fx:id="btnEmoji" contentDisplay="TEXT_ONLY" graphicTextGap="0.0" layoutX="724.0" layoutY="629.0" maxWidth="-Infinity" minHeight="19.0" minWidth="39.0" mnemonicParsing="false" onAction="#handleEmojiAction" onMouseEntered="#handleEmojiHoverEntered" prefHeight="42.0" prefWidth="41.0" styleClass="btnEmoji" text="🙄" />
                   <TextFlow fx:id="emojiList" layoutX="505.0" layoutY="535.0" prefHeight="91.0" prefWidth="260.0" visible="false">
