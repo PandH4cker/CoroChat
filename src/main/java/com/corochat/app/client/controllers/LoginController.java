@@ -1,7 +1,6 @@
 package com.corochat.app.client.controllers;
 
 import animatefx.animation.*;
-import com.corochat.app.client.doReceive;
 import com.corochat.app.client.models.UserModel;
 import com.corochat.app.client.views.ChatView;
 import com.corochat.app.utils.setters.ImageSetter;
