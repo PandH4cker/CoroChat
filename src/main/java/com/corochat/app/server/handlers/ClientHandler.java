@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class ClientHandler implements Runnable {
     private String pseudo;
@@ -52,7 +53,21 @@ public class ClientHandler implements Runnable {
                     String userInfo = command.substring(8);
                     UserModel user = new Gson().fromJson(userInfo, new TypeToken<UserModel>() {
                     }.getType());
-                    if (this.userRepository.insertUser(user)) {
+
+                    try {
+                        this.userRepository.insertUser(user);
+                        String success = new Gson().toJson("Account created");
+                        this.out.println("/displaySuccess " + success);
+                        System.out.println(user.getFirstName() + " is connected");
+                        this.pseudo =user.getPseudo();
+                    } catch (InterruptedException | ExecutionException e) {
+                        String error = new Gson().toJson(e.getMessage().split(":",2)[1].trim());
+                        this.out.println("/displayError " + error);
+
+                        return;
+                    }
+
+                    /*if (this.userRepository.insertUser(user)) {
                         String success = new Gson().toJson("Account created");
                         this.out.println("/displaySuccess " + success);
                         System.out.println(user.getFirstName() + " is connected");
@@ -60,7 +75,8 @@ public class ClientHandler implements Runnable {
                     } else {
                         String error = new Gson().toJson("User already exists");
                         this.out.println("/displayError " + error);
-                    }
+                        return;
+                    }*/
                 } else {
                     String error = new Gson().toJson("Please login first");
                     this.out.println("/displayError " + error);
@@ -92,6 +108,7 @@ public class ClientHandler implements Runnable {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            //coucou ici
         } finally {
             if (this.out != null)
                 MultiThreadedServer.getWriters().remove(this.out);

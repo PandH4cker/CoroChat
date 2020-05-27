@@ -3,6 +3,7 @@ package com.corochat.app.server.data.implementations;
 import com.corochat.app.client.models.UserModel;
 import com.corochat.app.server.data.AbstractCorochatDatabase;
 import com.corochat.app.server.data.daos.UserDao;
+import com.corochat.app.server.data.exception.AlreadyExistsException;
 import com.corochat.app.server.data.names.DataUserName;
 
 import java.sql.*;
@@ -115,7 +116,7 @@ public final class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean insert(UserModel user) {
+    public boolean insert(UserModel user) throws AlreadyExistsException{
         final String sql = "INSERT INTO " + DataUserName.TABLE_NAME + " (" +
                            DataUserName.COL_FIRST_NAME + ", " +
                            DataUserName.COL_LAST_NAME + ", " +
@@ -139,7 +140,11 @@ public final class UserDaoImpl implements UserDao {
             }
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            String errorMessage = e.getMessage();
+            if(errorMessage.contains("PSEUDO"))
+                throw new AlreadyExistsException("Pseudo already exists");
+            else
+                throw new AlreadyExistsException("Email already exists");
         }
         return false;
     }

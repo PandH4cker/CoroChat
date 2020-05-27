@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -30,12 +31,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
 public class ChatController implements Initializable {
     private LoginView loginView;
+    private List<String> arrayList;
 
     @FXML
     private AnchorPane anchRoot;
@@ -64,6 +64,7 @@ public class ChatController implements Initializable {
 
     public ChatController() {
         this.loginView = new LoginView();
+        this.arrayList = new ArrayList();
     }
 
     @Override
@@ -80,22 +81,35 @@ public class ChatController implements Initializable {
         new Thread(() -> {
             try {
                 Scanner in = new Scanner(ChatView.getSocket().getInputStream());
-                while(true) {
-                    if(in.hasNextLine()){
-                        String message = in.nextLine();
-                        if(message.startsWith("MESSAGE")) {
-                            String userMessage = message.substring(8);
-                            String[] splittedUserMessage = userMessage.split(" ", 2);
-                            String pseudo = splittedUserMessage[0];
-                            if(pseudo.contains(":"))
-                                pseudo = pseudo.substring(0,pseudo.length()-1);
-                            userMessage = splittedUserMessage[1];
-                            System.out.println(pseudo);
-                            System.out.println(ChatView.getUserModel().getPseudo());
+                String message;
+                while(true/*in.hasNextLine()*/){
+                    if(arrayList.isEmpty())
+                        message = in.nextLine();
+                    else
+                        message = arrayList.get(0);
 
-                            if(!pseudo.equals(ChatView.getUserModel().getPseudo()))
-                                sendAction(pseudo+": "+userMessage, false);
+                    if(message.startsWith("MESSAGE")) {
+                        String userMessage = message.substring(8);//remove MESSAGE
+
+                        if (arrayList.size() > 0) {
+                            for (int i = 1; i < this.arrayList.size(); i++){
+                                userMessage = userMessage + this.arrayList.get(i);
+                                System.out.println("test "+userMessage);
+                            }
+                            this.arrayList.clear();
                         }
+                        System.out.println("Message complet : "+ userMessage);
+
+                        String[] splittedUserMessage = userMessage.split(" ", 2);
+                        String pseudo = splittedUserMessage[0];
+                        if(pseudo.contains(":"))
+                            pseudo = pseudo.substring(0,pseudo.length()-1);
+                        userMessage = splittedUserMessage[1];
+                        //System.out.println(pseudo);
+                        //System.out.println(ChatView.getUserModel().getPseudo());
+
+                        if(!pseudo.equals(ChatView.getUserModel().getPseudo()))
+                            sendAction(pseudo+": "+userMessage, false);
                     }
                 }
             } catch (IOException e) {
@@ -167,16 +181,14 @@ public class ChatController implements Initializable {
     }
 
     public void handleEnterKey(KeyEvent keyEvent) {
-       /* System.out.println(txtMsg.getText().trim());
-        if(keyEvent.getKey == ENTER.KEY)
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if(this.arrayList.isEmpty())
+                this.arrayList.add("MESSAGE "+txtMsg.getText()+"\t"); //ajout du message : MESSAGE
+            else
+                this.arrayList.add(txtMsg.getText()+"\t");
+        }
 
-        Text text=new Text(txtMsg.getText());
-        text.setFill(Color.BLACK);
-        text.getStyleClass().add("message");
-        TextFlow flow=new TextFlow();
-
-        txtMsg.setText("");
-        txtMsg.requestFocus();*/
+     //   if(keyEvent.getCode()) touche suppr text
     }
 
     public void HandleLogoutAction(MouseEvent mouseEvent) {

@@ -2,6 +2,7 @@ package com.corochat.app.server.data;
 
 import com.corochat.app.client.models.UserModel;
 import com.corochat.app.server.data.daos.UserDao;
+import com.corochat.app.server.data.exception.AlreadyExistsException;
 import com.corochat.app.server.data.implementations.CorochatDatabase;
 
 import java.util.ArrayList;
@@ -46,13 +47,8 @@ public class UserRepository {
         }
     }
 
-    public boolean insertUser(UserModel user) {
-        try {
-            return this.executorService.submit(() -> this.userDao.insert(user)).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void insertUser(UserModel user) throws InterruptedException, ExecutionException {
+            this.executorService.submit(() -> this.userDao.insert(user)).get();
     }
 
     public void inactiveAll() {

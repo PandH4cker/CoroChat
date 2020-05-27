@@ -14,10 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -34,6 +31,8 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+
+import static javafx.scene.control.Alert.AlertType;
 
 public class LoginController implements Initializable {
     private ChatView chatView;
@@ -368,6 +367,16 @@ public class LoginController implements Initializable {
                 }else if(response.startsWith("/displayError")){
                     String errorMessage = response.substring(14);
                     //TODO afficher message dans le terminal, puis plus tard dans une textview
+
+                    Alert alert=new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText(errorMessage.replace("\"",""));
+                    alert.getButtonTypes().setAll(ButtonType.OK);
+                    alert.showAndWait();
+
+
+                    System.out.println("ça s'est mal passé Felicia :'( " + errorMessage);
                 }else{
                     System.out.println("ça s'est mal passé Felicia :'(");
                 }
