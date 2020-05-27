@@ -16,10 +16,31 @@
 + [JBcrypt](https://www.mindrot.org/projects/jBCrypt/)
 + [Gson](https://github.com/google/gson)
 
+---
+
+## Note: 
+> To be able to launch the LoginView, you must configure javaFX <br />
+> Go to:  Run > Edit configuration > LoginView > VM option
+
+> Inside the VM option text zone, add the location of the javaFX library as the example below:
+
+    --module-path \
+    /Path/To/javafx-sdk-11.0.2/lib \
+    --add-modules \
+    javafx.controls,javafx.fxml
 
 ---
-## Last Release Version: 0.0.2
+## Last Release Version: 0.0.3
 ### Changelog:
+> #### Version 0.0.3
+> Refactored design colors from linear gradient violet to darkblue. <br />
+> Added support for OS validations. <br />
+> Added second view ChatView and its ChatController for performing action on the Chat view. <br>
+> Refactored LoginController and added connection between the server and the view. <br />
+> Refactored MultiThreadedServer class. <br />
+> Refactored classes in the data package. <br />
+> Added new Index for handling pseudo duplication in the database. <br />
+---
 > #### Version 0.0.2
 > Added UserDao interface containing abstract sql methods to interact with the DB. <br />
 > Added DataUserName class containing the names of the user columns and the table name. <br />

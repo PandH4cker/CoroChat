@@ -1,17 +1,19 @@
 package com.corochat.app.client.controllers;
 
 import animatefx.animation.*;
+import com.corochat.app.client.models.UserModel;
+import com.corochat.app.client.views.ChatView;
 import com.corochat.app.utils.setters.ImageSetter;
 import com.corochat.app.utils.setters.LinkSetter;
 import com.corochat.app.utils.validations.EmailValidator;
 import com.corochat.app.utils.validations.PasswordValidator;
 import com.corochat.app.utils.validations.StringContaining;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -20,11 +22,22 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+
+import static javafx.scene.control.Alert.AlertType;
 
 public class LoginController implements Initializable {
+    private ChatView chatView;
+    private Pane currentPane;
+    private Socket socket;
+
     /** Main Screen **/
     @FXML
     private AnchorPane anchRoot;
@@ -98,6 +111,13 @@ public class LoginController implements Initializable {
     @FXML
     private Button btnFinish;
 
+
+
+
+    public LoginController() {
+        this.chatView = new ChatView();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.pnlSignIn.toFront();
@@ -134,6 +154,18 @@ public class LoginController implements Initializable {
             event.getSource() == this.btnForgotPasswordFirstBack) {
             this.backAction(this.pnlSignIn);
         }
+        this.tfSignUpFirstName.clear();
+        this.tfSignUpLastName.clear();
+        this.tfSignUpEmail.clear();
+        this.tfSignUpPseudo.clear();
+        this.pfPassword.clear();
+        this.pfRepeatPassword.clear();
+        this.tfEmail.clear();
+        this.tfForgotPasswordEmail.clear();
+        this.tfVerificationCode.clear();
+        this.pfNewPassword.clear();
+        this.pfSignUpPassword.clear();
+        this.pfRepeatNewPassword.clear();
     }
 
     private boolean isValidEmail(final TextField email) {
@@ -145,13 +177,14 @@ public class LoginController implements Initializable {
     }
 
     private void backAction(final Pane pane) {
-        pane.toFront();
-        new FadeInLeftBig(pane).play();
+        new ZoomOutRight(this.currentPane).play();
+        this.currentPane = pane;
     }
 
     private void inAction(final Pane pane) {
         pane.toFront();
-        new FadeInRightBig(pane).play();
+        new ZoomInRight(pane).play();
+        this.currentPane = pane;
     }
 
     @FXML
@@ -241,8 +274,125 @@ public class LoginController implements Initializable {
                         this.pfSignUpPassword.getText().equals(this.pfRepeatPassword.getText())) {
                         this.btnGetStarted.setDisable(false);
                     }
+                    else
+                        this.btnGetStarted.setDisable(true);
                 }
+                else
+                    this.btnGetStarted.setDisable(true);
             } else this.btnGetStarted.setDisable(true);
         }
+    }
+
+    public void handleLogInAction(MouseEvent mouseEvent) {
+        this.btnSignUp.setDisable(true);
+        this.lblForgot.setDisable(true);
+        this.btnClose.setDisable(true);
+        this.btnReduce.setDisable(true);
+
+
+        String email = this.tfEmail.getText();
+        String password = this.pfPassword.getText();
+
+        UserModel user = new UserModel(null, null, null, email, password);
+        String command = "/login "+new Gson().toJson(user);
+        try {
+            this.socket = new Socket("localhost", 4444);
+            Scanner in = new Scanner(socket.getInputStream());
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+            out.println(command); //envoyer la commande au server
+            if(in.hasNextLine()) {
+                String response = in.nextLine();
+                if(response.startsWith("/displaySuccess")) {
+                    String successMessage = response.substring(16);
+                    UserModel userRetrieved = new Gson().fromJson(successMessage, new TypeToken<UserModel>(){}.getType());
+                    try {
+                        ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
+                        this.chatView.start(new Stage(), userRetrieved, this.socket, out);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else if(response.startsWith("/displayError")){
+                    String errorMessage = response.substring(14);
+                }else{
+                    System.out.println("ça s'est mal passé Felicia :'(");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.tfSignUpFirstName.clear();
+        this.tfSignUpLastName.clear();
+        this.tfSignUpEmail.clear();
+        this.tfSignUpPseudo.clear();
+        this.pfSignUpPassword.clear();
+        this.pfRepeatPassword.clear();
+
+        this.btnSignUp.setDisable(false);
+        this.lblForgot.setDisable(false);
+        this.btnClose.setDisable(false);
+        this.btnReduce.setDisable(false);
+    }
+
+    public void handleGetStartedAction(MouseEvent mouseEvent) {
+        this.btnGetStarted.setDisable(true);
+        this.btnBack.setDisable(true);
+        this.btnClose.setDisable(true);
+        this.btnReduce.setDisable(true);
+
+        String firstName = this.tfSignUpFirstName.getText();
+        String lastName = this.tfSignUpLastName.getText();
+        String email = this.tfSignUpEmail.getText();
+        String pseudo = this.tfSignUpPseudo.getText();
+        String password = this.pfSignUpPassword.getText();
+        password = BCrypt.hashpw(password,BCrypt.gensalt());
+        UserModel user = new UserModel(firstName, lastName, pseudo, email, password);
+        String command = "/signup "+new Gson().toJson(user);
+        try {
+            this.socket = new Socket("localhost", 4444);
+            Scanner in = new Scanner(socket.getInputStream());
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            out.println(command); //envoyer la commande au server
+            if(in.hasNextLine()) {
+                String response = in.nextLine();
+                if(response.startsWith("/displaySuccess")) {
+                    String successMessage = response.substring(16);
+                    try {
+                        ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
+                        this.chatView.start(new Stage(), user, this.socket, out);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else if(response.startsWith("/displayError")){
+                    String errorMessage = response.substring(14);
+                    //TODO afficher message dans le terminal, puis plus tard dans une textview
+
+                    Alert alert=new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText(errorMessage.replace("\"",""));
+                    alert.getButtonTypes().setAll(ButtonType.OK);
+                    alert.showAndWait();
+
+
+                    System.out.println("ça s'est mal passé Felicia :'( " + errorMessage);
+                }else{
+                    System.out.println("ça s'est mal passé Felicia :'(");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.tfSignUpFirstName.clear();
+        this.tfSignUpLastName.clear();
+        this.tfSignUpEmail.clear();
+        this.tfSignUpPseudo.clear();
+        this.pfSignUpPassword.clear();
+        this.pfRepeatPassword.clear();
+
+        this.btnGetStarted.setDisable(true);
+        this.btnBack.setDisable(false);
+        this.btnClose.setDisable(false);
+        this.btnReduce.setDisable(false);
     }
 }

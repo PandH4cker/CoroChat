@@ -21,6 +21,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
         this.connection = databaseConnection;
         createAllTables();
         createUniqueIndexEmail();
+        createUniqueIndexPseudo();
         createSeqCorochatUser();
         createAutoIncrementCorochatUser();
     }
@@ -76,16 +77,40 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
 
     private void createUniqueIndexEmail() {
         final String createUniqueIndex = "DECLARE " +
-                                            "already_exists exception; " +
-                                            "columns_indexed exception; " +
-                                            "pragma exception_init(already_exists, -955); " +
-                                            "pragma exception_init(columns_indexed, -1408); " +
-                                         "BEGIN " +
-                                            "EXECUTE IMMEDIATE 'CREATE UNIQUE INDEX UNIDX_USER_EMAIL " +
-                                                                "ON " + DataUserName.TABLE_NAME +
-                                                                " (" + DataUserName.COL_EMAIL + " ASC)'; " +
-                                           "EXCEPTION WHEN already_exists OR columns_indexed THEN NULL; " +
-                                         "END;";
+                "already_exists exception; " +
+                "columns_indexed exception; " +
+                "pragma exception_init(already_exists, -955); " +
+                "pragma exception_init(columns_indexed, -1408); " +
+                "BEGIN " +
+                "EXECUTE IMMEDIATE 'CREATE UNIQUE INDEX UNIDX_USER_EMAIL " +
+                "ON " + DataUserName.TABLE_NAME +
+                " (" + DataUserName.COL_EMAIL + " ASC)'; " +
+                "EXCEPTION WHEN already_exists OR columns_indexed " +
+                "THEN RAISE_APPLICATION_ERROR(-20001,'Email already exists');" +
+                "END;";
+        try {
+            final Statement statement = this.connection.createStatement();
+            statement.executeUpdate(createUniqueIndex);
+            System.out.println("Unique index created on " + DataUserName.TABLE_NAME);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createUniqueIndexPseudo() {
+        final String createUniqueIndex = "DECLARE " +
+                "already_exists exception; " +
+                "columns_indexed exception; " +
+                "pragma exception_init(already_exists, -955); " +
+                "pragma exception_init(columns_indexed, -1408); " +
+                "BEGIN " +
+                "EXECUTE IMMEDIATE 'CREATE UNIQUE INDEX UNIDX_USER_PSEUDO " +
+                "ON " + DataUserName.TABLE_NAME +
+                " (" + DataUserName.COL_PSEUDO + " ASC)'; " +
+                "EXCEPTION WHEN already_exists OR columns_indexed THEN " +
+                "RAISE_APPLICATION_ERROR(-20002,'Pseudo already exists');" +
+                "END;";
         try {
             final Statement statement = this.connection.createStatement();
             statement.executeUpdate(createUniqueIndex);

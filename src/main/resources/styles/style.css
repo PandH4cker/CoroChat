@@ -1,44 +1,54 @@
 .linear-grad
 {
-    -fx-background-color: linear-gradient(to bottom left, #6F4CBB, #431FA0);
+    -fx-background-color: linear-gradient(to bottom left, #08101F, #08101F);
 }
 
 .signin-button
 {
-    -fx-background-color: #6F4CBB;
+    -fx-background-color: #08101F;
     -fx-text-fill: #FFFFFF;
+    -fx-border-color: #686A6E;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
 }
 
 .signin-button:hover
 {
-    -fx-text-fill: #431FA0;
-    -fx-cursor: hand;
+     -fx-background-color: #000000;
+     -fx-cursor: hand;
 }
 
 .signin-button:pressed
 {
-    -fx-text-fill: #371897;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #000000;
+    -fx-border-color: #686A6E;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
 }
 
 .signup-button
 {
-    -fx-background-color: #D5CBEB;
-    -fx-background-radius: 5;
-    -fx-text-fill: #371897;
-    -fx-border-color: #6F4CBB;
-    -fx-border-radius: 5;
+    -fx-background-color: #08101F;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #686A6E;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
 }
 
 .signup-button:hover
 {
-    -fx-background-color: #E4EEFD;
+    -fx-background-color: #000000;
     -fx-cursor: hand;
 }
 
 .signup-button:pressed
 {
-    -fx-background-color: #E4EEFD;
-    -fx-background-radius: 20;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #000000;
+    -fx-border-color: #686A6E;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
 }
 
 .circle-button:hover
@@ -46,8 +56,8 @@
     -fx-cursor: hand;
 }
 
+
 .forgot-label:hover
 {
     -fx-cursor: hand;
-    -fx-text-fill: cyan;
 }
