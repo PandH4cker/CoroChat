@@ -105,7 +105,10 @@ public class ChatController implements Initializable {
                         Text text=new Text(pseudo); //on get le text de l'user
                         text.setFill(Color.BLACK);
 
-                        Platform.runLater(() -> this.vBoxUserList.getChildren().add(text));
+                        Platform.runLater(() -> {
+                            this.vBoxUserList.getChildren().add(text);
+                            sendAction(userMessage, true);
+                        });
 
                     } else {
                         //TODO supprimer de la liste

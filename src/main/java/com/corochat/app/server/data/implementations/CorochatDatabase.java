@@ -86,7 +86,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
                 "ON " + DataUserName.TABLE_NAME +
                 " (" + DataUserName.COL_EMAIL + " ASC)'; " +
                 "EXCEPTION WHEN already_exists OR columns_indexed " +
-                "THEN RAISE_APPLICATION_ERROR(-20001,'Email already exists');" +
+                "THEN NULL;" +
                 "END;";
         try {
             final Statement statement = this.connection.createStatement();
@@ -109,7 +109,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
                 "ON " + DataUserName.TABLE_NAME +
                 " (" + DataUserName.COL_PSEUDO + " ASC)'; " +
                 "EXCEPTION WHEN already_exists OR columns_indexed THEN " +
-                "RAISE_APPLICATION_ERROR(-20002,'Pseudo already exists');" +
+                "NULL;" +
                 "END;";
         try {
             final Statement statement = this.connection.createStatement();

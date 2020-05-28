@@ -71,8 +71,9 @@ public class ClientHandler implements Runnable {
                     return;
                 }
             }
-            for (PrintWriter writer : MultiThreadedServer.getWriters())
-                writer.println(ServerCommand.CONNECT.getCommand()+" " + this.pseudo + " has joined the chat.");
+            for (PrintWriter writer : MultiThreadedServer.getWriters()) {
+                writer.println(ServerCommand.CONNECT.getCommand() + " " + this.pseudo + " has joined the chat.");
+            }
             MultiThreadedServer.getWriters().add(this.out);
             for(String pseudo : MultiThreadedServer.getPseudos())
                 this.out.println(ServerCommand.CONNECT.getCommand()+" " + pseudo + " has joined the chat.");
