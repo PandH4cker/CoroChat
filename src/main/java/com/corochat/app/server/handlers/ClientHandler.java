@@ -54,7 +54,6 @@ public class ClientHandler implements Runnable {
                     String userInfo = command.substring(8);
                     UserModel user = new Gson().fromJson(userInfo, new TypeToken<UserModel>() {
                     }.getType());
-
                     try {
                         this.userRepository.insertUser(user);
                         String success = new Gson().toJson("Account created");
@@ -64,7 +63,6 @@ public class ClientHandler implements Runnable {
                     } catch (InterruptedException | ExecutionException e) {
                         String error = new Gson().toJson(e.getMessage().split(":",2)[1].trim());
                         this.out.println(ServerCommand.DISPLAY_ERROR.getCommand()+" " + error);
-
                         return;
                     }
                 } else {
@@ -73,21 +71,12 @@ public class ClientHandler implements Runnable {
                     return;
                 }
             }
-
-            synchronized (MultiThreadedServer.getPseudos()) {
-                if (!this.pseudo.equals("") &&
-                    !MultiThreadedServer.getPseudos().contains(this.pseudo) &&
-                    EmailValidator.isValid(this.pseudo)) {
-                    MultiThreadedServer.getPseudos().add(this.pseudo);
-                }
-            }
-
-            for (PrintWriter writer : MultiThreadedServer.getWriters()) {
+            for (PrintWriter writer : MultiThreadedServer.getWriters())
                 writer.println(ServerCommand.CONNECT.getCommand()+" " + this.pseudo + " has joined the chat.");
-            }
-            System.out.println(this.pseudo.substring(0, this.pseudo.length()-1) + " has joined the chat.");
             MultiThreadedServer.getWriters().add(this.out);
-
+            for(String pseudo : MultiThreadedServer.getPseudos())
+                this.out.println(ServerCommand.CONNECT.getCommand()+" " + pseudo + " has joined the chat.");
+            MultiThreadedServer.getPseudos().add(this.pseudo);
             while (true) {
                 String input = this.in.nextLine();
                 System.out.println(input);

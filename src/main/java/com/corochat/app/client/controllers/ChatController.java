@@ -62,6 +62,8 @@ public class ChatController implements Initializable {
     private VBox vBox;
     @FXML
     private AnchorPane chatPane;
+    @FXML
+    private VBox vBoxUserList;
 
     public ChatController() {
         this.loginView = new LoginView();
@@ -81,8 +83,9 @@ public class ChatController implements Initializable {
         new Thread(() -> {
             try {
                 Scanner in = new Scanner(ChatView.getSocket().getInputStream());
-                while(true){
+                while(in.hasNextLine()){
                     String message=in.nextLine();
+                    System.out.println(message);
                     if(message.startsWith(ServerCommand.MESSAGE.getCommand())) {
                         String userMessage = message.substring(8);
                         String[] splittedUserMessage = userMessage.split(" ", 2);
@@ -94,6 +97,16 @@ public class ChatController implements Initializable {
                             sendAction(pseudo+": "+userMessage, false);
                     } else if(message.startsWith(ServerCommand.CONNECT.getCommand())){
                         //TODO ajouter dans la liste
+                        String userMessage = message.substring(8);
+                        String[] splittedUserMessage = userMessage.split(" ", 2);
+                        String pseudo = splittedUserMessage[0];
+                        this.vBoxUserList.setPadding(new Insets(20, 20, 20, 20));
+                        this.vBoxUserList.setSpacing(20);
+                        Text text=new Text(pseudo); //on get le text de l'user
+                        text.setFill(Color.BLACK);
+
+                        Platform.runLater(() -> this.vBoxUserList.getChildren().add(text));
+
                     } else {
                         //TODO supprimer de la liste
                     }
@@ -108,9 +121,15 @@ public class ChatController implements Initializable {
     @FXML
     public void handleCloseAction(MouseEvent event) {
         if (event.getSource() == this.btnClose) {
-            ZoomOutDown zoomOutDown = new ZoomOutDown(this.anchRoot);
-            zoomOutDown.setOnFinished(e -> System.exit(0));
-            zoomOutDown.play();
+            try {
+                PrintWriter out = new PrintWriter(ChatView.getSocket().getOutputStream(), true);
+                out.println(ClientCommand.QUIT.getCommand());
+                ZoomOutDown zoomOutDown = new ZoomOutDown(this.anchRoot);
+                zoomOutDown.setOnFinished(e -> System.exit(0));
+                zoomOutDown.play();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
