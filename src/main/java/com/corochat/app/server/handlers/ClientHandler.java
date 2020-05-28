@@ -1,10 +1,11 @@
 package com.corochat.app.server.handlers;
 
 import com.corochat.app.client.communication.ClientCommand;
+import com.corochat.app.client.models.Message;
 import com.corochat.app.client.models.UserModel;
 import com.corochat.app.server.MultiThreadedServer;
-import com.corochat.app.server.data.UserRepository;
-import com.corochat.app.utils.validations.EmailValidator;
+import com.corochat.app.server.data.repositories.MessageRepository;
+import com.corochat.app.server.data.repositories.UserRepository;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.mindrot.jbcrypt.BCrypt;
@@ -12,6 +13,10 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
@@ -22,6 +27,7 @@ public class ClientHandler implements Runnable {
     private PrintWriter out;
 
     private final UserRepository userRepository = UserRepository.getInstance();
+    private final MessageRepository messageRepository = MessageRepository.getInstance();
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
@@ -71,6 +77,9 @@ public class ClientHandler implements Runnable {
                     return;
                 }
             }
+
+            ArrayList<Message> messages = messageRepository.getMessages(0);
+
             for (PrintWriter writer : MultiThreadedServer.getWriters()) {
                 writer.println(ServerCommand.CONNECT.getCommand() + " " + this.pseudo + " has joined the chat.");
             }
@@ -78,6 +87,15 @@ public class ClientHandler implements Runnable {
             for(String pseudo : MultiThreadedServer.getPseudos())
                 this.out.println(ServerCommand.CONNECT.getCommand()+" " + pseudo + " has joined the chat.");
             MultiThreadedServer.getPseudos().add(this.pseudo);
+
+            for(Message m: messages){
+                this.out.println(ServerCommand.RETRIEVE.getCommand()+" "+ m.getDate()+"|"+ m.getUserPseudo()+"|"+m.getMessage());
+            }
+
+
+
+
+
             while (true) {
                 String input = this.in.nextLine();
                 System.out.println(input);
@@ -85,7 +103,15 @@ public class ClientHandler implements Runnable {
                     return;
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
                     writer.println(ServerCommand.MESSAGE.getCommand()+" " + this.pseudo + ": " + input);
+                messageRepository.insertMessage(new Message(input, this.pseudo, new Date()));
             }
+
+
+
+
+
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

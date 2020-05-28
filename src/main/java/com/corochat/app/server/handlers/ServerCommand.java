@@ -5,7 +5,8 @@ public enum ServerCommand {
     CONNECT("CONNECT"),
     DISCONNECT("DISCONNECT"),
     DISPLAY_SUCCESS("DISPLAYSUCCESS"),
-    DISPLAY_ERROR("DISPLAYERROR");
+    DISPLAY_ERROR("DISPLAYERROR"),
+    RETRIEVE("RETRIEVE"); //heure pseudo message
 
     private String command;
 

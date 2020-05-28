@@ -2,9 +2,9 @@ package com.corochat.app.client.communication;
 
 public enum ClientCommand {
     LOGIN("/login"),
-    LOGOUT("/logout"),
     SIGNUP("/signup"),
-    QUIT("/quit");
+    QUIT("/quit"),
+    DELETE_MESSAGE("/delete-message");
 
     private String command;
 
