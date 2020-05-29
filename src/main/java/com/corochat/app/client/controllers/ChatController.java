@@ -176,12 +176,14 @@ public class ChatController implements Initializable {
     //@Overload
     private void sendAction(String message, String pseudo, Calendar calendar, boolean tqtfelicia){
         Text date=new Text(
-                calendar.get(Calendar.HOUR_OF_DAY)+":"+
-                (
+                ((calendar.get(Calendar.HOUR_OF_DAY)<10)
+                        ?"0"+(calendar.get(Calendar.HOUR_OF_DAY))
+                        :(calendar.get(Calendar.HOUR_OF_DAY))) +":"+
+                        (
                         (calendar.get(Calendar.MINUTE)<10)
                                 ? "0"+(calendar.get(Calendar.MINUTE))
                                 :(calendar.get(Calendar.MINUTE))
-                )
+                        )
         );
         date.setFill(Color.WHITE);
 
