@@ -81,13 +81,14 @@ public class ChatController implements Initializable {
             });
         }
 
+        //Update on each client
         new Thread(() -> {
             try {
                 Scanner in = new Scanner(ChatView.getSocket().getInputStream());
                 while(in.hasNextLine()){
                     String message=in.nextLine();
                     System.out.println(message);
-
+                    //Send message
                     if(message.startsWith(ServerCommand.MESSAGE.getCommand())) {
                         String userMessage = message.substring(8);
                         String[] splittedUserMessage = userMessage.split(" ", 2);
@@ -98,7 +99,7 @@ public class ChatController implements Initializable {
                         if(!pseudo.equals(ChatView.getUserModel().getPseudo()))
                             sendAction(pseudo+": "+userMessage, false);
                     } else if(message.startsWith(ServerCommand.CONNECT.getCommand())){
-                        //TODO ajouter dans la liste
+                        //Add user in userList
                         String userMessage = message;
                         String[] splittedUserMessage = message.split(" ", 3);
                         String pseudo = splittedUserMessage[1];
@@ -109,10 +110,17 @@ public class ChatController implements Initializable {
 
                         Platform.runLater(() -> {
                             this.vBoxUserList.getChildren().add(text);
+                            //sendAction(userMessage, true);
+                        });
+                    } else if (message.startsWith(ServerCommand.SELFCONNECTED.getCommand())){
+                        //Add self connected
+                        String userMessage = message.substring(14);
+
+                        Platform.runLater(() -> {
                             sendAction(userMessage, true);
                         });
                     } else if(message.startsWith(ServerCommand.DISCONNECT.getCommand())){
-                        //TODO supprimer de la liste
+                        //Remove user from userList
                         String[] splittedUserMessage = message.split(" ", 3);
                         String pseudo = splittedUserMessage[1];
                         Text tempText;
@@ -135,7 +143,7 @@ public class ChatController implements Initializable {
                             }
                         }
                     } else if (message.startsWith(ServerCommand.RETRIEVE.getCommand())){
-                        //on fait notre bail :D
+                        //Retrieve messages
                         message = message.substring(9);
                         String[] splittedUserMessage = message.split("\\|", 3);
                         String dateTime = splittedUserMessage[0];
@@ -145,6 +153,13 @@ public class ChatController implements Initializable {
                         Calendar calendar = GregorianCalendar.getInstance();
                         calendar.setTime(date);
                         sendAction(userMessage.replace("\t", "\n"), userPseudo, calendar, userPseudo.equals(ChatView.getUserModel().getPseudo()));
+                    } else if(message.startsWith(ServerCommand.MESSAGE_DELETED.getCommand())) {
+                        message = message.substring(15);
+                        int index = Integer.parseInt(message);
+
+                        Platform.runLater(() -> {
+                            this.vBox.getChildren().remove(index);
+                        });
                     }
                 }
             } catch (IOException | ParseException e) {
@@ -155,7 +170,7 @@ public class ChatController implements Initializable {
         userScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.vvalueProperty().bind(vBox.heightProperty()); //position de la scrollbar qui se fit a la hauteur de la vBox globale
+        scrollPane.vvalueProperty().bind(vBox.heightProperty());
     }
 
 
@@ -203,6 +218,7 @@ public class ChatController implements Initializable {
 
 
     //@Overload
+    //for retrieved messages
     private void sendAction(String message, String pseudo, Calendar calendar, boolean tqtfelicia){
         Text date=new Text(
                 ((calendar.get(Calendar.HOUR_OF_DAY)<10)
@@ -231,12 +247,23 @@ public class ChatController implements Initializable {
                 TextFlow textFlowFelicia = (TextFlow) borderPane3Felicia.getParent();
                 BorderPane borderPane2Felicia = (BorderPane) textFlowFelicia.getParent();
                 BorderPane borderPane1Felicia = (BorderPane) borderPane2Felicia.getParent();
-                Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
 
                 ChatView.getOut().println(ClientCommand.DELETE_MESSAGE.getCommand() + " " +
                         new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(calendar.getTime()) +"|" +
                         pseudo+"|" +
-                        message);
+                        message+"|"+this.vBox.getChildren().indexOf(borderPane1Felicia));
+
+                //Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
+
+
+                /**
+                  * tempText = (Text) this.vBoxUserList.getChildren().get(i);
+                  *tempText.getText();
+                  */
+
+
+
+
             });
 
             imageView.setOnMouseEntered(mouseEvent -> {
@@ -296,8 +323,10 @@ public class ChatController implements Initializable {
     }
 
 
+    //for current user send
     private void sendAction(String message, boolean tqtfelicia){
-        Text date=new Text(new SimpleDateFormat("HH:mm").format(new Date()));
+        Date messageDate = new Date();
+        Text date=new Text(new SimpleDateFormat("HH:mm").format(messageDate));
         date.setFill(Color.WHITE);
 
         TextFlow textFlow = new TextFlow();
@@ -315,7 +344,14 @@ public class ChatController implements Initializable {
                 TextFlow textFlowFelicia = (TextFlow) borderPane3Felicia.getParent();
                 BorderPane borderPane2Felicia = (BorderPane) textFlowFelicia.getParent();
                 BorderPane borderPane1Felicia = (BorderPane) borderPane2Felicia.getParent();
-                Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
+
+                ChatView.getOut().println(ClientCommand.DELETE_MESSAGE.getCommand() + " " +
+                        new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(messageDate +"|" +
+                        ChatView.getUserModel().getPseudo()+"|" +
+                        message.substring(8)+"|"+this.vBox.getChildren().indexOf(borderPane1Felicia)));
+
+                //Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
+
             });
 
             imageView.setOnMouseEntered(mouseEvent -> {

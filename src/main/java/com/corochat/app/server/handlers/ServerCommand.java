@@ -7,7 +7,8 @@ public enum ServerCommand {
     DISPLAY_SUCCESS("DISPLAYSUCCESS"),
     DISPLAY_ERROR("DISPLAYERROR"),
     RETRIEVE("RETRIEVE"), //heure pseudo message
-    MESSAGE_DELETED("MESSAGEDELETED");//TODO
+    MESSAGE_DELETED("DELETEDMESSAGE"),//TODO
+    SELFCONNECTED("SELFCONNECTED");
 
     private String command;
 

@@ -79,6 +79,7 @@ public class ClientHandler implements Runnable {
                 }
             }
 
+            //this.out.println(ServerCommand.SELFCONNECTED.getCommand()+ " "+ "You have joined the chat.");
             ArrayList<Message> messages = messageRepository.getMessages(0);
 
             for (PrintWriter writer : MultiThreadedServer.getWriters()) {
@@ -103,17 +104,20 @@ public class ClientHandler implements Runnable {
                 if (input.toLowerCase().startsWith(ClientCommand.QUIT.getCommand()))
                     return;
                 else if(input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())){
-                    String[] splittedInput = input.split("\\|", 3);
+                    String[] splittedInput = input.split("\\|", 4);
                     String date = splittedInput[0].split(" ",2)[1];
                     String pseudo = splittedInput[1];
                     String userMessage = splittedInput[2];
+                    int index = Integer.parseInt(splittedInput[3]);
                     Message message = new Message(userMessage, pseudo, new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date));
                     messageRepository.deleteMessage(message);
                     System.out.println("ERROR: "+message);
-                    //Envoyer DELETED_MESSAGE command dans une boucle for a tous les writer ici TODO
-                    //for (PrintWriter writer : MultiThreadedServer.getWriters())//TODO
-                    //    writer.println(ServerCommand.MESSAGE_DELETED.getCommand() + " " +message);//TODO
+
+                    //DELETE MESSAGE
+                    for (PrintWriter writer : MultiThreadedServer.getWriters())
+                        writer.println(ServerCommand.MESSAGE_DELETED.getCommand() + " " +index);
                 }
+
                 if(!input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())) {
                     for (PrintWriter writer : MultiThreadedServer.getWriters())
                         writer.println(ServerCommand.MESSAGE.getCommand() + " " + this.pseudo + ": " + input);
