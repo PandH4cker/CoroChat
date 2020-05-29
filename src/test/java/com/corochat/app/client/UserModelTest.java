@@ -1,6 +1,7 @@
 package com.corochat.app.client;
 
 import com.corochat.app.client.models.UserModel;
+import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,17 +23,23 @@ public class UserModelTest {
                                   final String pseudo,
                                   final String email,
                                   final String hashedPassword) {
-        this.userModel = new UserModel(firstName, lastName, pseudo, email, hashedPassword); //TODO Add Try/Catch with `MalformedUserModelParameterException`
+        try{this.userModel = new UserModel(firstName, lastName, pseudo, email, hashedPassword);}
+        catch (MalformedUserModelParameterException e){e.printStackTrace();}
 
         populateTests(firstName, lastName, pseudo, email, hashedPassword);
     }
 
     private void populateTests(final String firstName, final String lastName, final String pseudo, final String email, final String hashedPassword) {
-        assertAll("Utilisateur non conforme", executeConformityTests(firstName, lastName, pseudo, email, hashedPassword));
+        assertAll("Improper user", executeConformityTests(firstName, lastName, pseudo, email, hashedPassword));
 
         //TODO Modify UserModel toString() method and assertEquals its string conversion
 
-        assertAll("Données utilisateur non conformes"); //TODO Append this method with assertions over each attributes
+        assertAll("Improper data",
+                UserModelTest::executeFirstNameTests
+               // UserModelTest::executeLastNameTests,
+               // UserModelTest::executePseudoTests,
+               // UserModelTest::executeEmailTests
+        );
     }
 
     private Executable[] executeConformityTests(String firstName, String lastName, String pseudo, String email, String hashedPassword) {
@@ -51,9 +58,31 @@ public class UserModelTest {
                             "Dray",
                             "MrrRaph",
                             "dray@et.esiea.fr",
-                            "$2a$10$qtvqGNWR1UcEg1b3jKkcOuLdvCeN8K9hFfqokQaNKLgQ5k/nK5GXK"
+                            "Coucou*1"
                         }
                 }
+        );
+    }
+
+//TODO
+    private static void executePseudoTests() {
+
+    }
+
+    private static void executeEmailTests() {
+
+    }
+
+    private static void executeLastNameTests() {
+
+    }
+
+    private static void executeFirstNameTests() {
+        assertAll("improper firstName",
+        () -> assertThrows(NullPointerException.class, () -> new UserModel(null, "Dray", "MrrRaph", "dray@et.esiea.fr", "Coucou*1")),
+        () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel(null, "Dray", "MrrRaph", "dray@et.esiea.fr", "Coucou*1")),
+        () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("7Thierry", "Khamphousone", "Yulypso", "tkhamphousone@et.esiea.fr", "Coucou*1")),
+        () -> assertDoesNotThrow(() -> new UserModel("Diane", "Martin", "Dianette", "dmartin@et.esiea.fr", "Coucou*1"))
         );
     }
 }
