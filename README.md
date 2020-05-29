@@ -5,7 +5,7 @@
 > This program is a desktop application. <br />
 > It integrates the client and the server which are communicating each other through HTTP Routes. <br />
 > The client fetches and posts data from/to the server which returns JSON-Encoded responses.
-> The client is a Skype-Like application.
+> The client is a Whatsapp-Like application.
 
 > It's written in __Java programming language including some libraries like so:__
 + [RxJava 2](https://github.com/ReactiveX/RxJava)
@@ -30,8 +30,17 @@
     javafx.controls,javafx.fxml
 
 ---
-## Last Release Version: 0.0.3
+## Last Release Version: 0.0.4
 ### Changelog:
+> #### Version 0.0.4
+> Added client commands for deleting messages. <br />
+> Added popup for informing the user when error on the login view. <br />
+> Added the Message model for storing messages in the database. <br />
+> Added MessageRepository to the AbstractCorochatDatabase. <br />
+> Added Dao and its helpers for communicating with the message table.
+> Added the button over our own message for deleting them. <br />
+> Added methods inside the chat controller for interacting with the other users in case of connecting, deleting, sending actions.
+---
 > #### Version 0.0.3
 > Refactored design colors from linear gradient violet to darkblue. <br />
 > Added support for OS validations. <br />
