@@ -13,6 +13,20 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.file.Paths;
 
+/**
+ * <h1>The view for creating the chat</h1>
+ * <p>
+ *     The ChatView class allows several users to communicate via a chat
+ * </p>
+ * //TODO Include diagram of UserModel
+ *
+ * @author Thierry Khamphousone
+ * @version 0.0.4
+ * @since 0.0.3
+ * @see UserModel
+ * @see Socket
+ * @see PrintWriter
+ */
 public class ChatView {
     private double xOffset = 0;
     private double yOffset = 0;
@@ -20,6 +34,18 @@ public class ChatView {
     private static Socket socket;
     private static PrintWriter out;
 
+    /**
+     * Start the view and initialize its attributes
+     * @param stage The stage, javafx convention for creating a view
+     * @param user The user which creates the view
+     * @param socketo The socket for the connection between the server and the user
+     * @param outo The printwriter for sending commands and information to the server
+     * @throws Exception In case of the resource is not found, the exception is thrown
+     * @see Stage
+     * @see UserModel
+     * @see Socket
+     * @see PrintWriter
+     */
     public void start(Stage stage, UserModel user, Socket socketo, PrintWriter outo) throws Exception {
         userModel = user;
         socket = socketo;
@@ -42,6 +68,10 @@ public class ChatView {
         new FadeInUp(root).play();
     }
 
+    /**
+     * Handle drag and drop of 
+     * @param mouseEvent
+     */
     private void handleMousePressed(MouseEvent mouseEvent) {
         this.xOffset = mouseEvent.getSceneX();
         this.yOffset = mouseEvent.getSceneY();

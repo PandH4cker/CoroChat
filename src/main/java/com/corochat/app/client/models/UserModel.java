@@ -113,35 +113,60 @@ public class UserModel {
 
     /**
      * Setter of the last name
-     * @param lastName 
+     * @param lastName The last name of the client
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Getter of the user pseudo
+     * @return String - The user pseudo
+     */
     public String getPseudo() {
-        return pseudo;
+        return this.pseudo;
     }
 
+    /**
+     * Setter of the user pseudo
+     * @param pseudo The user pseudo
+     */
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
 
+    /**
+     * Getter of the user mail
+     * @return String - The user mail
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Setter of the user mail
+     * @param email The user mail
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Getter of the user hashed password
+     * @return String - The user hashed password
+     */
     public String getHashedPassword() {
         return hashedPassword;
     }
 
+    /**
+     * Setter of the user hashed password
+     * @param hashedPassword The user hashed password
+     */
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
     }
+
 
     public boolean isActive() {
         return this.active;
