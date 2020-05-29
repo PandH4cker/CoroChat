@@ -2,24 +2,21 @@ package com.corochat.app.client.controllers;
 
 import animatefx.animation.ZoomOutDown;
 import com.corochat.app.client.communication.ClientCommand;
+import com.corochat.app.client.models.Message;
 import com.corochat.app.client.views.ChatView;
 import com.corochat.app.client.views.LoginView;
 import com.corochat.app.server.handlers.ServerCommand;
 import com.corochat.app.utils.setters.ImageSetter;
-import com.sun.jdi.request.ThreadDeathRequest;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -34,7 +31,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -44,8 +40,6 @@ public class ChatController implements Initializable {
 
     @FXML
     private AnchorPane anchRoot;
-    @FXML
-    private Pane pnlChat;
     @FXML
     private Circle btnClose;
     @FXML
@@ -65,11 +59,11 @@ public class ChatController implements Initializable {
     @FXML
     private VBox vBox;
     @FXML
-    private AnchorPane chatPane;
-    @FXML
     private VBox vBoxUserList;
     @FXML
     private Label labelCorochat;
+    @FXML
+    private ScrollPane userScrollPane;
 
     public ChatController() {
         this.loginView = new LoginView();
@@ -119,6 +113,27 @@ public class ChatController implements Initializable {
                         });
                     } else if(message.startsWith(ServerCommand.DISCONNECT.getCommand())){
                         //TODO supprimer de la liste
+                        String[] splittedUserMessage = message.split(" ", 3);
+                        String pseudo = splittedUserMessage[1];
+                        Text tempText;
+                        int i=0;
+                        while(true){
+                            if(i < this.vBoxUserList.getChildren().size()) {
+                                tempText = (Text) this.vBoxUserList.getChildren().get(i);
+                                tempText.getText();
+                                if (tempText.getText().equals(pseudo)) {
+                                    int j = i;
+                                    Platform.runLater(() -> {
+                                        this.vBoxUserList.getChildren().remove(j);
+                                    });
+                                    i = 0;
+                                }
+                                i++;
+                            }
+                            else{
+                                break;
+                            }
+                        }
                     } else if (message.startsWith(ServerCommand.RETRIEVE.getCommand())){
                         //on fait notre bail :D
                         message = message.substring(9);
@@ -136,7 +151,11 @@ public class ChatController implements Initializable {
                 e.printStackTrace();
             }
         }).start();
-        scrollPane.vvalueProperty().bind(vBox.heightProperty());
+        userScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        userScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.vvalueProperty().bind(vBox.heightProperty()); //position de la scrollbar qui se fit a la hauteur de la vBox globale
     }
 
 
@@ -168,9 +187,19 @@ public class ChatController implements Initializable {
         emojiList.setVisible(!emojiList.isVisible());
     }
 
-    private void removeMessageAction(){
+    //TODO remove message
+   /* private void removeMessageAction(Message message){
+        for(VBox vbox: scrollPane){
 
-    }
+        }
+
+        (Node) items = scrollPane.getContent().lookupAll(.hBox);
+
+        //Parcourir la scrollbox
+        //remonter jusqu'à Text
+        //comparer si Text == String message avec des \t
+        //depuis le server, envoyer le message avec des \t
+    }*/
 
 
     //@Overload
@@ -204,7 +233,6 @@ public class ChatController implements Initializable {
                 BorderPane borderPane1Felicia = (BorderPane) borderPane2Felicia.getParent();
                 Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
 
-//Date date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(dateTime);
                 ChatView.getOut().println(ClientCommand.DELETE_MESSAGE.getCommand() + " " +
                         new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(calendar.getTime()) +"|" +
                         pseudo+"|" +
@@ -278,8 +306,8 @@ public class ChatController implements Initializable {
         BorderPane borderPane3 = new BorderPane();
         BorderPane borderPane4 = new BorderPane();
         ImageView imageView = new ImageView();
-        if(tqtfelicia && !message.startsWith(ServerCommand.CONNECT.getCommand())) { //pour nous
-            imageView.setOnMouseClicked(mouseEvent -> { //DELETE MESSAGE
+        if(tqtfelicia && !message.startsWith(ServerCommand.CONNECT.getCommand())) {
+            imageView.setOnMouseClicked(mouseEvent -> {
                 ImageView imageView1 = (ImageView) mouseEvent.getSource();
                 labelCorochat.requestFocus();
                 BorderPane borderPane4Felicia = (BorderPane) imageView1.getParent();
@@ -288,16 +316,12 @@ public class ChatController implements Initializable {
                 BorderPane borderPane2Felicia = (BorderPane) textFlowFelicia.getParent();
                 BorderPane borderPane1Felicia = (BorderPane) borderPane2Felicia.getParent();
                 Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
-
-                //CURRENT
-                //ChatView.getOut().println(ClientCommand.DELETE_MESSAGE + " " +);
-
             });
 
             imageView.setOnMouseEntered(mouseEvent -> {
                 imageView.setCursor(Cursor.HAND);
             });
-            ImageSetter.set(imageView, "DeleteBtn.png"); //on ajoute l'image
+            ImageSetter.set(imageView, "DeleteBtn.png");
         }
         borderPane3.setMinWidth(150);
 
@@ -320,7 +344,7 @@ public class ChatController implements Initializable {
             borderPane1.setRight(borderPane2);
             textFlow.getStyleClass().add("feliciaText");
             if(!message.startsWith(ServerCommand.CONNECT.getCommand()))
-                borderPane4.setRight(imageView); //ajout a droite
+                borderPane4.setRight(imageView);
         }
         else {
             DropShadow dropShadow = new DropShadow();
@@ -397,5 +421,15 @@ public class ChatController implements Initializable {
     @FXML
     public void handleLogoutHoverEntered(MouseEvent mouseEvent) {
         btnlogout.setCursor(Cursor.HAND);
+    }
+
+    @FXML
+    public void handleCloseHoverEntered(MouseEvent mouseEvent) {
+        btnClose.setCursor(Cursor.HAND);
+    }
+
+    @FXML
+    public void handleReduceHoverEntered(MouseEvent mouseEvent) {
+        btnReduce.setCursor(Cursor.HAND);
     }
 }

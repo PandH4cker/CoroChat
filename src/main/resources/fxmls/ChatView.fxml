@@ -130,7 +130,7 @@
          <left>
             <AnchorPane prefHeight="489.0" prefWidth="186.0" BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane layoutX="14.0" layoutY="73.0" prefHeight="614.0" prefWidth="232.0">
+                  <ScrollPane fx:id="userScrollPane" layoutX="14.0" layoutY="73.0" prefHeight="614.0" prefWidth="232.0">
                      <content>
                         <VBox fx:id="vBoxUserList" prefHeight="612.0" prefWidth="211.0" />
                      </content>
@@ -142,8 +142,8 @@
                   </Label>
                   <HBox layoutX="14.0" layoutY="14.0" prefHeight="14.0" prefWidth="51.0" spacing="5.0">
                      <children>
-                        <Circle fx:id="btnClose" fill="#fc5d57" onMouseClicked="#handleCloseAction" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
-                        <Circle fx:id="btnReduce" fill="#fdbb2d" onMouseClicked="#handleReduceAction" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
+                        <Circle fx:id="btnClose" fill="#fc5d57" onMouseClicked="#handleCloseAction" onMouseEntered="#handleCloseHoverEntered" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
+                        <Circle fx:id="btnReduce" fill="#fdbb2d" onMouseClicked="#handleReduceAction" onMouseEntered="#handleReduceHoverEntered" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
                         <Circle fill="#27c941" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
                      </children>
                   </HBox>

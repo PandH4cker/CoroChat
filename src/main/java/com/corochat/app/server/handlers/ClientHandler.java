@@ -110,6 +110,9 @@ public class ClientHandler implements Runnable {
                     Message message = new Message(userMessage, pseudo, new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date));
                     messageRepository.deleteMessage(message);
                     System.out.println("ERROR: "+message);
+                    //Envoyer DELETED_MESSAGE command dans une boucle for a tous les writer ici TODO
+                    //for (PrintWriter writer : MultiThreadedServer.getWriters())//TODO
+                    //    writer.println(ServerCommand.MESSAGE_DELETED.getCommand() + " " +message);//TODO
                 }
                 if(!input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())) {
                     for (PrintWriter writer : MultiThreadedServer.getWriters())
@@ -133,7 +136,7 @@ public class ClientHandler implements Runnable {
                 System.out.println(this.pseudo + " is leaving.");
                 MultiThreadedServer.getPseudos().remove(this.pseudo);
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println(ServerCommand.DISCONNECT.getCommand()+" " + this.pseudo.substring(0, this.pseudo.length()-1) + " has left.");
+                    writer.println(ServerCommand.DISCONNECT.getCommand()+" " + this.pseudo + " has left.");
             }
             try {
                 this.socket.close();
