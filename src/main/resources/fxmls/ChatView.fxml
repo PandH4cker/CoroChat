@@ -14,7 +14,7 @@
                <children>
                   <ScrollPane fx:id="scrollPane" accessibleRole="PARENT" hbarPolicy="NEVER" layoutX="14.0" layoutY="72.0" prefHeight="539.0" prefWidth="900.0" vvalue="1.0">
                      <content>
-                        <VBox fx:id="vBox" alignment="TOP_RIGHT" prefHeight="536.0" prefWidth="897.0" />
+                        <VBox fx:id="vBox" alignment="TOP_RIGHT" prefHeight="508.0" prefWidth="877.0" />
                      </content>
                   </ScrollPane>
                   <TextArea fx:id="txtMsg" accessibleRole="PARENT" layoutX="163.0" layoutY="629.0" prefHeight="43.0" prefWidth="602.0" promptText="Type your message" wrapText="true" />
@@ -108,7 +108,7 @@
                      <children>
                         <HBox layoutX="18.0" prefHeight="57.0" prefWidth="505.0">
                            <children>
-                              <Label prefHeight="56.0" prefWidth="176.0" text="CoroChat" textFill="WHITE">
+                              <Label fx:id="labelCorochat" prefHeight="56.0" prefWidth="176.0" text="CoroChat" textFill="WHITE">
                                  <font>
                                     <Font name="Rockwell" size="34.0" />
                                  </font>
@@ -130,9 +130,9 @@
          <left>
             <AnchorPane prefHeight="489.0" prefWidth="186.0" BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane layoutX="14.0" layoutY="73.0" prefHeight="614.0" prefWidth="232.0">
+                  <ScrollPane fx:id="userScrollPane" layoutX="14.0" layoutY="73.0" prefHeight="614.0" prefWidth="232.0">
                      <content>
-                        <VBox prefHeight="612.0" prefWidth="230.0" />
+                        <VBox fx:id="vBoxUserList" prefHeight="612.0" prefWidth="211.0" />
                      </content>
                   </ScrollPane>
                   <Label layoutX="14.0" layoutY="47.0" prefHeight="22.0" prefWidth="172.0" text="User connected" textAlignment="CENTER" textFill="WHITE">
@@ -142,8 +142,8 @@
                   </Label>
                   <HBox layoutX="14.0" layoutY="14.0" prefHeight="14.0" prefWidth="51.0" spacing="5.0">
                      <children>
-                        <Circle fx:id="btnClose" fill="#fc5d57" onMouseClicked="#handleCloseAction" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
-                        <Circle fx:id="btnReduce" fill="#fdbb2d" onMouseClicked="#handleReduceAction" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
+                        <Circle fx:id="btnClose" fill="#fc5d57" onMouseClicked="#handleCloseAction" onMouseEntered="#handleCloseHoverEntered" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
+                        <Circle fx:id="btnReduce" fill="#fdbb2d" onMouseClicked="#handleReduceAction" onMouseEntered="#handleReduceHoverEntered" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
                         <Circle fill="#27c941" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="circle-button" />
                      </children>
                   </HBox>
