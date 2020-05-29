@@ -26,6 +26,7 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
+    private int positionInList;
 
     private final UserRepository userRepository = UserRepository.getInstance();
     private final MessageRepository messageRepository = MessageRepository.getInstance();
@@ -48,6 +49,12 @@ public class ClientHandler implements Runnable {
                     }.getType());
                     UserModel fetchedUser = this.userRepository.getUser(givenUser.getEmail());
                     if (fetchedUser != null && BCrypt.checkpw(givenUser.getHashedPassword(), fetchedUser.getHashedPassword())) {
+                        if(MultiThreadedServer.getPseudos().contains(fetchedUser.getPseudo())){
+                            String error = new Gson().toJson("An user with the same pseudo is already connected!");
+                            this.out.println(ServerCommand.DISPLAY_ERROR.getCommand()+" " + error);
+                            return;
+                        }
+
                         String success = new Gson().toJson(fetchedUser);
                         this.out.println(ServerCommand.DISPLAY_SUCCESS.getCommand()+" " + success);
                         System.out.println(fetchedUser.getFirstName() + " is connected");
@@ -101,8 +108,10 @@ public class ClientHandler implements Runnable {
             while (true) {
                 String input = this.in.nextLine();
                 System.out.println("mon input: "+input);
-                if (input.toLowerCase().startsWith(ClientCommand.QUIT.getCommand()))
+                if (input.toLowerCase().startsWith(ClientCommand.QUIT.getCommand())){
+                    this.positionInList = Integer.parseInt(input.substring(5));
                     return;
+                }
                 else if(input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())){
                     String[] splittedInput = input.split("\\|", 4);
                     String date = splittedInput[0].split(" ",2)[1];
@@ -140,7 +149,7 @@ public class ClientHandler implements Runnable {
                 System.out.println(this.pseudo + " is leaving.");
                 MultiThreadedServer.getPseudos().remove(this.pseudo);
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println(ServerCommand.DISCONNECT.getCommand()+" " + this.pseudo + " has left.");
+                    writer.println(ServerCommand.DISCONNECT.getCommand()+" " + this.positionInList + " has left.");
             }
             try {
                 this.socket.close();

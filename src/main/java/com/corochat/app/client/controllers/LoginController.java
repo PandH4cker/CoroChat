@@ -316,6 +316,14 @@ public class LoginController implements Initializable {
                     }
                 }else if(response.startsWith(ServerCommand.DISPLAY_ERROR.getCommand())){
                     String errorMessage = response.substring(12);
+                    
+                    Alert alert=new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText(errorMessage.replace("\"",""));
+                    alert.getButtonTypes().setAll(ButtonType.OK);
+                    alert.showAndWait();
+
                 }else{
                     System.out.println("ça s'est mal passé Felicia :'(");
                 }

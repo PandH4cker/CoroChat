@@ -37,6 +37,7 @@ import java.util.*;
 
 public class ChatController implements Initializable {
     private LoginView loginView;
+    private int positionInList;
 
     @FXML
     private AnchorPane anchRoot;
@@ -110,6 +111,7 @@ public class ChatController implements Initializable {
 
                         Platform.runLater(() -> {
                             this.vBoxUserList.getChildren().add(text);
+                            positionInList = this.vBoxUserList.getChildren().indexOf(text);
                             //sendAction(userMessage, true);
                         });
                     } else if (message.startsWith(ServerCommand.SELFCONNECTED.getCommand())){
@@ -122,8 +124,13 @@ public class ChatController implements Initializable {
                     } else if(message.startsWith(ServerCommand.DISCONNECT.getCommand())){
                         //Remove user from userList
                         String[] splittedUserMessage = message.split(" ", 3);
-                        String pseudo = splittedUserMessage[1];
-                        Text tempText;
+                        this.positionInList = Integer.parseInt(splittedUserMessage[1]);
+                        Platform.runLater(()->{
+                            this.vBoxUserList.getChildren().remove(this.positionInList);
+                        });
+
+
+                        /*Text tempText;
                         int i=0;
                         while(true){
                             if(i < this.vBoxUserList.getChildren().size()) {
@@ -141,7 +148,7 @@ public class ChatController implements Initializable {
                             else{
                                 break;
                             }
-                        }
+                        }*/
                     } else if (message.startsWith(ServerCommand.RETRIEVE.getCommand())){
                         //Retrieve messages
                         message = message.substring(9);
@@ -431,12 +438,7 @@ public class ChatController implements Initializable {
     @FXML
     public void HandleLogoutAction(MouseEvent mouseEvent) {
         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
-        try {
-           PrintWriter out = new PrintWriter(ChatView.getSocket().getOutputStream(), true);
-            out.println(ClientCommand.QUIT.getCommand());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ChatView.getOut().println(ClientCommand.QUIT.getCommand()+" "+positionInList);
         try {
             this.loginView.start(new Stage());
         } catch (Exception e) {
