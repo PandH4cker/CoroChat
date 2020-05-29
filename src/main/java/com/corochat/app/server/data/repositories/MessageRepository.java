@@ -50,8 +50,12 @@ public class MessageRepository {
         }
     }
 
-    //bug potentiel a cause de execute
+
     public void insertMessage(Message message){
         this.executorService.execute(() -> this.messageDao.insert(message));
+    }
+
+    public void deleteMessage(Message message){
+        this.executorService.execute(() -> this.messageDao.delete(message));
     }
 }

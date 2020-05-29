@@ -12,7 +12,7 @@ public interface MessageDao {
     ArrayList<Message> getMessagesByPseudo(String pseudo);
 
     void insert(Message message);
-    void delete(String selfPseudo, Message message);
+    void delete(Message message);
     //Message contient Pseudo message sysdate
     //interdit de modifier un message envoyé
     //Si le pseudo selfpseudo == pseudo du message, autorisation de supprimer

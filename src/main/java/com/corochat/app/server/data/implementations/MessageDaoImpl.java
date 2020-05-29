@@ -121,26 +121,26 @@ public final class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public void delete(String selfPseudo, Message message) {
-        if(selfPseudo.equals(message.getUserPseudo())) {
-            final String sql = "DELETE FROM " + DataMessageName.TABLE_NAME +
-                    " WHERE " + DataMessageName.COL_MESSAGE + " = ?" +
-                    " AND " + DataMessageName.COL_DATE + " = ?" +
-                    " AND " + DataMessageName.COL_USER_PSEUDO + " = ?";
-            try {
-                final PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
-                preparedStatement.setString(1, message.getUserPseudo());
-                preparedStatement.setTimestamp(2, new Timestamp(message.getDate().getTime()));
-                preparedStatement.setString(3, message.getUserPseudo());
+    public void delete(Message message) {
+        final String sql = "DELETE FROM " + DataMessageName.TABLE_NAME +
+                " WHERE " + DataMessageName.COL_MESSAGE + " = ?" +
+                " AND TO_CHAR(" + DataMessageName.COL_DATE + ", 'YYYY-MM-DD HH24:MI:SS') = ?" +
+                " AND " + DataMessageName.COL_USER_PSEUDO + " = ?";
+        try {
+            Timestamp timestamp = new Timestamp(message.getDate().getTime());
+            final PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+            preparedStatement.setString(1, message.getMessage());
+            preparedStatement.setString(2, timestamp.toString().substring(0, timestamp.toString().length()-2));
+            preparedStatement.setString(3, message.getUserPseudo());
 
-                int rowsInserted = preparedStatement.executeUpdate();
-                if (rowsInserted > 0) {
-                    System.out.println("A new message has been inserted successfully.");
-                }
-                preparedStatement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            System.out.println("PREPSTATIEMENT: "+ timestamp);
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("A new message has been inserted successfully.");
             }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

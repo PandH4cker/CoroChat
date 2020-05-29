@@ -201,6 +201,12 @@ public class ChatController implements Initializable {
                 BorderPane borderPane2Felicia = (BorderPane) textFlowFelicia.getParent();
                 BorderPane borderPane1Felicia = (BorderPane) borderPane2Felicia.getParent();
                 Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
+
+//Date date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(dateTime);
+                ChatView.getOut().println(ClientCommand.DELETE_MESSAGE.getCommand() + " " +
+                        new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(calendar.getTime()) +"|" +
+                        pseudo+"|" +
+                        message);
             });
 
             imageView.setOnMouseEntered(mouseEvent -> {
@@ -271,7 +277,7 @@ public class ChatController implements Initializable {
         BorderPane borderPane4 = new BorderPane();
         ImageView imageView = new ImageView();
         if(tqtfelicia && !message.startsWith(ServerCommand.CONNECT.getCommand())) { //pour nous
-            imageView.setOnMouseClicked(mouseEvent -> {
+            imageView.setOnMouseClicked(mouseEvent -> { //DELETE MESSAGE
                 ImageView imageView1 = (ImageView) mouseEvent.getSource();
                 labelCorochat.requestFocus();
                 BorderPane borderPane4Felicia = (BorderPane) imageView1.getParent();
@@ -281,6 +287,7 @@ public class ChatController implements Initializable {
                 BorderPane borderPane1Felicia = (BorderPane) borderPane2Felicia.getParent();
                 Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
 
+                //CURRENT
                 //ChatView.getOut().println(ClientCommand.DELETE_MESSAGE + " " +);
 
             });

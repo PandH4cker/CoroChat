@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,9 +102,20 @@ public class ClientHandler implements Runnable {
                 System.out.println(input);
                 if (input.toLowerCase().startsWith(ClientCommand.QUIT.getCommand()))
                     return;
-                for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println(ServerCommand.MESSAGE.getCommand()+" " + this.pseudo + ": " + input);
-                messageRepository.insertMessage(new Message(input, this.pseudo, new Date()));
+                else if(input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())){
+                    String[] splittedInput = input.split("\\|", 3);
+                    String date = splittedInput[0].split(" ",2)[1];
+                    String pseudo = splittedInput[1];
+                    String userMessage = splittedInput[2];
+                    Message message = new Message(userMessage, pseudo, new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date));
+                    messageRepository.deleteMessage(message);
+                    System.out.println("ERROR: "+message);
+                }
+                if(!input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())) {
+                    for (PrintWriter writer : MultiThreadedServer.getWriters())
+                        writer.println(ServerCommand.MESSAGE.getCommand() + " " + this.pseudo + ": " + input);
+                    messageRepository.insertMessage(new Message(input, this.pseudo, new Date()));
+                }
             }
 
 
@@ -112,7 +124,7 @@ public class ClientHandler implements Runnable {
 
 
 
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         } finally {
             if (this.out != null)
