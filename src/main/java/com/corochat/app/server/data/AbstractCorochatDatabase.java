@@ -1,6 +1,8 @@
 package com.corochat.app.server.data;
 
+import com.corochat.app.server.data.daos.MessageDao;
 import com.corochat.app.server.data.daos.UserDao;
+import com.corochat.app.utils.validations.OSValidator;
 import oracle.jdbc.driver.OracleDriver;
 
 import java.sql.Connection;
@@ -12,10 +14,14 @@ public abstract class AbstractCorochatDatabase {
     protected static Connection databaseConnection;
 
     public abstract UserDao userDao();
+    public abstract MessageDao messageDao();
 
     private static volatile AbstractCorochatDatabase INSTANCE = null;
 
-    private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
+    private static final String DB_URL = OSValidator.isMac()
+                                         ? "jdbc:oracle:thin:@localhost:32118:xe"
+                                         : "jdbc:oracle:thin:@localhost:1521:xe";
+
     private static final String USERNAME = "c##corochat";
     private static final String PASSWORD = "corochat";
 

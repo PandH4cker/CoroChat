@@ -1,0 +1,16 @@
+.linear-grad
+{
+    -fx-background-color: linear-gradient(to bottom left, #08101F, #08101F);
+}
+
+.feliciaText{
+    -fx-background-color: linear-gradient(to left, #ff512f, #dd2476);
+    -fx-background-insets: -5 -10 -5 -5;
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.07),3,2.0,0.6,0.6);
+}
+
+.notFeliciaText{
+    -fx-background-color: linear-gradient(to left, #4776e6, #8e54e9);
+    -fx-background-insets: -5 -5 -5 -10;
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.07),3,2.0,-0.6,-0.6);
+}

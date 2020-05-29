@@ -1,6 +1,7 @@
 package com.corochat.app.server.data.daos;
 
 import com.corochat.app.client.models.UserModel;
+import com.corochat.app.server.data.exception.AlreadyExistsException;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,6 @@ public interface UserDao {
     UserModel getUserByEmail(String email);
 
     void inactiveAll();
-    void insert(UserModel user);
+    boolean insert(UserModel user) throws AlreadyExistsException;
     void update(int id, String hashedPassword);
 }

@@ -1,4 +1,4 @@
-package com.corochat.app.server.data;
+package com.corochat.app.server.data.repositories;
 
 import com.corochat.app.client.models.UserModel;
 import com.corochat.app.server.data.daos.UserDao;
@@ -46,8 +46,8 @@ public class UserRepository {
         }
     }
 
-    public void insertUser(UserModel user) {
-        this.executorService.execute(() -> this.userDao.insert(user));
+    public void insertUser(UserModel user) throws InterruptedException, ExecutionException {
+            this.executorService.submit(() -> this.userDao.insert(user)).get();
     }
 
     public void inactiveAll() {
