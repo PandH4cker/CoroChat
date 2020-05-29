@@ -1,5 +1,6 @@
 package com.corochat.app.server.data;
 
+import com.corochat.app.server.data.daos.MessageDao;
 import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.utils.validations.OSValidator;
 import oracle.jdbc.driver.OracleDriver;
@@ -13,6 +14,7 @@ public abstract class AbstractCorochatDatabase {
     protected static Connection databaseConnection;
 
     public abstract UserDao userDao();
+    public abstract MessageDao messageDao();
 
     private static volatile AbstractCorochatDatabase INSTANCE = null;
 
