@@ -100,15 +100,15 @@ public class ClientHandler implements Runnable {
 
             while (true) {
                 String input = this.in.nextLine();
-                System.out.println(input);
+                System.out.println("mon input: "+input);
                 if (input.toLowerCase().startsWith(ClientCommand.QUIT.getCommand()))
                     return;
                 else if(input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())){
                     String[] splittedInput = input.split("\\|", 4);
                     String date = splittedInput[0].split(" ",2)[1];
                     String pseudo = splittedInput[1];
-                    String userMessage = splittedInput[2];
-                    int index = Integer.parseInt(splittedInput[3]);
+                    int index = Integer.parseInt(splittedInput[2]);
+                    String userMessage = splittedInput[3];
                     Message message = new Message(userMessage, pseudo, new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date));
                     messageRepository.deleteMessage(message);
                     System.out.println("ERROR: "+message);

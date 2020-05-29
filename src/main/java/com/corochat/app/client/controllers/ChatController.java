@@ -251,7 +251,7 @@ public class ChatController implements Initializable {
                 ChatView.getOut().println(ClientCommand.DELETE_MESSAGE.getCommand() + " " +
                         new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(calendar.getTime()) +"|" +
                         pseudo+"|" +
-                        message+"|"+this.vBox.getChildren().indexOf(borderPane1Felicia));
+                        this.vBox.getChildren().indexOf(borderPane1Felicia)+"|"+message.replace("\n", "\t"));
 
                 //Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
 
@@ -345,13 +345,13 @@ public class ChatController implements Initializable {
                 BorderPane borderPane2Felicia = (BorderPane) textFlowFelicia.getParent();
                 BorderPane borderPane1Felicia = (BorderPane) borderPane2Felicia.getParent();
 
+                System.out.println("sendAction : "+message);
+                System.out.println("sendAction : "+message+"|"+this.vBox.getChildren().indexOf(borderPane1Felicia));
+
                 ChatView.getOut().println(ClientCommand.DELETE_MESSAGE.getCommand() + " " +
-                        new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(messageDate +"|" +
+                        new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(messageDate) +"|" +
                         ChatView.getUserModel().getPseudo()+"|" +
-                        message.substring(8)+"|"+this.vBox.getChildren().indexOf(borderPane1Felicia)));
-
-                //Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
-
+                        this.vBox.getChildren().indexOf(borderPane1Felicia)+"|"+message.replace("\n", "\t"));
             });
 
             imageView.setOnMouseEntered(mouseEvent -> {
