@@ -48,7 +48,6 @@ public class UserModel implements Model<MalformedUserModelParameterException> {
                 ", pseudo='" + pseudo + '\'' +
                 ", email='" + email + '\'' +
                 ", hashedPassword='" + hashedPassword + '\'' +
-                ", active=" + active +
                 '}';
     }
 
@@ -130,9 +129,9 @@ public class UserModel implements Model<MalformedUserModelParameterException> {
 
 
         boolean passes = !StringContaining.numbers(this.firstName);
-        if(!passes) errors.add("firstName need to start with a capital letter and does not include numbers");
+        if(!passes) errors.add("firstName must not include numbers");
         passes = !StringContaining.numbers(this.lastName);
-        if(!passes) errors.add("lastName need to start with a capital letter and does not include numbers");
+        if(!passes) errors.add("lastName must not include numbers");
         passes = !this.pseudo.matches("^[\\d !\"#$%&'()*+,-./\\\\:;<=>?@\\[\\]^_`{|}~].*"); //TO REVIEW
         if(!passes) errors.add("pseudo must not start with a number or special character");
         passes = EmailValidator.isValid(this.email);

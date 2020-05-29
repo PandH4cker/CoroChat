@@ -1,6 +1,7 @@
 package com.corochat.app.server.data.implementations;
 
 import com.corochat.app.client.models.UserModel;
+import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
 import com.corochat.app.server.data.AbstractCorochatDatabase;
 import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.exception.AlreadyExistsException;
@@ -39,7 +40,7 @@ public final class UserDaoImpl implements UserDao {
             }
             statement.close();
             return userModels;
-        } catch (SQLException e) {
+        } catch (SQLException | MalformedUserModelParameterException e) {
             e.printStackTrace();
         }
         return null;
@@ -69,7 +70,7 @@ public final class UserDaoImpl implements UserDao {
             }
             preparedStatement.close();
             return userModels;
-        } catch (SQLException e) {
+        } catch (SQLException | MalformedUserModelParameterException e) {
             e.printStackTrace();
         }
         return null;
@@ -94,7 +95,7 @@ public final class UserDaoImpl implements UserDao {
                 preparedStatement.close();
                 return new UserModel(firstName, lastName, pseudo, email, hashedPassword);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | MalformedUserModelParameterException e) {
             e.printStackTrace();
         }
         return null;
