@@ -32,7 +32,7 @@ public class UserModelTest {
 
         //TODO Modify UserModel toString() method and assertEquals its string conversion
 
-        assertAll("Données utilisateur non conformes"); //TODO Append this method with assertions over each attributes
+       // assertAll("Données utilisateur non conformes"); //TODO Append this method with assertions over each attributes
     }
 
     private Executable[] executeConformityTests(String firstName, String lastName, String pseudo, String email, String hashedPassword) {
