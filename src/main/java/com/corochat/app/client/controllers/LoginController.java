@@ -358,7 +358,7 @@ public class LoginController implements Initializable {
         String password = this.pfSignUpPassword.getText();
         UserModel user = null;
         try {
-            user = new UserModel(firstName, lastName, pseudo, email, password);
+            user = new UserModel(firstName, lastName, pseudo, email, BCrypt.hashpw(password,BCrypt.gensalt()));
         } catch (MalformedUserModelParameterException e) {
             e.printStackTrace();
         }

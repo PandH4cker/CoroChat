@@ -1,6 +1,5 @@
-package com.corochat.app.client;
+package com.corochat.app.client.models;
 
-import com.corochat.app.client.models.UserModel;
 import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.function.Executable;

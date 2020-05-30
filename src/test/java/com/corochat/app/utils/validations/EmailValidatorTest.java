@@ -1,4 +1,4 @@
-package com.corochat.app.utils;
+package com.corochat.app.utils.validations;
 
 import com.corochat.app.utils.validations.EmailValidator;
 import org.junit.jupiter.api.DisplayName;

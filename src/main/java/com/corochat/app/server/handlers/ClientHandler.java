@@ -45,8 +45,7 @@ public class ClientHandler implements Runnable {
                 String command = this.in.nextLine();
                 if (command.toLowerCase().startsWith(ClientCommand.LOGIN.getCommand())) {
                     String userCredentials = command.substring(7);
-                    UserModel givenUser = new Gson().fromJson(userCredentials, new TypeToken<UserModel>() {
-                    }.getType());
+                    UserModel givenUser = new Gson().fromJson(userCredentials, new TypeToken<UserModel>() {}.getType());
                     UserModel fetchedUser = this.userRepository.getUser(givenUser.getEmail());
                     if (fetchedUser != null && BCrypt.checkpw(givenUser.getHashedPassword(), fetchedUser.getHashedPassword())) {
                         if(MultiThreadedServer.getPseudos().contains(fetchedUser.getPseudo())){
@@ -109,7 +108,7 @@ public class ClientHandler implements Runnable {
                 String input = this.in.nextLine();
                 System.out.println("mon input: "+input);
                 if (input.toLowerCase().startsWith(ClientCommand.QUIT.getCommand())){
-                    this.positionInList = Integer.parseInt(input.substring(5));
+                    this.positionInList = Integer.parseInt(input.substring(6).trim());
                     return;
                 }
                 else if(input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())){
