@@ -30,8 +30,11 @@
     javafx.controls,javafx.fxml
 
 ---
-## Last Release Version: 0.0.4
+## Last Release Version: 0.0.5
 ### Changelog:
+> #### Version 0.0.5
+> Added JavaDoc inside all the classes
+---
 > #### Version 0.0.4
 > Added client commands for deleting messages. <br />
 > Added popup for informing the user when error on the login view. <br />
