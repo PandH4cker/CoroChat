@@ -21,6 +21,23 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * <h1>The ClientHandler object</h1>
+ * <p>
+ *     The ClientHandler class implements the interface Runnable in order to be run in a Thread.
+ *     It handles client interaction/communication with the server asynchronously.
+ * </p>
+ * //TODO Include diagram of ClientHandler
+ *
+ * @author Raphael Dray
+ * @author Thierry Khamphousone
+ * @version 0.0.4
+ * @since 0.0.1
+ * @see Runnable
+ * @see Socket
+ * @see Scanner
+ * @see PrintWriter
+ */
 public class ClientHandler implements Runnable {
     private String pseudo;
     private Socket socket;
@@ -31,10 +48,19 @@ public class ClientHandler implements Runnable {
     private final UserRepository userRepository = UserRepository.getInstance();
     private final MessageRepository messageRepository = MessageRepository.getInstance();
 
+    /**
+     * This constructor initialize its attributes
+     * @param socket The user socket for communicating with the server
+     */
     public ClientHandler(Socket socket) {
         this.socket = socket;
     }
 
+    /**
+     * Perform checks over the received command.
+     * Log in or Sign up an user.
+     * Send messages to the other users.
+     */
     @Override
     public void run() {
         try {
