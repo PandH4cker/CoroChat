@@ -3,6 +3,7 @@ package com.corochat.app.server.handlers;
 import com.corochat.app.client.communication.ClientCommand;
 import com.corochat.app.client.models.Message;
 import com.corochat.app.client.models.UserModel;
+import com.corochat.app.client.models.exceptions.MalformedMessageParameterException;
 import com.corochat.app.server.MultiThreadedServer;
 import com.corochat.app.server.data.repositories.MessageRepository;
 import com.corochat.app.server.data.repositories.UserRepository;
@@ -26,7 +27,6 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
-    private int positionInList;
 
     private final UserRepository userRepository = UserRepository.getInstance();
     private final MessageRepository messageRepository = MessageRepository.getInstance();
@@ -108,7 +108,6 @@ public class ClientHandler implements Runnable {
                 String input = this.in.nextLine();
                 System.out.println("mon input: "+input);
                 if (input.toLowerCase().startsWith(ClientCommand.QUIT.getCommand())){
-                    this.positionInList = Integer.parseInt(input.substring(6).trim());
                     return;
                 }
                 else if(input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())){
@@ -117,7 +116,12 @@ public class ClientHandler implements Runnable {
                     String pseudo = splittedInput[1];
                     int index = Integer.parseInt(splittedInput[2]);
                     String userMessage = splittedInput[3];
-                    Message message = new Message(userMessage, pseudo, new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date));
+                    Message message = null;
+                    try {
+                        message = new Message(userMessage, pseudo, new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date));
+                    } catch (MalformedMessageParameterException e) {
+                        e.printStackTrace();
+                    }
                     messageRepository.deleteMessage(message);
                     System.out.println("ERROR: "+message);
 
@@ -129,7 +133,11 @@ public class ClientHandler implements Runnable {
                 if(!input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())) {
                     for (PrintWriter writer : MultiThreadedServer.getWriters())
                         writer.println(ServerCommand.MESSAGE.getCommand() + " " + this.pseudo + ": " + input);
-                    messageRepository.insertMessage(new Message(input, this.pseudo, new Date()));
+                    try {
+                        messageRepository.insertMessage(new Message(input, this.pseudo, new Date()));
+                    } catch (MalformedMessageParameterException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -148,7 +156,7 @@ public class ClientHandler implements Runnable {
                 System.out.println(this.pseudo + " is leaving.");
                 MultiThreadedServer.getPseudos().remove(this.pseudo);
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println(ServerCommand.DISCONNECT.getCommand()+" " + this.positionInList + " has left.");
+                    writer.println(ServerCommand.DISCONNECT.getCommand()+" " + this.pseudo + " has left.");
             }
             try {
                 this.socket.close();

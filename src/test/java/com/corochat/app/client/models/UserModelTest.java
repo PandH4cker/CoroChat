@@ -23,9 +23,11 @@ public class UserModelTest {
                                   final String pseudo,
                                   final String email,
                                   final String hashedPassword) {
-        try{this.userModel = new UserModel(firstName, lastName, pseudo, email, hashedPassword);}
+        try{this.userModel = new UserModel(firstName, lastName, pseudo, email, hashedPassword);
+        }
         catch (MalformedUserModelParameterException e){e.printStackTrace();}
 
+        this.userModel.setHashedPassword(BCrypt.hashpw(this.userModel.getHashedPassword(), BCrypt.gensalt()));
         populateTests(firstName, lastName, pseudo, email, hashedPassword);
     }
 

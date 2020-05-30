@@ -23,10 +23,8 @@ public class UserRepository {
     public static UserRepository getInstance() {
         if (INSTANCE == null)
             synchronized (UserRepository.class) {
-                if (INSTANCE == null) {
-                    CorochatDatabase database = CorochatDatabase.getInstance();
-                    INSTANCE = new UserRepository(database.userDao(), Executors.newSingleThreadExecutor());
-                }
+                CorochatDatabase database = CorochatDatabase.getInstance();
+                INSTANCE = new UserRepository(database.userDao(), Executors.newSingleThreadExecutor());
             }
         return INSTANCE;
     }

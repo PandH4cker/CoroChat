@@ -37,7 +37,6 @@ import java.util.*;
 
 public class ChatController implements Initializable {
     private LoginView loginView;
-    private int positionInList;
 
     @FXML
     private AnchorPane anchRoot;
@@ -111,7 +110,6 @@ public class ChatController implements Initializable {
 
                         Platform.runLater(() -> {
                             this.vBoxUserList.getChildren().add(text);
-                            positionInList = this.vBoxUserList.getChildren().indexOf(text);
                             //sendAction(userMessage, true);
                         });
                     } else if (message.startsWith(ServerCommand.SELFCONNECTED.getCommand())){
@@ -123,14 +121,16 @@ public class ChatController implements Initializable {
                         });
                     } else if(message.startsWith(ServerCommand.DISCONNECT.getCommand())){
                         //Remove user from userList
+                       // String[] splittedUserMessage = message.split(" ", 3);
+                       // this.positionInList = Integer.parseInt(splittedUserMessage[1]);
+                       // System.out.println("POSITION");
+                       // Platform.runLater(()->{
+                       //     this.vBoxUserList.getChildren().remove(this.positionInList);
+                       // });
                         String[] splittedUserMessage = message.split(" ", 3);
-                        this.positionInList = Integer.parseInt(splittedUserMessage[1]);
-                        Platform.runLater(()->{
-                            this.vBoxUserList.getChildren().remove(this.positionInList);
-                        });
+                        String pseudo = splittedUserMessage[1];
 
-
-                        /*Text tempText;
+                        Text tempText;
                         int i=0;
                         while(true){
                             if(i < this.vBoxUserList.getChildren().size()) {
@@ -148,7 +148,7 @@ public class ChatController implements Initializable {
                             else{
                                 break;
                             }
-                        }*/
+                        }
                     } else if (message.startsWith(ServerCommand.RETRIEVE.getCommand())){
                         //Retrieve messages
                         message = message.substring(9);
@@ -259,18 +259,6 @@ public class ChatController implements Initializable {
                         new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(calendar.getTime()) +"|" +
                         pseudo+"|" +
                         this.vBox.getChildren().indexOf(borderPane1Felicia)+"|"+message.replace("\n", "\t"));
-
-                //Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
-
-
-                /**
-                  * tempText = (Text) this.vBoxUserList.getChildren().get(i);
-                  *tempText.getText();
-                  */
-
-
-
-
             });
 
             imageView.setOnMouseEntered(mouseEvent -> {
@@ -438,7 +426,7 @@ public class ChatController implements Initializable {
     @FXML
     public void HandleLogoutAction(MouseEvent mouseEvent) {
         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
-        ChatView.getOut().println(ClientCommand.QUIT.getCommand()+" "+positionInList);
+        ChatView.getOut().println(ClientCommand.QUIT.getCommand());
         try {
             this.loginView.start(new Stage());
         } catch (Exception e) {

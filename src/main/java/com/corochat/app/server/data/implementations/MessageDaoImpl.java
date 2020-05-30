@@ -1,6 +1,7 @@
 package com.corochat.app.server.data.implementations;
 
 import com.corochat.app.client.models.Message;
+import com.corochat.app.client.models.exceptions.MalformedMessageParameterException;
 import com.corochat.app.server.data.AbstractCorochatDatabase;
 import com.corochat.app.server.data.daos.MessageDao;
 import com.corochat.app.server.data.names.DataMessageName;
@@ -36,7 +37,7 @@ public final class MessageDaoImpl implements MessageDao {
             }
             statement.close();
             return messages;
-        } catch (SQLException e) {
+        } catch (SQLException | MalformedMessageParameterException e) {
             e.printStackTrace();
         }
         return null;
@@ -63,7 +64,7 @@ public final class MessageDaoImpl implements MessageDao {
             }
             preparedStatement.close();
             return messages;
-        } catch (SQLException e) {
+        } catch (SQLException | MalformedMessageParameterException e) {
             e.printStackTrace();
         }
         return null;
@@ -91,7 +92,7 @@ public final class MessageDaoImpl implements MessageDao {
                 messageList.add(new Message(message, userPseudo, dateTime));
             }
                 return messageList;
-        } catch (SQLException e) {
+        } catch (SQLException | MalformedMessageParameterException e) {
             e.printStackTrace();
         }
         return null;

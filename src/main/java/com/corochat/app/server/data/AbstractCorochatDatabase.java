@@ -28,18 +28,16 @@ public abstract class AbstractCorochatDatabase {
     public static synchronized AbstractCorochatDatabase getInstance(AbstractCorochatDatabase databaseImplementation) {
         if (INSTANCE == null)
             synchronized (AbstractCorochatDatabase.class) {
-                if (INSTANCE == null) {
-                    try {
-                        DriverManager.registerDriver(new OracleDriver());
-                        Properties properties = new Properties();
-                        properties.put("user", USERNAME);
-                        properties.put("password", PASSWORD);
-                        properties.put("defaultRowPrefetch", "20");
-                        databaseConnection = DriverManager.getConnection(DB_URL, properties);
-                        INSTANCE = databaseImplementation;
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    DriverManager.registerDriver(new OracleDriver());
+                    Properties properties = new Properties();
+                    properties.put("user", USERNAME);
+                    properties.put("password", PASSWORD);
+                    properties.put("defaultRowPrefetch", "20");
+                    databaseConnection = DriverManager.getConnection(DB_URL, properties);
+                    INSTANCE = databaseImplementation;
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         return INSTANCE;

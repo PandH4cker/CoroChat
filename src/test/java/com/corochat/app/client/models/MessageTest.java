@@ -1,70 +1,59 @@
 package com.corochat.app.client.models;
 
-import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
+import com.corochat.app.client.models.exceptions.MalformedMessageParameterException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageTest {
-    private UserModel userModel = null;
+    private Message message = null;
 
-    @DisplayName("Constructor of UserModel Tester")
+    @DisplayName("Constructor of Message Tester")
     @ParameterizedTest
     @MethodSource("getDataForConstructor")
-    void messageConstructorTest(final String firstName,
-                                  final String lastName,
-                                  final String pseudo,
-                                  final String email,
-                                  final String hashedPassword) {
-        try{this.userModel = new UserModel(firstName, lastName, pseudo, email, hashedPassword);}
-        catch (MalformedUserModelParameterException e){e.printStackTrace();}
+    void messageConstructorTest(final String message, final String userPseudo, final Date date) {
+        try{this.message = new Message(message, userPseudo, date);}
+        catch (MalformedMessageParameterException e){e.printStackTrace();}
 
-        populateTests(firstName, lastName, pseudo, email, hashedPassword);
+        //populateTests(message, userPseudo, date);
     }
 
-    private void populateTests(final String firstName, final String lastName, final String pseudo, final String email, final String hashedPassword) {
-        assertAll("Improper user", executeConformityTests(firstName, lastName, pseudo, email, hashedPassword));
 
-        assertEquals(this.userModel.toString(),"UserModel{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", pseudo='" + pseudo + '\'' +
-                ", email='" + email + '\'' +
-                ", hashedPassword='" + this.userModel.getHashedPassword() + '\'' +
+    private void populateTests(final String message, final String userPseudo, final Date date) {
+        assertAll("Improper message", executeConformityTests(message, userPseudo, date));
+
+        assertEquals(this.message.toString(),"Message{" +
+                "message='" + message + '\'' +
+                ", userPseudo='" + userPseudo + '\'' +
+                ", date=" + date +
                 '}');
 
-       /* assertAll("Improper data",
-                UserModelTest::executeFirstNameTests,
-                UserModelTest::executeLastNameTests,
-                UserModelTest::executePseudoTests,
-                UserModelTest::executeEmailTests
-        );*/
+
+       assertAll("Improper data",
+                MessageTest::executeMessageTests,
+                MessageTest::executeDateTests,
+                MessageTest::executePseudoTests
+        );
     }
 
-    private Executable[] executeConformityTests(String firstName, String lastName, String pseudo, String email, String hashedPassword) {
-        return new Executable[]{() -> assertEquals(firstName, this.userModel.getFirstName()),
-                () -> assertEquals(lastName, this.userModel.getLastName()),
-                () -> assertEquals(pseudo, this.userModel.getPseudo()),
-                () -> assertEquals(email, this.userModel.getEmail()),
-                () -> assertTrue(BCrypt.checkpw(hashedPassword,this.userModel.getHashedPassword()))};
+    private Executable[] executeConformityTests(String message, String userPseudo, Date date) {
+        return new Executable[]{() -> assertEquals(message, this.message.getMessage()),
+                () -> assertEquals(userPseudo, this.message.getUserPseudo()),
+                () -> assertTrue(date.compareTo(new Date())<=0)};
     }
 
     static List<Object[]> getDataForConstructor() {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Raphael",
-                                "Dray",
-                                "MrrRaph",
-                                "dray@et.esiea.fr",
-                                "Coucou*1"
+                                "Bonjour je suis Felicia Ionascu et j'aime le chocolat",
+                                "Felicia",
+                                new Date()
                         }
                 }
         );
@@ -72,38 +61,31 @@ public class MessageTest {
 
     private static void executePseudoTests() {
         assertAll("improper pseudo",
-                () -> assertThrows(NullPointerException.class, () -> new UserModel("Raphael", "Dray", null, "dray@et.esiea.fr", "Coucou*1")),
-                () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("Thierry", "Khamphousone", "*Yulypso", "tkhamphousone@et.esiea.fr", "Coucou*1")),
-                () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("Thierry", "Khamphousone", "7Yulypso", "tkhamphousone@et.esiea.fr", "Coucou*1")),
-                () -> assertDoesNotThrow(() -> new UserModel("Diane", "Martin", "Dianette", "dmartin@et.esiea.fr", "Coucou*1"))
+                () -> assertThrows(NullPointerException.class, () -> new Message("J'aime les abeilles", null, new Date())),
+                () -> assertThrows(MalformedMessageParameterException.class, () -> new Message("J'aime les abeilles", "*Yulypso", new Date())),
+                () -> assertThrows(MalformedMessageParameterException.class, () -> new Message("J'aime les abeilles", "7Yulypso", new Date())),
+                () -> assertDoesNotThrow(() -> new Message("Je m'appelle Felicia", "Felicia", new Date()))
         );
     }
 
-    private static void executeEmailTests() {
-        assertAll("improper email",
-                () -> assertThrows(NullPointerException.class, () -> new UserModel("Raphael", "Dray", "MrrRaph", null, "Coucou*1")),
-                () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("Thierry", "Khamphousone", "Yulypso", "tkhamphousoneet.esiea.fr", "Coucou*1")),
-                () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("Thierry", "Khamphousone", "Yulypso", "zazirnfm@qzmrjnelcbaelblab", "Coucou*1")),
-                () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("Thierry", "Khamphousone", "Yulypso", "", "Coucou*1")),
-                () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("Thierry", "Khamphousone", "Yulypso", "67585859", "Coucou*1")),
-                () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("Thierry", "Khamphousone", "Yulypso", "draygmail.com", "Coucou*1")),
-                () -> assertDoesNotThrow(() -> new UserModel("Diane", "Martin", "Dianette", "dmartin@et.esiea.fr", "Coucou*1"))
+    private static void executeMessageTests() {
+        assertAll("improper message",
+                () -> assertThrows(NullPointerException.class, () -> new Message(null, "MrrRaph", new Date())),
+                () -> assertThrows(MalformedMessageParameterException.class, () -> new Message("", "Yulypso", new Date())),
+                () -> assertDoesNotThrow(() -> new Message("Je m'appelle Felicia", "Felicia", new Date()))
         );
     }
 
-    private static void executeLastNameTests() {
-        assertAll("improper lastName",
-                () -> assertThrows(NullPointerException.class, () -> new UserModel("Raphael", null, "MrrRaph", "dray@et.esiea.fr", "Coucou*1")),
-                () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("Thierry", "7Khamphousone", "Yulypso", "tkhamphousone@et.esiea.fr", "Coucou*1")),
-                () -> assertDoesNotThrow(() -> new UserModel("Diane", "Martin", "Dianette", "dmartin@et.esiea.fr", "Coucou*1"))
-        );
-    }
-
-    private static void executeFirstNameTests() {
-        assertAll("improper firstName",
-                () -> assertThrows(NullPointerException.class, () -> new UserModel(null, "Dray", "MrrRaph", "dray@et.esiea.fr", "Coucou*1")),
-                () -> assertThrows(MalformedUserModelParameterException.class, () -> new UserModel("7Thierry", "Khamphousone", "Yulypso", "tkhamphousone@et.esiea.fr", "Coucou*1")),
-                () -> assertDoesNotThrow(() -> new UserModel("Diane", "Martin", "Dianette", "dmartin@et.esiea.fr", "Coucou*1"))
+    private static void executeDateTests() {
+        assertAll("improper date",
+                () -> assertThrows(NullPointerException.class, () -> new Message("Je suis un pigeon", "Dianette", null)),
+                () -> assertThrows(MalformedMessageParameterException.class, () ->{
+                    Calendar calendar = new GregorianCalendar().getInstance();
+                    calendar.setTime(new Date());
+                    calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+1);
+                    new Message("Je suis un arc-en-ciel", "Sypholks", calendar.getTime());
+                }),
+                () -> assertDoesNotThrow(() -> new Message("Je m'appelle Felicia", "Felicia", new Date()))
         );
     }
 }
