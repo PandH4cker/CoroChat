@@ -35,6 +35,34 @@ import java.util.Scanner;
 
 import static javafx.scene.control.Alert.AlertType;
 
+/**
+ * <h1>The main controller of the FXML App</h1>
+ * <p>
+ *     The LoginController class implements the Initializable interface
+ *     in order to setup our panels and disable the buttons.
+ *     It handle Button, Text Area and Text Input mouse events / context menu events
+ * </p>
+ * //TODO Include the diagram of LoginController
+ *
+ * @author Dray Raphael
+ * @author Thierry Khamphousone
+ * @version 0.0.4
+ * @since 0.0.1
+ * @see Initializable
+ * @see FXML
+ * @see ChatView
+ * @see Pane
+ * @see Socket
+ * @see AnchorPane
+ * @see Circle
+ * @see StackPane
+ * @see Pane
+ * @see TextField
+ * @see Button
+ * @see Label
+ * @see PasswordField
+ * @see ImageView
+ */
 public class LoginController implements Initializable {
     private ChatView chatView;
     private Pane currentPane;
@@ -113,19 +141,31 @@ public class LoginController implements Initializable {
     @FXML
     private Button btnFinish;
 
-
-
-
+    /**
+     * Instantiate the chat view
+     * @see ChatView
+     */
     public LoginController() {
         this.chatView = new ChatView();
     }
 
+    /**
+     * Disable buttons and bring to front the panel sign in
+     * @param url The url of the resource
+     * @param resourceBundle The resource bundle
+     * @see URL
+     * @see ResourceBundle
+     * @see LoginController#disableButtons()
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.pnlSignIn.toFront();
         this.disableButtons();
     }
 
+    /**
+     * Disable all buttons
+     */
     private void disableButtons() {
         this.btnSignIn.setDisable(true);
         this.btnGetStarted.setDisable(true);
@@ -134,6 +174,12 @@ public class LoginController implements Initializable {
         this.btnForgotPasswordSecondContinue.setDisable(true);
     }
 
+    /**
+     * Handle close action on the view
+     * @param event The click on the button close
+     * @see MouseEvent
+     * @see ZoomOutDown
+     */
     @FXML
     public void handleCloseAction(MouseEvent event) {
         if (event.getSource() == this.btnClose) {
@@ -143,6 +189,13 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handle reduce action on the view
+     * @param event The click on the reduce button
+     * @see MouseEvent
+     * @see Stage
+     * @see Circle
+     */
     @FXML
     public void handleReduceAction(MouseEvent event) {
         if (event.getSource() == this.btnReduce) {
@@ -150,6 +203,12 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handle back action over all the panels
+     * @param event The click on the back button of a panel
+     * @see MouseEvent
+     * @see LoginController#backAction(Pane)
+     */
     @FXML
     public void handleBackAction(MouseEvent event) {
         if (event.getSource() == this.btnBack ||
@@ -170,25 +229,61 @@ public class LoginController implements Initializable {
         this.pfRepeatNewPassword.clear();
     }
 
+    /**
+     * Check if an email in a text field is a correct email
+     * @param email The text field that has the email
+     * @return boolean - True if the email is valid, else, false
+     * @see EmailValidator
+     * @see EmailValidator#isValid(String)
+     * @see TextField
+     */
     private boolean isValidEmail(final TextField email) {
         return EmailValidator.isValid(email.getText());
     }
 
+    /**
+     * Check if the complexity of a password.
+     * @param password The password to be check
+     * @return boolean - True if the password contains at least
+     * one lowercase, one uppercase, one number, one special character
+     * and a minimum of 8 to a maximum of 32 characters
+     * @see PasswordField
+     * @see PasswordValidator
+     * @see PasswordValidator#isValid(String)
+     */
     private boolean isValidPassword(final PasswordField password) {
         return PasswordValidator.isValid(password.getText());
     }
 
+    /**
+     * Perform a back action from a pane to a previous pane
+     * @param pane The pane that we want to go back
+     * @see Pane
+     * @see ZoomOutRight
+     */
     private void backAction(final Pane pane) {
         new ZoomOutRight(this.currentPane).play();
         this.currentPane = pane;
     }
 
+    /**
+     * Perform an in action from a pane to a next pane
+     * @param pane The pane that we want to go next
+     * @see Pane
+     * @see ZoomInRight
+     */
     private void inAction(final Pane pane) {
         pane.toFront();
         new ZoomInRight(pane).play();
         this.currentPane = pane;
     }
 
+    /**
+     * Handle sign up button action
+     * @param event The mouse event when we click on the button it triggers the function
+     * @see MouseEvent
+     * @see LoginController#inAction(Pane)
+     */
     @FXML
     public void handleSignUpAction(MouseEvent event) {
         if (event.getSource() == this.btnSignUp) {
@@ -196,6 +291,12 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handle label forgot password button action
+     * @param event The mouse event when we click on the button it triggers the function
+     * @see MouseEvent
+     * @see LoginController#inAction(Pane)
+     */
     @FXML
     public void handleLabelForgotAction(MouseEvent event) {
         if (event.getSource() == this.lblForgot) {
@@ -203,6 +304,13 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handle label hovering
+     * @param event The mouse event when we hover on the button it triggers the function
+     * @see MouseEvent
+     * @see LinkSetter
+     * @see LinkSetter#setAsLink(Label)
+     */
     @FXML
     public void handleLabelHover(MouseEvent event) {
         if (event.getSource() == this.lblForgot ||
@@ -211,6 +319,13 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handle label exiting
+     * @param event The mouse event when we exit the range of the button it triggers the function
+     * @see MouseEvent
+     * @see LinkSetter
+     * @see LinkSetter#unsetAsLink(Label)
+     */
     @FXML
     public void handleLabelExited(MouseEvent event) {
         if (event.getSource() == this.lblForgot ||
@@ -219,6 +334,12 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handle back button hovering
+     * @param event The mouse event when we hover on the button it triggers the function
+     * @see MouseEvent
+     * @see LoginController#backHovering(ImageView)
+     */
     @FXML
     public void handleBackHover(MouseEvent event) {
         if (event.getSource() == this.btnBack ||
@@ -228,14 +349,34 @@ public class LoginController implements Initializable {
             this.backHovering((ImageView) event.getSource());
     }
 
+    /**
+     * Set the image for hovering a back button
+     * @param back The button to be set
+     * @see ImageView
+     * @see ImageSetter
+     * @see ImageSetter#set(ImageView, String)
+     */
     private void backHovering(final ImageView back) {
         ImageSetter.set(back, "backHover.png");
     }
 
+    /**
+     * Unset the image for unhovering a back button
+     * @param back The button to be unset
+     * @see ImageView
+     * @see ImageSetter
+     * @see ImageSetter#set(ImageView, String)
+     */
     private void backUnhovering(final ImageView back) {
         ImageSetter.set(back, "back.png");
     }
 
+    /**
+     * Handle back button exiting
+     * @param event The mouse event when we exit the range of the button it triggers the function
+     * @see MouseEvent
+     * @see LoginController#backUnhovering(ImageView)
+     */
     @FXML
     public void handleBackExited(MouseEvent event) {
         if (event.getSource() == this.btnBack ||
@@ -245,6 +386,12 @@ public class LoginController implements Initializable {
             this.backUnhovering((ImageView) event.getSource());
     }
 
+    /**
+     * Handle the sign in button enabling
+     * @param keyEvent The key event when we type in the text field it triggers the function
+     * @see KeyEvent
+     */
+    @FXML
     public void handleSignInEnable(KeyEvent keyEvent) {
         if (keyEvent.getSource() == this.tfEmail ||
             keyEvent.getSource() == this.pfPassword) {
@@ -255,6 +402,16 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handle the get started button enabling
+     * @param keyEvent The key event when we type in the text field it triggers the function
+     * @see KeyEvent
+     * @see StringContaining
+     * @see StringContaining#numbers(String)
+     * @see LoginController#isValidEmail(TextField)
+     * @see LoginController#isValidPassword(PasswordField)
+     */
+    @FXML
     public void handleGetStartedEnable(KeyEvent keyEvent) {
         if (keyEvent.getSource() == this.tfSignUpFirstName ||
             keyEvent.getSource() == this.tfSignUpLastName  ||
@@ -285,6 +442,24 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handle the log in button clicking
+     * @param mouseEvent The mouse event when we click on the button it triggers the function
+     * @see MouseEvent
+     * @see UserModel
+     * @see ClientCommand
+     * @see ClientCommand#LOGIN
+     * @see Socket
+     * @see Scanner
+     * @see PrintWriter
+     * @see ServerCommand
+     * @see ServerCommand#DISPLAY_SUCCESS
+     * @see Gson
+     * @see TypeToken
+     * @see ChatView#start(Stage, UserModel, Socket, PrintWriter)
+     * @see Alert
+     */
+    @FXML
     public void handleLogInAction(MouseEvent mouseEvent) {
         this.btnSignUp.setDisable(true);
         this.lblForgot.setDisable(true);
@@ -344,6 +519,21 @@ public class LoginController implements Initializable {
         this.btnReduce.setDisable(false);
     }
 
+    /**
+     * Handle the get started button clicking
+     * @param mouseEvent The mouse event when we click on the button it triggers the function
+     * @see MouseEvent
+     * @see BCrypt#hashpw(String, String)
+     * @see UserModel
+     * @see ClientCommand#SIGNUP
+     * @see Gson
+     * @see Socket
+     * @see PrintWriter
+     * @see ServerCommand#DISPLAY_SUCCESS
+     * @see ServerCommand#DISPLAY_ERROR
+     * @see ChatView#start(Stage, UserModel, Socket, PrintWriter)
+     * @see Alert
+     */
     public void handleGetStartedAction(MouseEvent mouseEvent) {
         this.btnGetStarted.setDisable(true);
         this.btnBack.setDisable(true);

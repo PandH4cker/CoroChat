@@ -11,10 +11,31 @@ import javafx.stage.StageStyle;
 
 import java.nio.file.Paths;
 
+/**
+ * <h1>The view for creating the login view</h1>
+ * <p>
+ *     This LoginView class allows to login and to sign up
+ * </p>
+ * //TODO Include diagram of UserModel
+ *
+ * @author Raphael Dray
+ * @version 0.0.4
+ * @since 0.0.1
+ */
 public class LoginView extends Application {
     private double xOffset = 0;
     private double yOffset = 0;
 
+    /**
+     * Start the login view
+     * @param stage The stage, javafx convention for creating a view
+     * @throws Exception In case of the resource is not found, the exception is thrown
+     * @see Stage
+     * @see Parent
+     * @see Scene
+     * @see LoginView#handleMousePressed(MouseEvent)
+     * @see FadeInDown
+     */
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(Paths.get("src/main/resources/fxmls/LoginView.fxml").toUri().toURL());
         stage.setTitle("CoroChat");
@@ -38,6 +59,10 @@ public class LoginView extends Application {
         launch(args);
     }
 
+    /**
+     * Handle drag and drop of the view
+     * @param mouseEvent The mouse event
+     */
     private void handleMousePressed(MouseEvent mouseEvent) {
         this.xOffset = mouseEvent.getSceneX();
         this.yOffset = mouseEvent.getSceneY();

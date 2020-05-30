@@ -9,6 +9,7 @@ import com.corochat.app.server.handlers.ServerCommand;
 import com.corochat.app.utils.setters.ImageSetter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -35,6 +36,32 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * <h1>The second view that observe actions on the chat view</h1>
+ * <p>
+ *     This ChatController implements the Initializable interface
+ *     in order to setup the emoji text flow, start a thread to listen the server actions
+ *     and setup the vbars and hbars
+ *     It handle Button, Text Area and Text Input mouse events / context menu events
+ * </p>
+ * //TODO Include diagram of UserModel
+ *
+ * @author Raphael Dray
+ * @author Thierry Khamphousone
+ * @version 0.0.4
+ * @since 0.0.4
+ * @see Initializable
+ * @see LoginView
+ * @see AnchorPane
+ * @see Circle
+ * @see Button
+ * @see TextFlow
+ * @see ImageView
+ * @see TextArea
+ * @see ScrollPane
+ * @see VBox
+ * @see Label
+ */
 public class ChatController implements Initializable {
     private LoginView loginView;
     private int positionInList;
@@ -66,10 +93,38 @@ public class ChatController implements Initializable {
     @FXML
     private ScrollPane userScrollPane;
 
+    /**
+     * Instantiate the login view
+     * @see LoginView
+     */
     public ChatController() {
         this.loginView = new LoginView();
     }
 
+    /**
+     * Initialize the emojis in the text flow.
+     * Start a new thread to listen on the server actions and perform the update of the UI
+     * @param url The url of the resource
+     * @param resourceBundle The resource bundle
+     * @see URL
+     * @see ResourceBundle
+     * @see Node
+     * @see Thread
+     * @see Scanner
+     * @see ServerCommand#MESSAGE
+     * @see ChatController#sendAction(String, boolean)
+     * @see ChatController#sendAction(String, String, Calendar, boolean)
+     * @see ServerCommand#CONNECT
+     * @see Text
+     * @see Platform#runLater(Runnable)
+     * @see ServerCommand#DISCONNECT
+     * @see ServerCommand#RETRIEVE
+     * @see Date
+     * @see SimpleDateFormat
+     * @see Calendar
+     * @see GregorianCalendar
+     * @see ServerCommand#MESSAGE_DELETED
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         for(Node text : emojiList.getChildren()){
@@ -180,8 +235,12 @@ public class ChatController implements Initializable {
         scrollPane.vvalueProperty().bind(vBox.heightProperty());
     }
 
-
-
+    /**
+     * Handle close action on the view
+     * @param event The click on the button close
+     * @see MouseEvent
+     * @see ZoomOutDown
+     */
     @FXML
     public void handleCloseAction(MouseEvent event) {
         if (event.getSource() == this.btnClose) {
@@ -197,6 +256,13 @@ public class ChatController implements Initializable {
         }
     }
 
+    /**
+     * Handle reduce action on the view
+     * @param event The click on the reduce button
+     * @see MouseEvent
+     * @see Stage
+     * @see Circle
+     */
     @FXML
     public void handleReduceAction(MouseEvent event) {
         if (event.getSource() == this.btnReduce) {
@@ -204,6 +270,11 @@ public class ChatController implements Initializable {
         }
     }
 
+    /**
+     * Handle emojis displaying
+     * @param actionEvent The click on the button to display the emojis
+     * @see ActionEvent
+     */
     @FXML
     public void handleEmojiAction(ActionEvent actionEvent) {
         emojiList.setVisible(!emojiList.isVisible());
@@ -226,6 +297,24 @@ public class ChatController implements Initializable {
 
     //@Overload
     //for retrieved messages
+
+    /**
+     * Send message to other users and add it to our view
+     * @param message The message to be sent
+     * @param pseudo The pseudo who sends the message
+     * @param calendar The date of when the message is sent
+     * @param tqtfelicia True if it's our message, else, false
+     * @see Text
+     * @see TextFlow
+     * @see BorderPane
+     * @see ImageView
+     * @see ImageView#setOnMouseClicked(EventHandler)
+     * @see ImageView#setOnMouseEntered(EventHandler)
+     * @see VBox
+     * @see HBox
+     * @see DropShadow
+     * @see Platform#runLater(Runnable)
+     */
     private void sendAction(String message, String pseudo, Calendar calendar, boolean tqtfelicia){
         Text date=new Text(
                 ((calendar.get(Calendar.HOUR_OF_DAY)<10)
@@ -331,6 +420,23 @@ public class ChatController implements Initializable {
 
 
     //for current user send
+    /**
+     * Send message to other users and add it to our view
+     * @param message The message to be sent
+     * @param tqtfelicia True if it's our message, else, false
+     * @see Date
+     * @see Text
+     * @see TextFlow
+     * @see BorderPane
+     * @see ImageView
+     * @see ServerCommand#CONNECT
+     * @see ImageView#setOnMouseClicked(EventHandler)
+     * @see ImageView#setOnMouseEntered(EventHandler)
+     * @see VBox
+     * @see HBox
+     * @see DropShadow
+     * @see Platform#runLater(Runnable)
+     */
     private void sendAction(String message, boolean tqtfelicia){
         Date messageDate = new Date();
         Text date=new Text(new SimpleDateFormat("HH:mm").format(messageDate));
@@ -426,6 +532,12 @@ public class ChatController implements Initializable {
         Platform.runLater(() -> this.vBox.getChildren().add(borderPane1));
     }
 
+    /**
+     * Handle send button action
+     * @param actionEvent The click on the send button
+     * @see ActionEvent
+     * @see ChatController#sendAction(String, boolean)
+     */
     @FXML
     public void handleSendAction(ActionEvent actionEvent) {
         sendAction(txtMsg.getText(), true);
@@ -435,6 +547,12 @@ public class ChatController implements Initializable {
         txtMsg.requestFocus();
     }
 
+    /**
+     * Handle log out button action
+     * @param mouseEvent The click on the log out button action
+     * @see ClientCommand#QUIT
+     * @see LoginView#start(Stage)
+     */
     @FXML
     public void HandleLogoutAction(MouseEvent mouseEvent) {
         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
