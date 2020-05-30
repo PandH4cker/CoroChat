@@ -45,6 +45,10 @@ public class ChatView {
      * @see UserModel
      * @see Socket
      * @see PrintWriter
+     * @see Parent
+     * @see Scene
+     * @see FadeInUp
+     * @see ChatView#handleMousePressed(MouseEvent)
      */
     public void start(Stage stage, UserModel user, Socket socketo, PrintWriter outo) throws Exception {
         userModel = user;
@@ -69,22 +73,34 @@ public class ChatView {
     }
 
     /**
-     * Handle drag and drop of 
-     * @param mouseEvent
+     * Handle drag and drop of the view
+     * @param mouseEvent The mouse event
      */
     private void handleMousePressed(MouseEvent mouseEvent) {
         this.xOffset = mouseEvent.getSceneX();
         this.yOffset = mouseEvent.getSceneY();
     }
 
+    /**
+     * Getter of the socket
+     * @return Socket - The socket for communicating with the server
+     */
     public static Socket getSocket() {
         return socket;
     }
 
+    /**
+     * Getter of the user
+     * @return UserModel - The user which creates the view
+     */
     public static UserModel getUserModel() {
         return userModel;
     }
 
+    /**
+     * Getter of the printwriter
+     * @return PrintWriter - The writer for sending information to the server
+     */
     public static PrintWriter getOut() {
         return out;
     }

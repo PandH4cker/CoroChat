@@ -9,10 +9,28 @@ import com.corochat.app.server.data.names.DataUserName;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * <h1>The UserDaoImpl object</h1>
+ * <p>
+ *     This class is an implementation of the UserDao interface.
+ * </p>
+ * //TODO Include diagram of UserDaoImpl
+ *
+ * @author Raphael Dray
+ * @version 0.0.4
+ * @since 0.0.2
+ * @see UserDao
+ * @see AbstractCorochatDatabase
+ * @see Connection
+ */
 public final class UserDaoImpl implements UserDao {
     private final AbstractCorochatDatabase database;
     private final Connection connection;
 
+    /**
+     * This constructor initialize its attributes
+     * @param database The instance of the database
+     */
     public UserDaoImpl(CorochatDatabase database) {
         this.database = database;
         this.connection = database.getConnection();

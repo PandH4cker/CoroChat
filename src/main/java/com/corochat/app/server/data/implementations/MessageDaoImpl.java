@@ -3,16 +3,36 @@ package com.corochat.app.server.data.implementations;
 import com.corochat.app.client.models.Message;
 import com.corochat.app.server.data.AbstractCorochatDatabase;
 import com.corochat.app.server.data.daos.MessageDao;
+import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.names.DataMessageName;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * <h1>The MessageDaoImpl object</h1>
+ * <p>
+ *     This class is an implementation of the MessageDao interface.
+ * </p>
+ * //TODO Include diagram of UserDaoImpl
+ *
+ * @author Raphael Dray
+ * @author Thierry Khamphousone
+ * @version 0.0.4
+ * @since 0.0.4
+ * @see MessageDao
+ * @see AbstractCorochatDatabase
+ * @see Connection
+ */
 public final class MessageDaoImpl implements MessageDao {
     private final AbstractCorochatDatabase database;
     private final Connection connection;
 
+    /**
+     * This constructor initialize its attributes
+     * @param database The instance of the database
+     */
     public MessageDaoImpl(CorochatDatabase database) {
         this.database = database;
         this.connection = database.getConnection();

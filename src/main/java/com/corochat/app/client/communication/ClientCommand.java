@@ -52,6 +52,6 @@ public enum ClientCommand {
      * @return String - The client command
      */
     public String getCommand() {
-        return command;
+        return this.command;
     }
 }
