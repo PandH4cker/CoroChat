@@ -47,8 +47,8 @@ public final class MessageDaoImpl implements MessageDao {
     public ArrayList<Message> getAllLimited(int limit) {
         final String sql = "SELECT * " +
                 "FROM " + DataMessageName.TABLE_NAME +
-                " ORDER BY " + DataMessageName.COL_DATE +
-                " LIMIT ?";
+                " WHERE ROWNUM <= ?"+
+                " ORDER BY " + DataMessageName.COL_DATE;
         try {
             final PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
             preparedStatement.setInt(1, limit);

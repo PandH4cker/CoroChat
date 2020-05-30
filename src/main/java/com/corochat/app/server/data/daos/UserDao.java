@@ -12,5 +12,6 @@ public interface UserDao {
 
     void inactiveAll();
     boolean insert(UserModel user) throws AlreadyExistsException;
+    void delete(UserModel userModel);
     void update(int id, String hashedPassword);
 }

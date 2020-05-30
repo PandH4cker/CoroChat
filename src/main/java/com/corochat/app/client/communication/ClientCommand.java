@@ -4,7 +4,7 @@ public enum ClientCommand {
     LOGIN("/login"),
     SIGNUP("/signup"),
     QUIT("/quit"),
-    DELETE_MESSAGE("/delete-message");//TODO
+    DELETE_MESSAGE("/delete-message");
 
     private String command;
 

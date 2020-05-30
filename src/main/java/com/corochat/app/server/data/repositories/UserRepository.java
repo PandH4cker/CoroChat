@@ -45,7 +45,11 @@ public class UserRepository {
     }
 
     public void insertUser(UserModel user) throws InterruptedException, ExecutionException {
-            this.executorService.submit(() -> this.userDao.insert(user)).get();
+        this.executorService.submit(() -> this.userDao.insert(user)).get();
+    }
+
+    public void deleteUser(UserModel user) {
+        this.executorService.execute(() -> this.userDao.delete(user));
     }
 
     public void inactiveAll() {
