@@ -39,6 +39,7 @@ public final class UserDaoImpl implements UserDao {
                 userModels.add(new UserModel(firstName, lastName, pseudo, email, hashedPassword));
             }
             statement.close();
+            resultSet.close();
             return userModels;
         } catch (SQLException | MalformedUserModelParameterException e) {
             e.printStackTrace();
@@ -68,6 +69,7 @@ public final class UserDaoImpl implements UserDao {
                 userModels.add(new UserModel(firstName, lastName, pseudo, email, hashedPassword));
             }
             preparedStatement.close();
+            resultSet.close();
             return userModels;
         } catch (SQLException | MalformedUserModelParameterException e) {
             e.printStackTrace();
@@ -92,6 +94,7 @@ public final class UserDaoImpl implements UserDao {
                 String email = resultSet.getString(DataUserName.COL_EMAIL);
                 String hashedPassword = resultSet.getString(DataUserName.COL_HASHED_PASSWORD);
                 preparedStatement.close();
+                resultSet.close();
                 return new UserModel(firstName, lastName, pseudo, email, hashedPassword);
             }
         } catch (SQLException | MalformedUserModelParameterException e) {

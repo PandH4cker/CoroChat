@@ -36,6 +36,7 @@ public final class MessageDaoImpl implements MessageDao {
                 messages.add(new Message(message, userPseudo, dateTime));
             }
             statement.close();
+            resultSet.close();
             return messages;
         } catch (SQLException | MalformedMessageParameterException e) {
             e.printStackTrace();
@@ -63,6 +64,7 @@ public final class MessageDaoImpl implements MessageDao {
                 messages.add(new Message(message, userPseudo, dateTime));
             }
             preparedStatement.close();
+            resultSet.close();
             return messages;
         } catch (SQLException | MalformedMessageParameterException e) {
             e.printStackTrace();
@@ -88,10 +90,11 @@ public final class MessageDaoImpl implements MessageDao {
                 String message = resultSet.getString(DataMessageName.COL_MESSAGE);
                 String userPseudo = resultSet.getString(DataMessageName.COL_USER_PSEUDO);
                 Date dateTime = new Date(resultSet.getTimestamp(DataMessageName.COL_DATE).getTime());
-                preparedStatement.close();
                 messageList.add(new Message(message, userPseudo, dateTime));
             }
-                return messageList;
+            preparedStatement.close();
+            resultSet.close();
+            return messageList;
         } catch (SQLException | MalformedMessageParameterException e) {
             e.printStackTrace();
         }
@@ -131,13 +134,12 @@ public final class MessageDaoImpl implements MessageDao {
             Timestamp timestamp = new Timestamp(message.getDate().getTime());
             final PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
             preparedStatement.setString(1, message.getMessage());
-            preparedStatement.setString(2, timestamp.toString().substring(0, timestamp.toString().length()-2));
+            preparedStatement.setString(2, timestamp.toString().split("\\.",2)[0]);
             preparedStatement.setString(3, message.getUserPseudo());
 
-            System.out.println("PREPSTATIEMENT: "+ timestamp);
-            int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("A new message has been inserted successfully.");
+            int rowsDeleted = preparedStatement.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("A message has been deleted successfully.");
             }
             preparedStatement.close();
         } catch (SQLException e) {

@@ -120,13 +120,6 @@ public class ChatController implements Initializable {
                             sendAction(userMessage, true);
                         });
                     } else if(message.startsWith(ServerCommand.DISCONNECT.getCommand())){
-                        //Remove user from userList
-                       // String[] splittedUserMessage = message.split(" ", 3);
-                       // this.positionInList = Integer.parseInt(splittedUserMessage[1]);
-                       // System.out.println("POSITION");
-                       // Platform.runLater(()->{
-                       //     this.vBoxUserList.getChildren().remove(this.positionInList);
-                       // });
                         String[] splittedUserMessage = message.split(" ", 3);
                         String pseudo = splittedUserMessage[1];
 
