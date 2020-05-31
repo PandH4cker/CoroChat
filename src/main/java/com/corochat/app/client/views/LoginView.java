@@ -1,6 +1,9 @@
 package com.corochat.app.client.views;
 
 import animatefx.animation.*;
+import com.corochat.app.utils.logger.Logger;
+import com.corochat.app.utils.logger.LoggerFactory;
+import com.corochat.app.utils.logger.level.Level;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,6 +26,8 @@ import java.nio.file.Paths;
  * @since 0.0.1
  */
 public class LoginView extends Application {
+    private final Logger logger = LoggerFactory.getLogger(LoginView.class.getSimpleName());
+
     private double xOffset = 0;
     private double yOffset = 0;
 
@@ -53,6 +58,7 @@ public class LoginView extends Application {
 
         stage.show();
         new FadeInDown(root).play();
+        logger.log("Login view has been created", Level.INFO);
     }
 
     public static void main(String[] args) {

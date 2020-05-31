@@ -1,5 +1,9 @@
 package com.corochat.app.client.models;
 
+import com.corochat.app.utils.logger.Logger;
+import com.corochat.app.utils.logger.LoggerFactory;
+import com.corochat.app.utils.logger.level.Level;
+
 import java.util.Date;
 
 /**
@@ -21,6 +25,8 @@ import java.util.Date;
  * @see Date
  */
 public class Message {
+    private final Logger logger = LoggerFactory.getLogger(Message.class.getSimpleName());
+
     private String message;
     private String userPseudo;
     private Date date;
@@ -35,6 +41,7 @@ public class Message {
         this.message = message;
         this.userPseudo = userPseudo;
         this.date = date;
+        logger.log("New message has been created", Level.INFO);
     }
 
     @Override

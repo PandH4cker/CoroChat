@@ -2,6 +2,9 @@ package com.corochat.app.client.views;
 
 import animatefx.animation.*;
 import com.corochat.app.client.models.UserModel;
+import com.corochat.app.utils.logger.Logger;
+import com.corochat.app.utils.logger.LoggerFactory;
+import com.corochat.app.utils.logger.level.Level;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,6 +31,8 @@ import java.nio.file.Paths;
  * @see PrintWriter
  */
 public class ChatView {
+    private final Logger logger = LoggerFactory.getLogger(ChatView.class.getSimpleName());
+
     private double xOffset = 0;
     private double yOffset = 0;
     private static UserModel userModel;
@@ -70,6 +75,7 @@ public class ChatView {
 
         stage.show();
         new FadeInUp(root).play();
+        logger.log("Chat view has been created", Level.INFO);
     }
 
     /**

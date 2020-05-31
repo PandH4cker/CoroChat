@@ -6,6 +6,9 @@ import com.corochat.app.server.data.daos.MessageDao;
 import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.names.DataMessageName;
 import com.corochat.app.server.data.names.DataUserName;
+import com.corochat.app.utils.logger.Logger;
+import com.corochat.app.utils.logger.LoggerFactory;
+import com.corochat.app.utils.logger.level.Level;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,6 +31,8 @@ import java.sql.Statement;
  * @see Connection
  */
 public final class CorochatDatabase extends AbstractCorochatDatabase {
+    private final Logger logger = LoggerFactory.getLogger(CorochatDatabase.class.getSimpleName());
+
     private volatile UserDao userDao;
     private volatile MessageDao messageDao;
     /**
@@ -50,6 +55,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
         createAllTables();
         createUniqueIndexEmail();
         createUniqueIndexPseudo();
+        logger.log("Creating all tables and their indexes", Level.INFO);
     }
 
     /**
@@ -127,7 +133,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
             statement.executeUpdate(plsql);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
     }
 
@@ -153,7 +159,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
             statement.executeUpdate(plsql);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
     }
 
@@ -188,7 +194,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
             System.out.println("Unique index created on " + DataUserName.TABLE_NAME);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
     }
 
@@ -214,7 +220,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
             System.out.println("Unique index created on " + DataUserName.TABLE_NAME);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
     }
 }
