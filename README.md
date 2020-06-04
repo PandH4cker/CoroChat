@@ -30,8 +30,11 @@
     javafx.controls,javafx.fxml
 
 ---
-## Last Release Version: 0.0.7
+## Last Release Version: 0.0.8
 ### Changelog:
+> #### Version 0.0.8
+> Refactored modules between client and server.
+---
 > #### Version 0.0.7
 > Added Unit Tests. <br />
 ---
