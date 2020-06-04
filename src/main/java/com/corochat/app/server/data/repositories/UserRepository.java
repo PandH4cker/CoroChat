@@ -53,10 +53,8 @@ public class UserRepository {
     public static UserRepository getInstance() {
         if (INSTANCE == null)
             synchronized (UserRepository.class) {
-                if (INSTANCE == null) {
-                    CorochatDatabase database = CorochatDatabase.getInstance();
-                    INSTANCE = new UserRepository(database.userDao(), Executors.newSingleThreadExecutor());
-                }
+                CorochatDatabase database = CorochatDatabase.getInstance();
+                INSTANCE = new UserRepository(database.userDao(), Executors.newSingleThreadExecutor());
             }
         return INSTANCE;
     }
@@ -96,7 +94,11 @@ public class UserRepository {
      * @throws ExecutionException In case of the execution throws an exception, it throws it
      */
     public void insertUser(UserModel user) throws InterruptedException, ExecutionException {
-            this.executorService.submit(() -> this.userDao.insert(user)).get();
+        this.executorService.submit(() -> this.userDao.insert(user)).get();
+    }
+
+    public void deleteUser(UserModel user) {
+        this.executorService.execute(() -> this.userDao.delete(user));
     }
 
     public void inactiveAll() {

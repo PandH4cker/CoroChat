@@ -56,4 +56,6 @@ public interface UserDao {
      * @param hashedPassword The new hashed password
      */
     void update(int id, String hashedPassword);
+
+    void delete(UserModel user);
 }

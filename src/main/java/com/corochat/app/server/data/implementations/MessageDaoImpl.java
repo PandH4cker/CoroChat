@@ -1,6 +1,7 @@
 package com.corochat.app.server.data.implementations;
 
 import com.corochat.app.client.models.Message;
+import com.corochat.app.client.models.exceptions.MalformedMessageParameterException;
 import com.corochat.app.server.data.AbstractCorochatDatabase;
 import com.corochat.app.server.data.daos.MessageDao;
 import com.corochat.app.server.data.daos.UserDao;
@@ -60,9 +61,10 @@ public final class MessageDaoImpl implements MessageDao {
                 messages.add(new Message(message, userPseudo, dateTime));
             }
             statement.close();
+            resultSet.close();
             return messages;
-        } catch (SQLException e) {
-           logger.log(e.getMessage(), Level.ERROR);
+        } catch (SQLException | MalformedMessageParameterException e) {
+            logger.log(e.getMessage(), Level.ERROR);
         }
         return null;
     }
@@ -71,8 +73,8 @@ public final class MessageDaoImpl implements MessageDao {
     public ArrayList<Message> getAllLimited(int limit) {
         final String sql = "SELECT * " +
                 "FROM " + DataMessageName.TABLE_NAME +
-                " ORDER BY " + DataMessageName.COL_DATE +
-                " LIMIT ?";
+                " WHERE ROWNUM <= ?"+
+                " ORDER BY " + DataMessageName.COL_DATE;
         try {
             final PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
             preparedStatement.setInt(1, limit);
@@ -87,8 +89,9 @@ public final class MessageDaoImpl implements MessageDao {
                 messages.add(new Message(message, userPseudo, dateTime));
             }
             preparedStatement.close();
+            resultSet.close();
             return messages;
-        } catch (SQLException e) {
+        } catch (SQLException | MalformedMessageParameterException e) {
             logger.log(e.getMessage(), Level.ERROR);
         }
         return null;
@@ -112,11 +115,12 @@ public final class MessageDaoImpl implements MessageDao {
                 String message = resultSet.getString(DataMessageName.COL_MESSAGE);
                 String userPseudo = resultSet.getString(DataMessageName.COL_USER_PSEUDO);
                 Date dateTime = new Date(resultSet.getTimestamp(DataMessageName.COL_DATE).getTime());
-                preparedStatement.close();
                 messageList.add(new Message(message, userPseudo, dateTime));
             }
-                return messageList;
-        } catch (SQLException e) {
+            preparedStatement.close();
+            resultSet.close();
+            return messageList;
+        } catch (SQLException | MalformedMessageParameterException e) {
             logger.log(e.getMessage(), Level.ERROR);
         }
         return null;
@@ -154,10 +158,9 @@ public final class MessageDaoImpl implements MessageDao {
             Timestamp timestamp = new Timestamp(message.getDate().getTime());
             final PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
             preparedStatement.setString(1, message.getMessage());
-            preparedStatement.setString(2, timestamp.toString().substring(0, timestamp.toString().length()-2));
+            preparedStatement.setString(2, timestamp.toString().split("\\.",2)[0]);
             preparedStatement.setString(3, message.getUserPseudo());
 
-            System.out.println("PREPSTATIEMENT: "+ timestamp);
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0)
                 logger.log("A new message has been inserted successfully.", Level.INFO);

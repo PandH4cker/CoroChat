@@ -55,11 +55,9 @@ public class MessageRepository {
      */
     public static MessageRepository getInstance() {
         if (INSTANCE == null)
-            synchronized (UserRepository.class) {
-                if (INSTANCE == null) {
-                    CorochatDatabase database = CorochatDatabase.getInstance();
-                    INSTANCE = new MessageRepository(database.messageDao(), Executors.newSingleThreadExecutor());
-                }
+            synchronized (MessageRepository.class) {
+                CorochatDatabase database = CorochatDatabase.getInstance();
+                INSTANCE = new MessageRepository(database.messageDao(), Executors.newSingleThreadExecutor());
             }
         return INSTANCE;
     }

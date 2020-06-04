@@ -3,6 +3,7 @@ package com.corochat.app.server.handlers;
 import com.corochat.app.client.communication.ClientCommand;
 import com.corochat.app.client.models.Message;
 import com.corochat.app.client.models.UserModel;
+import com.corochat.app.client.models.exceptions.MalformedMessageParameterException;
 import com.corochat.app.server.MultiThreadedServer;
 import com.corochat.app.server.data.repositories.MessageRepository;
 import com.corochat.app.server.data.repositories.UserRepository;
@@ -46,7 +47,6 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private Scanner in;
     private PrintWriter out;
-    private int positionInList;
 
     private final UserRepository userRepository = UserRepository.getInstance();
     private final MessageRepository messageRepository = MessageRepository.getInstance();
@@ -78,7 +78,7 @@ public class ClientHandler implements Runnable {
                 if (command.toLowerCase().startsWith(ClientCommand.LOGIN.getCommand())) {
                     logger.log("Login requested", Level.INFO);
                     String userCredentials = command.substring(7);
-                    UserModel givenUser = new Gson().fromJson(userCredentials, new TypeToken<UserModel>(){}.getType());
+                    UserModel givenUser = new Gson().fromJson(userCredentials, new TypeToken<UserModel>() {}.getType());
                     UserModel fetchedUser = this.userRepository.getUser(givenUser.getEmail());
                     if (fetchedUser != null && BCrypt.checkpw(givenUser.getHashedPassword(), fetchedUser.getHashedPassword())) {
                         logger.log("User fetched from database with the email: " + givenUser.getEmail(), Level.INFO);
@@ -140,7 +140,6 @@ public class ClientHandler implements Runnable {
                 String input = this.in.nextLine();
                 if (input.toLowerCase().startsWith(ClientCommand.QUIT.getCommand())){
                     logger.log("Quit command received for " + this.pseudo, Level.INFO);
-                    this.positionInList = Integer.parseInt(input.substring(5));
                     return;
                 }
                 else if(input.toLowerCase().startsWith(ClientCommand.DELETE_MESSAGE.getCommand())){
@@ -150,7 +149,12 @@ public class ClientHandler implements Runnable {
                     String pseudo = splittedInput[1];
                     int index = Integer.parseInt(splittedInput[2]);
                     String userMessage = splittedInput[3];
-                    Message message = new Message(userMessage, pseudo, new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date));
+                    Message message = null;
+                    try {
+                        message = new Message(userMessage, pseudo, new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(date));
+                    } catch (MalformedMessageParameterException e) {
+                        e.printStackTrace();
+                    }
                     messageRepository.deleteMessage(message);
 
                     logger.log("Sending information to delete the messages to other clients", Level.INFO);
@@ -162,7 +166,11 @@ public class ClientHandler implements Runnable {
                     logger.log("Sending the message to other clients", Level.INFO);
                     for (PrintWriter writer : MultiThreadedServer.getWriters())
                         writer.println(ServerCommand.MESSAGE.getCommand() + " " + this.pseudo + ": " + input);
-                    messageRepository.insertMessage(new Message(input, this.pseudo, new Date()));
+                    try {
+                        messageRepository.insertMessage(new Message(input, this.pseudo, new Date()));
+                    } catch (MalformedMessageParameterException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -182,7 +190,7 @@ public class ClientHandler implements Runnable {
                 MultiThreadedServer.getPseudos().remove(this.pseudo);
                 logger.log("Sending disconnection to other clients", Level.INFO);
                 for (PrintWriter writer : MultiThreadedServer.getWriters())
-                    writer.println(ServerCommand.DISCONNECT.getCommand()+" " + this.positionInList + " has left.");
+                    writer.println(ServerCommand.DISCONNECT.getCommand()+" " + this.pseudo + " has left.");
             }
             try {
                 this.socket.close();
