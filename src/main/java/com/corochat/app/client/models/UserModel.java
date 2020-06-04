@@ -1,5 +1,13 @@
 package com.corochat.app.client.models;
 
+import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
+import com.corochat.app.utils.validations.EmailValidator;
+import com.corochat.app.utils.validations.PasswordValidator;
+import com.corochat.app.utils.validations.StringContaining;
+import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,7 +28,7 @@ import java.util.Objects;
  * @version 0.0.3
  * @since 0.0.1
  */
-public class UserModel {
+public class UserModel implements Model<MalformedUserModelParameterException> {
     private String firstName;
     private String lastName;
     private String pseudo;
@@ -36,17 +44,25 @@ public class UserModel {
      * @param email The email of the user
      * @param hashedPassword The hashed password of the user
      */
-    public UserModel(final String firstName,
-                     final String lastName,
-                     final String pseudo,
-                     final String email,
-                     final String hashedPassword) {
+    public UserModel (final String firstName,
+                      final String lastName,
+                      final String pseudo,
+                      final String email,
+                      final String hashedPassword) throws MalformedUserModelParameterException {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pseudo = pseudo;
         this.email = email;
         this.hashedPassword = hashedPassword;
-        this.active = true;
+        this.active = true; //REMOVE THIS
+
+        validate();
+    }
+
+    //No exception
+    public UserModel (final String email, final String hashedPassword){
+        this.email = email;
+        this.hashedPassword = hashedPassword;
     }
 
     @Override
@@ -57,7 +73,6 @@ public class UserModel {
                 ", pseudo='" + pseudo + '\'' +
                 ", email='" + email + '\'' +
                 ", hashedPassword='" + hashedPassword + '\'' +
-                ", active=" + active +
                 '}';
     }
 
@@ -174,5 +189,35 @@ public class UserModel {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    //TODO
+    @Override
+    public void validate() throws MalformedUserModelParameterException {
+        List<String> errors = new ArrayList<>();
+
+        if(!hasContent(this.firstName)) errors.add("firstName has no content."); //OK
+        if(!hasContent(this.lastName)) errors.add("lastName has no content."); //OK
+        if(!hasContent(this.pseudo)) errors.add("Pseudo has no content.");
+        if(!hasContent(this.email)) errors.add("Email Code has no content."); //OK
+        if(!hasContent(this.hashedPassword)) errors.add("Email Code has no content."); //OK
+
+
+        boolean passes = !StringContaining.numbers(this.firstName);
+        if(!passes) errors.add("firstName must not include numbers");
+        passes = !StringContaining.numbers(this.lastName);
+        if(!passes) errors.add("lastName must not include numbers");
+        passes = !this.pseudo.matches("^[\\d !\"#$%&'()*+,-./\\\\:;<=>?@\\[\\]^_`{|}~].*"); //TO REVIEW
+        if(!passes) errors.add("pseudo must not start with a number or special character");
+        passes = EmailValidator.isValid(this.email);
+        if(!passes) errors.add("email format is not correct");
+        //NO PASSWORD TEST BECAUSE OF BUG
+
+        if (!errors.isEmpty()) {
+            MalformedUserModelParameterException ex = new MalformedUserModelParameterException();
+            for (String error : errors)
+                ex.addSuppressed(new MalformedUserModelParameterException(error));
+            throw ex;
+        }
     }
 }

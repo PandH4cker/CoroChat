@@ -64,8 +64,8 @@ import java.util.*;
  */
 public class ChatController implements Initializable {
     private LoginView loginView;
-    private int positionInList;
 
+    private Thread thread;
     @FXML
     private AnchorPane anchRoot;
     @FXML
@@ -138,7 +138,7 @@ public class ChatController implements Initializable {
         }
 
         //Update on each client
-        new Thread(() -> {
+        thread = new Thread(() -> {
             try {
                 Scanner in = new Scanner(ChatView.getSocket().getInputStream());
                 while(in.hasNextLine()){
@@ -166,7 +166,6 @@ public class ChatController implements Initializable {
 
                         Platform.runLater(() -> {
                             this.vBoxUserList.getChildren().add(text);
-                            positionInList = this.vBoxUserList.getChildren().indexOf(text);
                             //sendAction(userMessage, true);
                         });
                     } else if (message.startsWith(ServerCommand.SELFCONNECTED.getCommand())){
@@ -177,15 +176,10 @@ public class ChatController implements Initializable {
                             sendAction(userMessage, true);
                         });
                     } else if(message.startsWith(ServerCommand.DISCONNECT.getCommand())){
-                        //Remove user from userList
                         String[] splittedUserMessage = message.split(" ", 3);
-                        this.positionInList = Integer.parseInt(splittedUserMessage[1]);
-                        Platform.runLater(()->{
-                            this.vBoxUserList.getChildren().remove(this.positionInList);
-                        });
+                        String pseudo = splittedUserMessage[1];
 
-
-                        /*Text tempText;
+                        Text tempText;
                         int i=0;
                         while(true){
                             if(i < this.vBoxUserList.getChildren().size()) {
@@ -203,7 +197,7 @@ public class ChatController implements Initializable {
                             else{
                                 break;
                             }
-                        }*/
+                        }
                     } else if (message.startsWith(ServerCommand.RETRIEVE.getCommand())){
                         //Retrieve messages
                         message = message.substring(9);
@@ -211,7 +205,7 @@ public class ChatController implements Initializable {
                         String dateTime = splittedUserMessage[0];
                         String userPseudo = splittedUserMessage[1];
                         String userMessage = splittedUserMessage[2];
-                        Date date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(dateTime);
+                        Date date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(dateTime);
                         Calendar calendar = GregorianCalendar.getInstance();
                         calendar.setTime(date);
                         sendAction(userMessage.replace("\t", "\n"), userPseudo, calendar, userPseudo.equals(ChatView.getUserModel().getPseudo()));
@@ -227,7 +221,8 @@ public class ChatController implements Initializable {
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
+        thread.start();
         userScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         userScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -244,15 +239,13 @@ public class ChatController implements Initializable {
     @FXML
     public void handleCloseAction(MouseEvent event) {
         if (event.getSource() == this.btnClose) {
-            try {
-                PrintWriter out = new PrintWriter(ChatView.getSocket().getOutputStream(), true);
-                out.println(ClientCommand.QUIT.getCommand());
-                ZoomOutDown zoomOutDown = new ZoomOutDown(this.anchRoot);
-                zoomOutDown.setOnFinished(e -> System.exit(0));
-                zoomOutDown.play();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ZoomOutDown zoomOutDown = new ZoomOutDown(this.anchRoot);
+            zoomOutDown.setOnFinished(e -> {
+                ChatView.getOut().println(ClientCommand.QUIT.getCommand());
+                thread.interrupt();
+                System.exit(0);
+            });
+            zoomOutDown.play();
         }
     }
 
@@ -348,18 +341,6 @@ public class ChatController implements Initializable {
                         new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(calendar.getTime()) +"|" +
                         pseudo+"|" +
                         this.vBox.getChildren().indexOf(borderPane1Felicia)+"|"+message.replace("\n", "\t"));
-
-                //Platform.runLater(() -> this.vBox.getChildren().remove(borderPane1Felicia));
-
-
-                /**
-                  * tempText = (Text) this.vBoxUserList.getChildren().get(i);
-                  *tempText.getText();
-                  */
-
-
-
-
             });
 
             imageView.setOnMouseEntered(mouseEvent -> {
@@ -556,7 +537,7 @@ public class ChatController implements Initializable {
     @FXML
     public void HandleLogoutAction(MouseEvent mouseEvent) {
         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
-        ChatView.getOut().println(ClientCommand.QUIT.getCommand()+" "+positionInList);
+        ChatView.getOut().println(ClientCommand.QUIT.getCommand());
         try {
             this.loginView.start(new Stage());
         } catch (Exception e) {
