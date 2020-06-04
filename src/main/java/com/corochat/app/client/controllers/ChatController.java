@@ -150,7 +150,7 @@ public class ChatController implements Initializable {
                         String dateTime = splittedUserMessage[0];
                         String userPseudo = splittedUserMessage[1];
                         String userMessage = splittedUserMessage[2];
-                        Date date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").parse(dateTime);
+                        Date date = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(dateTime);
                         Calendar calendar = GregorianCalendar.getInstance();
                         calendar.setTime(date);
                         sendAction(userMessage.replace("\t", "\n"), userPseudo, calendar, userPseudo.equals(ChatView.getUserModel().getPseudo()));
