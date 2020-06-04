@@ -1,23 +1,12 @@
 package com.corochat.app.server.data.repositories;
 
-import com.corochat.app.client.models.Message;
-import com.corochat.app.client.models.UserModel;
-import com.corochat.app.client.models.UserModelTest;
-import com.corochat.app.client.models.exceptions.MalformedMessageParameterException;
-import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
-import com.corochat.app.server.data.implementations.CorochatDatabase;
-import com.corochat.app.server.data.implementations.MessageDaoImpl;
-import com.corochat.app.server.data.implementations.UserDaoImpl;
-import com.corochat.app.server.data.names.DataMessageName;
-import com.corochat.app.server.data.names.DataUserName;
-import javafx.scene.text.Text;
+import com.corochat.app.server.models.Message;
+import com.corochat.app.server.models.exceptions.MalformedMessageParameterException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

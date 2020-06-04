@@ -1,12 +1,14 @@
 package com.corochat.app.server.data.implementations;
 
-import com.corochat.app.client.models.Message;
-import com.corochat.app.client.models.UserModel;
-import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
+import com.corochat.app.server.models.UserModel;
+import com.corochat.app.server.models.exceptions.MalformedUserModelParameterException;
 import com.corochat.app.server.data.AbstractCorochatDatabase;
 import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.exception.AlreadyExistsException;
 import com.corochat.app.server.data.names.DataUserName;
+import com.corochat.app.server.utils.logger.Logger;
+import com.corochat.app.server.utils.logger.LoggerFactory;
+import com.corochat.app.server.utils.logger.level.Level;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
  * @see Connection
  */
 public final class UserDaoImpl implements UserDao {
+    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class.getSimpleName());
     private final AbstractCorochatDatabase database;
     private final Connection connection;
 
@@ -36,6 +39,7 @@ public final class UserDaoImpl implements UserDao {
     public UserDaoImpl(CorochatDatabase database) {
         this.database = database;
         this.connection = database.getConnection();
+        logger.log("Implementation of User DAO created", Level.INFO);
     }
 
     @Override
@@ -60,7 +64,7 @@ public final class UserDaoImpl implements UserDao {
             resultSet.close();
             return userModels;
         } catch (SQLException | MalformedUserModelParameterException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
         return null;
     }
@@ -90,7 +94,7 @@ public final class UserDaoImpl implements UserDao {
             resultSet.close();
             return userModels;
         } catch (SQLException | MalformedUserModelParameterException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
         return null;
     }
@@ -116,7 +120,7 @@ public final class UserDaoImpl implements UserDao {
                 return new UserModel(firstName, lastName, pseudo, email, hashedPassword);
             }
         } catch (SQLException | MalformedUserModelParameterException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
         return null;
     }
@@ -128,11 +132,11 @@ public final class UserDaoImpl implements UserDao {
         try {
             final Statement statement = this.connection.createStatement();
             int rowsUpdated = statement.executeUpdate(sql);
-            if (rowsUpdated > 0)
-                System.out.println(rowsUpdated + " rows updated.");
+            if (rowsUpdated > 0) {}
+                logger.log(rowsUpdated + " rows updated.", Level.INFO);
             statement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
     }
 
@@ -155,17 +159,23 @@ public final class UserDaoImpl implements UserDao {
             preparedStatement.setString(5, user.getHashedPassword());
 
             int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0){
-                System.out.println("A new user has been inserted successfully.");
+            if (rowsInserted > 0) {
+                logger.log("A new user has been inserted successfully.", Level.INFO);
                 return true;
             }
             preparedStatement.close();
         } catch (SQLException e) {
             String errorMessage = e.getMessage();
-            if(errorMessage.contains("PSEUDO"))
+            logger.log(errorMessage, Level.ERROR);
+            if(errorMessage.contains("PSEUDO")) {
+                errorMessage = "Pseudo already exists";
+                logger.log(errorMessage, Level.WARNING);
                 throw new AlreadyExistsException("Pseudo already exists");
-            else
+            } else {
+                errorMessage = "Email already exists";
+                logger.log(errorMessage, Level.WARNING);
                 throw new AlreadyExistsException("Email already exists");
+            }
         }
         return false;
     }
@@ -207,8 +217,8 @@ public final class UserDaoImpl implements UserDao {
             preparedStatement.setInt(2, id);
 
             int rowsUpdated = preparedStatement.executeUpdate();
-            if (rowsUpdated > 0)
-                System.out.println(rowsUpdated + " rows updated");
+            if (rowsUpdated > 0) {}
+                logger.log(rowsUpdated + " rows updated", Level.INFO);
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
