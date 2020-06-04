@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 target/
-.mvn/
+.mvn
