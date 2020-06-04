@@ -38,6 +38,7 @@ import java.util.*;
 public class ChatController implements Initializable {
     private LoginView loginView;
 
+    private Thread thread;
     @FXML
     private AnchorPane anchRoot;
     @FXML
@@ -82,7 +83,7 @@ public class ChatController implements Initializable {
         }
 
         //Update on each client
-        new Thread(() -> {
+        thread = new Thread(() -> {
             try {
                 Scanner in = new Scanner(ChatView.getSocket().getInputStream());
                 while(in.hasNextLine()){
@@ -165,7 +166,8 @@ public class ChatController implements Initializable {
             } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
+        thread.start();
         userScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         userScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -178,15 +180,13 @@ public class ChatController implements Initializable {
     @FXML
     public void handleCloseAction(MouseEvent event) {
         if (event.getSource() == this.btnClose) {
-            try {
-                PrintWriter out = new PrintWriter(ChatView.getSocket().getOutputStream(), true);
-                out.println(ClientCommand.QUIT.getCommand());
-                ZoomOutDown zoomOutDown = new ZoomOutDown(this.anchRoot);
-                zoomOutDown.setOnFinished(e -> System.exit(0));
-                zoomOutDown.play();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ZoomOutDown zoomOutDown = new ZoomOutDown(this.anchRoot);
+            zoomOutDown.setOnFinished(e -> {
+                ChatView.getOut().println(ClientCommand.QUIT.getCommand());
+                thread.interrupt();
+                System.exit(0);
+            });
+            zoomOutDown.play();
         }
     }
 

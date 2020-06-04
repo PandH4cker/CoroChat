@@ -51,7 +51,7 @@ public class MessageTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Bonjour je suis Felicia Ionascu et j'aime le chocolat",
+                                "Bonjour je suis Felicia et j'aime le chocolat",
                                 "Felicia",
                                 new Date()
                         }
