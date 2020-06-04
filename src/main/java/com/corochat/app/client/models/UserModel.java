@@ -33,7 +33,7 @@ import java.util.Objects;
  * @since 0.0.1
  */
 public class UserModel implements Model<MalformedUserModelParameterException> {
-    private final Logger logger = LoggerFactory.getLogger(UserModel.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(UserModel.class.getSimpleName());
 
 
     private String firstName;

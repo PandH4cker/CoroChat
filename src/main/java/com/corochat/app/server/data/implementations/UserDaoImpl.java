@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * @see Connection
  */
 public final class UserDaoImpl implements UserDao {
-    private final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class.getSimpleName());
     private final AbstractCorochatDatabase database;
     private final Connection connection;
 
@@ -133,7 +133,7 @@ public final class UserDaoImpl implements UserDao {
         try {
             final Statement statement = this.connection.createStatement();
             int rowsUpdated = statement.executeUpdate(sql);
-            if (rowsUpdated > 0)
+            if (rowsUpdated > 0) {}
                 logger.log(rowsUpdated + " rows updated.", Level.INFO);
             statement.close();
         } catch (SQLException e) {
@@ -218,7 +218,7 @@ public final class UserDaoImpl implements UserDao {
             preparedStatement.setInt(2, id);
 
             int rowsUpdated = preparedStatement.executeUpdate();
-            if (rowsUpdated > 0)
+            if (rowsUpdated > 0) {}
                 logger.log(rowsUpdated + " rows updated", Level.INFO);
             preparedStatement.close();
         } catch (SQLException e) {

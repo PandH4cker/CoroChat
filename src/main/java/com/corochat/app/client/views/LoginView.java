@@ -26,7 +26,7 @@ import java.nio.file.Paths;
  * @since 0.0.1
  */
 public class LoginView extends Application {
-    private final Logger logger = LoggerFactory.getLogger(LoginView.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(LoginView.class.getSimpleName());
 
     private double xOffset = 0;
     private double yOffset = 0;

@@ -68,7 +68,7 @@ import static javafx.scene.control.Alert.AlertType;
  * @see ImageView
  */
 public class LoginController implements Initializable {
-    private final Logger logger = LoggerFactory.getLogger(LoginController.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class.getSimpleName());
 
     private ChatView chatView;
     private Pane currentPane;

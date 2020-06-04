@@ -4,6 +4,7 @@ import com.corochat.app.server.handlers.ClientHandler;
 import com.corochat.app.utils.logger.Logger;
 import com.corochat.app.utils.logger.LoggerFactory;
 import com.corochat.app.utils.logger.level.Level;
+import sun.misc.Signal;
 
 import java.io.PrintWriter;
 import java.net.PortUnreachableException;
@@ -27,7 +28,7 @@ import java.util.Set;
  * @see ServerSocket
  */
 public class MultiThreadedServer {
-    private final Logger logger = LoggerFactory.getLogger(MultiThreadedServer.class.getSimpleName());
+   private static final Logger logger = LoggerFactory.getLogger(MultiThreadedServer.class.getSimpleName());
 
     /**
      * The default port if not specified is 8080
@@ -58,6 +59,11 @@ public class MultiThreadedServer {
         }
     }
 
+    private static void handleSignal(Signal signal) {
+        logger.log("Server exiting..", Level.INFO);
+        System.exit(0);
+    }
+
     /**
      * The actual port of the server
      * @return int - The port of the server
@@ -85,10 +91,16 @@ public class MultiThreadedServer {
     }
 
     public static void main(String[] args) throws Exception {
+        handleSignals();
         MultiThreadedServer server = new MultiThreadedServer("localhost", 4444);
         try(ServerSocket listener = new ServerSocket(server.actualPort())) {
             //noinspection InfiniteLoopStatement
             while (true) new Thread(new ClientHandler(listener.accept())).start();
         }
+    }
+
+    private static void handleSignals() {
+        Signal.handle(new Signal("INT"), MultiThreadedServer::handleSignal);
+        Signal.handle(new Signal("TERM"), MultiThreadedServer::handleSignal);
     }
 }

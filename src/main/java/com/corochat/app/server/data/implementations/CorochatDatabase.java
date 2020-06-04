@@ -31,7 +31,7 @@ import java.sql.Statement;
  * @see Connection
  */
 public final class CorochatDatabase extends AbstractCorochatDatabase {
-    private final Logger logger = LoggerFactory.getLogger(CorochatDatabase.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(CorochatDatabase.class.getSimpleName());
 
     private volatile UserDao userDao;
     private volatile MessageDao messageDao;
@@ -169,7 +169,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
     private void createAllTables(){
         createUserTable();
         createMessageTable();
-        System.out.println("Tables created successfully");
+        logger.log("Tables created successfully", Level.INFO);
     }
 
     /**
@@ -191,7 +191,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
         try {
             final Statement statement = this.connection.createStatement();
             statement.executeUpdate(createUniqueIndex);
-            System.out.println("Unique index created on " + DataUserName.TABLE_NAME);
+            logger.log("Unique index created on " + DataUserName.TABLE_NAME, Level.INFO);
             statement.close();
         } catch (SQLException e) {
             logger.log(e.getMessage(), Level.ERROR);
@@ -217,7 +217,7 @@ public final class CorochatDatabase extends AbstractCorochatDatabase {
         try {
             final Statement statement = this.connection.createStatement();
             statement.executeUpdate(createUniqueIndex);
-            System.out.println("Unique index created on " + DataUserName.TABLE_NAME);
+            logger.log("Unique index created on " + DataUserName.TABLE_NAME, Level.INFO);
             statement.close();
         } catch (SQLException e) {
             logger.log(e.getMessage(), Level.ERROR);

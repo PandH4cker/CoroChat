@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
  * @see ExecutorService
  */
 public class UserRepository {
-    private final Logger logger = LoggerFactory.getLogger(UserRepository.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(UserRepository.class.getSimpleName());
     private final UserDao userDao;
     private final ExecutorService executorService;
 

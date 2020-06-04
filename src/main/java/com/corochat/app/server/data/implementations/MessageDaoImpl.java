@@ -30,7 +30,7 @@ import java.util.Date;
  * @see Connection
  */
 public final class MessageDaoImpl implements MessageDao {
-    private final Logger logger = LoggerFactory.getLogger(MessageDaoImpl.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(MessageDaoImpl.class.getSimpleName());
     private final AbstractCorochatDatabase database;
     private final Connection connection;
 

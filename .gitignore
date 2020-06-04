@@ -14,3 +14,4 @@
 .cxx
 target/
 .mvn
+files/log.txt

@@ -31,7 +31,7 @@ import java.nio.file.Paths;
  * @see PrintWriter
  */
 public class ChatView {
-    private final Logger logger = LoggerFactory.getLogger(ChatView.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(ChatView.class.getSimpleName());
 
     private double xOffset = 0;
     private double yOffset = 0;

@@ -6,6 +6,9 @@ import com.corochat.app.client.models.Message;
 import com.corochat.app.client.views.ChatView;
 import com.corochat.app.client.views.LoginView;
 import com.corochat.app.server.handlers.ServerCommand;
+import com.corochat.app.utils.logger.Logger;
+import com.corochat.app.utils.logger.LoggerFactory;
+import com.corochat.app.utils.logger.level.Level;
 import com.corochat.app.utils.setters.ImageSetter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -63,9 +66,11 @@ import java.util.*;
  * @see Label
  */
 public class ChatController implements Initializable {
-    private LoginView loginView;
+    private static final Logger logger = LoggerFactory.getLogger(ChatController.class.getSimpleName());
 
+    private LoginView loginView;
     private Thread thread;
+
     @FXML
     private AnchorPane anchRoot;
     @FXML
@@ -99,6 +104,7 @@ public class ChatController implements Initializable {
      */
     public ChatController() {
         this.loginView = new LoginView();
+        logger.log("Chat controller created", Level.INFO);
     }
 
     /**
@@ -136,6 +142,7 @@ public class ChatController implements Initializable {
                 emojiList.setVisible(false);
             });
         }
+        logger.log("Added emojis to the text flow box", Level.INFO);
 
         //Update on each client
         thread = new Thread(() -> {
@@ -143,7 +150,6 @@ public class ChatController implements Initializable {
                 Scanner in = new Scanner(ChatView.getSocket().getInputStream());
                 while(in.hasNextLine()){
                     String message=in.nextLine();
-                    System.out.println(message);
                     //Send message
                     if(message.startsWith(ServerCommand.MESSAGE.getCommand())) {
                         String userMessage = message.substring(8);
@@ -223,11 +229,13 @@ public class ChatController implements Initializable {
             }
         });
         thread.start();
+        logger.log("Thread started for listening on the server requests", Level.INFO);
         userScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         userScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.vvalueProperty().bind(vBox.heightProperty());
+        logger.log("Chat controller initialized", Level.INFO);
     }
 
     /**
@@ -239,6 +247,7 @@ public class ChatController implements Initializable {
     @FXML
     public void handleCloseAction(MouseEvent event) {
         if (event.getSource() == this.btnClose) {
+            logger.log("Close action triggered", Level.INFO);
             ZoomOutDown zoomOutDown = new ZoomOutDown(this.anchRoot);
             zoomOutDown.setOnFinished(e -> {
                 ChatView.getOut().println(ClientCommand.QUIT.getCommand());
@@ -259,6 +268,7 @@ public class ChatController implements Initializable {
     @FXML
     public void handleReduceAction(MouseEvent event) {
         if (event.getSource() == this.btnReduce) {
+            logger.log("Reduce action triggered", Level.INFO);
             ((Stage)((Circle) event.getSource()).getScene().getWindow()).setIconified(true);
         }
     }
@@ -270,26 +280,9 @@ public class ChatController implements Initializable {
      */
     @FXML
     public void handleEmojiAction(ActionEvent actionEvent) {
+        logger.log("Emoji action triggered", Level.INFO);
         emojiList.setVisible(!emojiList.isVisible());
     }
-
-    //TODO remove message
-   /* private void removeMessageAction(Message message){
-        for(VBox vbox: scrollPane){
-
-        }
-
-        (Node) items = scrollPane.getContent().lookupAll(.hBox);
-
-        //Parcourir la scrollbox
-        //remonter jusqu'à Text
-        //comparer si Text == String message avec des \t
-        //depuis le server, envoyer le message avec des \t
-    }*/
-
-
-    //@Overload
-    //for retrieved messages
 
     /**
      * Send message to other users and add it to our view
@@ -397,6 +390,7 @@ public class ChatController implements Initializable {
         borderPane3.setBottom(hBox);
         borderPane3.setTop(borderPane4);
         Platform.runLater(() -> this.vBox.getChildren().add(borderPane1));
+        logger.log("New message has been added to the view", Level.INFO);
     }
 
 
@@ -439,8 +433,6 @@ public class ChatController implements Initializable {
                 BorderPane borderPane2Felicia = (BorderPane) textFlowFelicia.getParent();
                 BorderPane borderPane1Felicia = (BorderPane) borderPane2Felicia.getParent();
 
-                System.out.println("sendAction : "+message);
-                System.out.println("sendAction : "+message+"|"+this.vBox.getChildren().indexOf(borderPane1Felicia));
 
                 ChatView.getOut().println(ClientCommand.DELETE_MESSAGE.getCommand() + " " +
                         new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy").format(messageDate) +"|" +
@@ -511,6 +503,7 @@ public class ChatController implements Initializable {
         borderPane3.setTop(borderPane4);
 
         Platform.runLater(() -> this.vBox.getChildren().add(borderPane1));
+        logger.log("New message has been added to the view", Level.INFO);
     }
 
     /**
@@ -521,6 +514,7 @@ public class ChatController implements Initializable {
      */
     @FXML
     public void handleSendAction(ActionEvent actionEvent) {
+        logger.log("Send action triggered", Level.INFO);
         sendAction(txtMsg.getText(), true);
         txtMsg.setText(txtMsg.getText().replace("\n","\t"));
         ChatView.getOut().println(txtMsg.getText()); //parle sur le server
@@ -536,6 +530,7 @@ public class ChatController implements Initializable {
      */
     @FXML
     public void HandleLogoutAction(MouseEvent mouseEvent) {
+        logger.log("Logout action triggered", Level.INFO);
         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
         ChatView.getOut().println(ClientCommand.QUIT.getCommand());
         try {

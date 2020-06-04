@@ -32,7 +32,7 @@ import java.util.List;
  * @see Date
  */
 public class Message implements Model<MalformedMessageParameterException> {
-    private final Logger logger = LoggerFactory.getLogger(Message.class.getSimpleName());
+    //private final Logger logger = LoggerFactory.getLogger(Message.class.getSimpleName());
 
     private String message;
     private String userPseudo;
@@ -48,7 +48,9 @@ public class Message implements Model<MalformedMessageParameterException> {
         this.message = message;
         this.userPseudo = userPseudo;
         this.date = date;
-        logger.log("New message has been created", Level.INFO);
+        /*synchronized (logger) {
+            logger.log("New message has been created", Level.INFO);
+        }*/
     }
 
     @Override

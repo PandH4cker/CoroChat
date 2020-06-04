@@ -50,7 +50,7 @@ public class ClientHandler implements Runnable {
 
     private final UserRepository userRepository = UserRepository.getInstance();
     private final MessageRepository messageRepository = MessageRepository.getInstance();
-    private final Logger logger = LoggerFactory.getLogger(ClientHandler.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class.getSimpleName());
 
     /**
      * This constructor initialize its attributes

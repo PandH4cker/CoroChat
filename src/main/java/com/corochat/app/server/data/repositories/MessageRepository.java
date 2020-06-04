@@ -29,7 +29,7 @@ import java.util.concurrent.Executors;
  * @see ExecutorService
  */
 public class MessageRepository {
-    private final Logger logger = LoggerFactory.getLogger(MessageRepository.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(MessageRepository.class.getSimpleName());
     private final MessageDao messageDao;
     private final ExecutorService executorService;
 
