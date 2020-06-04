@@ -3,6 +3,7 @@ package com.corochat.app.client.controllers;
 import animatefx.animation.*;
 import com.corochat.app.client.communication.ClientCommand;
 import com.corochat.app.client.models.UserModel;
+import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
 import com.corochat.app.client.views.ChatView;
 import com.corochat.app.server.handlers.ServerCommand;
 import com.corochat.app.utils.setters.ImageSetter;
@@ -470,7 +471,7 @@ public class LoginController implements Initializable {
         String email = this.tfEmail.getText();
         String password = this.pfPassword.getText();
 
-        UserModel user = new UserModel(null, null, null, email, password);
+        UserModel user = new UserModel(email, password);
         String command = ClientCommand.LOGIN.getCommand()+" "+new Gson().toJson(user);
         try {
             this.socket = new Socket("localhost", 4444);
@@ -545,8 +546,12 @@ public class LoginController implements Initializable {
         String email = this.tfSignUpEmail.getText();
         String pseudo = this.tfSignUpPseudo.getText();
         String password = this.pfSignUpPassword.getText();
-        password = BCrypt.hashpw(password,BCrypt.gensalt());
-        UserModel user = new UserModel(firstName, lastName, pseudo, email, password);
+        UserModel user = null;
+        try {
+            user = new UserModel(firstName, lastName, pseudo, email, BCrypt.hashpw(password,BCrypt.gensalt()));
+        } catch (MalformedUserModelParameterException e) {
+            e.printStackTrace();
+        }
         String command = ClientCommand.SIGNUP.getCommand()+" "+new Gson().toJson(user);
         try {
             this.socket = new Socket("localhost", 4444);

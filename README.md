@@ -30,8 +30,11 @@
     javafx.controls,javafx.fxml
 
 ---
-## Last Release Version: 0.0.6
+## Last Release Version: 0.0.7
 ### Changelog:
+> #### Version 0.0.7
+> Added Unit Tests. <br />
+---
 > #### Version 0.0.6
 > Added Logger interface with its implementation for logging information as well as in console and in a file stored on the server/client.
 ---
