@@ -1,10 +1,11 @@
 package com.corochat.app.server.data.repositories;
 
-import com.corochat.app.client.models.Message;
-import com.corochat.app.client.models.UserModel;
+import com.corochat.app.server.models.Message;
 import com.corochat.app.server.data.daos.MessageDao;
-import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.implementations.CorochatDatabase;
+import com.corochat.app.server.utils.logger.Logger;
+import com.corochat.app.server.utils.logger.LoggerFactory;
+import com.corochat.app.server.utils.logger.level.Level;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -26,6 +27,7 @@ import java.util.concurrent.Executors;
  * @see ExecutorService
  */
 public class MessageRepository {
+    private static final Logger logger = LoggerFactory.getLogger(MessageRepository.class.getSimpleName());
     private final MessageDao messageDao;
     private final ExecutorService executorService;
 
@@ -42,6 +44,7 @@ public class MessageRepository {
     private MessageRepository(MessageDao messageDao, ExecutorService executorService) {
         this.messageDao = messageDao;
         this.executorService = executorService;
+        logger.log("Instantiating the message repository", Level.INFO);
     }
 
     /**
@@ -80,7 +83,7 @@ public class MessageRepository {
         try {
             return this.executorService.submit(() -> this.messageDao.getMessagesByPseudo(pseudo)).get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
             return null;
         }
     }

@@ -1,8 +1,11 @@
 package com.corochat.app.server.data.repositories;
 
-import com.corochat.app.client.models.UserModel;
+import com.corochat.app.server.models.UserModel;
 import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.implementations.CorochatDatabase;
+import com.corochat.app.server.utils.logger.Logger;
+import com.corochat.app.server.utils.logger.LoggerFactory;
+import com.corochat.app.server.utils.logger.level.Level;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -23,6 +26,7 @@ import java.util.concurrent.Executors;
  * @see ExecutorService
  */
 public class UserRepository {
+    private static final Logger logger = LoggerFactory.getLogger(UserRepository.class.getSimpleName());
     private final UserDao userDao;
     private final ExecutorService executorService;
 
@@ -39,6 +43,7 @@ public class UserRepository {
     private UserRepository(UserDao userDao, ExecutorService executorService) {
         this.userDao = userDao;
         this.executorService = executorService;
+        logger.log("Instantiating the user repository", Level.INFO);
     }
 
     /**
@@ -77,7 +82,7 @@ public class UserRepository {
         try {
             return this.executorService.submit(() -> this.userDao.getUserByEmail(email)).get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
             return null;
         }
     }

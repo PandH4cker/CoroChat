@@ -1,16 +1,19 @@
 package com.corochat.app.client.controllers;
 
 import animatefx.animation.*;
-import com.corochat.app.client.communication.ClientCommand;
+import com.corochat.app.client.communications.ClientCommand;
 import com.corochat.app.client.models.UserModel;
 import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
 import com.corochat.app.client.views.ChatView;
-import com.corochat.app.server.handlers.ServerCommand;
-import com.corochat.app.utils.setters.ImageSetter;
-import com.corochat.app.utils.setters.LinkSetter;
-import com.corochat.app.utils.validations.EmailValidator;
-import com.corochat.app.utils.validations.PasswordValidator;
-import com.corochat.app.utils.validations.StringContaining;
+import com.corochat.app.client.communications.ServerCommand;
+import com.corochat.app.client.utils.logger.Logger;
+import com.corochat.app.client.utils.logger.LoggerFactory;
+import com.corochat.app.client.utils.logger.level.Level;
+import com.corochat.app.client.utils.setters.ImageSetter;
+import com.corochat.app.client.utils.setters.LinkSetter;
+import com.corochat.app.client.utils.validations.EmailValidator;
+import com.corochat.app.client.utils.validations.PasswordValidator;
+import com.corochat.app.client.utils.validations.StringContaining;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javafx.fxml.FXML;
@@ -65,6 +68,8 @@ import static javafx.scene.control.Alert.AlertType;
  * @see ImageView
  */
 public class LoginController implements Initializable {
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class.getSimpleName());
+
     private ChatView chatView;
     private Pane currentPane;
     private Socket socket;
@@ -148,6 +153,7 @@ public class LoginController implements Initializable {
      */
     public LoginController() {
         this.chatView = new ChatView();
+        logger.log("Login controller created", Level.INFO);
     }
 
     /**
@@ -162,6 +168,7 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.pnlSignIn.toFront();
         this.disableButtons();
+        logger.log("Login controller initialized", Level.INFO);
     }
 
     /**
@@ -184,6 +191,7 @@ public class LoginController implements Initializable {
     @FXML
     public void handleCloseAction(MouseEvent event) {
         if (event.getSource() == this.btnClose) {
+            logger.log("Close action triggered", Level.INFO);
             ZoomOutDown zoomOutDown = new ZoomOutDown(this.anchRoot);
             zoomOutDown.setOnFinished(e -> System.exit(0));
             zoomOutDown.play();
@@ -200,6 +208,7 @@ public class LoginController implements Initializable {
     @FXML
     public void handleReduceAction(MouseEvent event) {
         if (event.getSource() == this.btnReduce) {
+            logger.log("Reduce action triggered", Level.INFO);
             ((Stage)((Circle) event.getSource()).getScene().getWindow()).setIconified(true);
         }
     }
@@ -214,6 +223,7 @@ public class LoginController implements Initializable {
     public void handleBackAction(MouseEvent event) {
         if (event.getSource() == this.btnBack ||
             event.getSource() == this.btnForgotPasswordFirstBack) {
+            logger.log("Back action triggered", Level.INFO);
             this.backAction(this.pnlSignIn);
         }
         this.tfSignUpFirstName.clear();
@@ -288,6 +298,7 @@ public class LoginController implements Initializable {
     @FXML
     public void handleSignUpAction(MouseEvent event) {
         if (event.getSource() == this.btnSignUp) {
+            logger.log("Sign up action triggered", Level.INFO);
             this.inAction(this.pnlSignUp);
         }
     }
@@ -301,6 +312,7 @@ public class LoginController implements Initializable {
     @FXML
     public void handleLabelForgotAction(MouseEvent event) {
         if (event.getSource() == this.lblForgot) {
+            logger.log("Label forgot action triggered", Level.INFO);
             this.inAction(this.pnlForgotPasswordFirst);
         }
     }
@@ -316,6 +328,7 @@ public class LoginController implements Initializable {
     public void handleLabelHover(MouseEvent event) {
         if (event.getSource() == this.lblForgot ||
             event.getSource() == this.lblSendItBack) {
+            logger.log("Label hover triggered", Level.INFO);
             LinkSetter.setAsLink((Label) event.getSource());
         }
     }
@@ -331,6 +344,7 @@ public class LoginController implements Initializable {
     public void handleLabelExited(MouseEvent event) {
         if (event.getSource() == this.lblForgot ||
             event.getSource() == this.lblSendItBack) {
+            logger.log("Label exited triggered", Level.INFO);
             LinkSetter.unsetAsLink((Label) event.getSource());
         }
     }
@@ -346,8 +360,10 @@ public class LoginController implements Initializable {
         if (event.getSource() == this.btnBack ||
             event.getSource() == this.btnForgotPasswordFirstBack ||
             event.getSource() == this.btnForgotPasswordSecondBack ||
-            event.getSource() == this.btnForgotPasswordThirdBack)
+            event.getSource() == this.btnForgotPasswordThirdBack) {
+            logger.log("Back hover action triggered", Level.INFO);
             this.backHovering((ImageView) event.getSource());
+        }
     }
 
     /**
@@ -383,8 +399,10 @@ public class LoginController implements Initializable {
         if (event.getSource() == this.btnBack ||
             event.getSource() == this.btnForgotPasswordFirstBack ||
             event.getSource() == this.btnForgotPasswordSecondBack ||
-            event.getSource() == this.btnForgotPasswordThirdBack)
+            event.getSource() == this.btnForgotPasswordThirdBack) {
+            logger.log("Back exited action triggered", Level.INFO);
             this.backUnhovering((ImageView) event.getSource());
+        }
     }
 
     /**
@@ -396,6 +414,7 @@ public class LoginController implements Initializable {
     public void handleSignInEnable(KeyEvent keyEvent) {
         if (keyEvent.getSource() == this.tfEmail ||
             keyEvent.getSource() == this.pfPassword) {
+            logger.log("Sign in enabling triggered", Level.INFO);
             if (!this.tfEmail.getText().equals("") && !this.pfPassword.getText().equals(""))
                 this.btnSignIn.setDisable(false);
             else
@@ -420,6 +439,7 @@ public class LoginController implements Initializable {
             keyEvent.getSource() == this.tfSignUpEmail     ||
             keyEvent.getSource() == this.pfSignUpPassword  ||
             keyEvent.getSource() == this.pfRepeatPassword) {
+            logger.log("Get started enabling triggered", Level.INFO);
             //Checking for non null texts
             if (!this.tfSignUpFirstName.getText().equals("") && !this.tfSignUpLastName.getText().equals("") &&
                 !this.tfSignUpPseudo.getText().equals("") && !this.tfSignUpEmail.getText().equals("") &&
@@ -462,6 +482,7 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void handleLogInAction(MouseEvent mouseEvent) {
+        logger.log("Login action triggered", Level.INFO);
         this.btnSignUp.setDisable(true);
         this.lblForgot.setDisable(true);
         this.btnClose.setDisable(true);
@@ -488,11 +509,11 @@ public class LoginController implements Initializable {
                         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
                         this.chatView.start(new Stage(), userRetrieved, this.socket, out);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.log(e.getMessage(), Level.ERROR);
                     }
-                }else if(response.startsWith(ServerCommand.DISPLAY_ERROR.getCommand())){
+                } else if(response.startsWith(ServerCommand.DISPLAY_ERROR.getCommand())){
                     String errorMessage = response.substring(12);
-                    
+                    logger.log(errorMessage, Level.WARNING);
                     Alert alert=new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
@@ -500,12 +521,11 @@ public class LoginController implements Initializable {
                     alert.getButtonTypes().setAll(ButtonType.OK);
                     alert.showAndWait();
 
-                }else{
-                    System.out.println("ça s'est mal passé Felicia :'(");
-                }
+                } else
+                    logger.log("Unknown error occurred during login", Level.ERROR);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
         this.tfSignUpFirstName.clear();
         this.tfSignUpLastName.clear();
@@ -536,6 +556,7 @@ public class LoginController implements Initializable {
      * @see Alert
      */
     public void handleGetStartedAction(MouseEvent mouseEvent) {
+        logger.log("Get started action triggered", Level.INFO);
         this.btnGetStarted.setDisable(true);
         this.btnBack.setDisable(true);
         this.btnClose.setDisable(true);
@@ -562,31 +583,27 @@ public class LoginController implements Initializable {
                 String response = in.nextLine();
                 if(response.startsWith(ServerCommand.DISPLAY_SUCCESS.getCommand())) {
                     String successMessage = response.substring(14);
+                    logger.log(successMessage, Level.INFO);
                     try {
                         ((Node) (mouseEvent.getSource())).getScene().getWindow().hide();
                         this.chatView.start(new Stage(), user, this.socket, out);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.log(e.getMessage(), Level.ERROR);
                     }
-                }else if(response.startsWith(ServerCommand.DISPLAY_ERROR.getCommand())){
+                } else if(response.startsWith(ServerCommand.DISPLAY_ERROR.getCommand())){
                     String errorMessage = response.substring(12);
-                    //TODO afficher message dans le terminal, puis plus tard dans une textview
-
+                    logger.log(errorMessage, Level.WARNING);
                     Alert alert=new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
                     alert.setContentText(errorMessage.replace("\"",""));
                     alert.getButtonTypes().setAll(ButtonType.OK);
                     alert.showAndWait();
-
-
-                    System.out.println("ça s'est mal passé Felicia :'( " + errorMessage);
-                }else{
-                    System.out.println("ça s'est mal passé Felicia :'(");
-                }
+                } else
+                    logger.log("Unknown error occurred during sign up", Level.ERROR);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
         this.tfSignUpFirstName.clear();
         this.tfSignUpLastName.clear();

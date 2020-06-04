@@ -1,9 +1,9 @@
 package com.corochat.app.client.models;
 
 import com.corochat.app.client.models.exceptions.MalformedMessageParameterException;
-import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
-import com.corochat.app.utils.validations.EmailValidator;
-import com.corochat.app.utils.validations.StringContaining;
+import com.corochat.app.client.utils.logger.Logger;
+import com.corochat.app.client.utils.logger.LoggerFactory;
+import com.corochat.app.client.utils.logger.level.Level;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +28,8 @@ import java.util.List;
  * @see Date
  */
 public class Message implements Model<MalformedMessageParameterException> {
+    private static final Logger logger = LoggerFactory.getLogger(Message.class.getSimpleName());
+
     private String message;
     private String userPseudo;
     private Date date;
@@ -42,6 +44,7 @@ public class Message implements Model<MalformedMessageParameterException> {
         this.message = message;
         this.userPseudo = userPseudo;
         this.date = date;
+        logger.log("New message has been created", Level.INFO);
     }
 
     @Override

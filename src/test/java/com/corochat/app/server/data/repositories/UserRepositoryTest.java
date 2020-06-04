@@ -1,7 +1,7 @@
 package com.corochat.app.server.data.repositories;
 
-import com.corochat.app.client.models.UserModel;
-import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
+import com.corochat.app.server.models.UserModel;
+import com.corochat.app.server.models.exceptions.MalformedUserModelParameterException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

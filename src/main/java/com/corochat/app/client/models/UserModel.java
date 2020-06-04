@@ -1,10 +1,12 @@
 package com.corochat.app.client.models;
 
+import com.corochat.app.client.utils.logger.Logger;
+import com.corochat.app.client.utils.logger.LoggerFactory;
+import com.corochat.app.client.utils.logger.level.Level;
+
 import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
-import com.corochat.app.utils.validations.EmailValidator;
-import com.corochat.app.utils.validations.PasswordValidator;
-import com.corochat.app.utils.validations.StringContaining;
-import org.mindrot.jbcrypt.BCrypt;
+import com.corochat.app.client.utils.validations.EmailValidator;
+import com.corochat.app.client.utils.validations.StringContaining;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,9 @@ import java.util.Objects;
  * @since 0.0.1
  */
 public class UserModel implements Model<MalformedUserModelParameterException> {
+    private static final Logger logger = LoggerFactory.getLogger(UserModel.class.getSimpleName());
+
+
     private String firstName;
     private String lastName;
     private String pseudo;
@@ -54,7 +59,8 @@ public class UserModel implements Model<MalformedUserModelParameterException> {
         this.pseudo = pseudo;
         this.email = email;
         this.hashedPassword = hashedPassword;
-        this.active = true; //REMOVE THIS
+        this.active = true;
+        logger.log("New user has been created", Level.INFO);
 
         validate();
     }

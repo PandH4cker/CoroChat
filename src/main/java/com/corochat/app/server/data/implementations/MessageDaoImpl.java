@@ -1,11 +1,13 @@
 package com.corochat.app.server.data.implementations;
 
-import com.corochat.app.client.models.Message;
-import com.corochat.app.client.models.exceptions.MalformedMessageParameterException;
+import com.corochat.app.server.models.Message;
+import com.corochat.app.server.models.exceptions.MalformedMessageParameterException;
 import com.corochat.app.server.data.AbstractCorochatDatabase;
 import com.corochat.app.server.data.daos.MessageDao;
-import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.names.DataMessageName;
+import com.corochat.app.server.utils.logger.Logger;
+import com.corochat.app.server.utils.logger.LoggerFactory;
+import com.corochat.app.server.utils.logger.level.Level;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import java.util.Date;
  * @see Connection
  */
 public final class MessageDaoImpl implements MessageDao {
+    private static final Logger logger = LoggerFactory.getLogger(MessageDaoImpl.class.getSimpleName());
     private final AbstractCorochatDatabase database;
     private final Connection connection;
 
@@ -37,6 +40,7 @@ public final class MessageDaoImpl implements MessageDao {
     public MessageDaoImpl(CorochatDatabase database) {
         this.database = database;
         this.connection = database.getConnection();
+        logger.log("Implementation of Message DAO created", Level.INFO);
     }
 
     @Override
@@ -59,7 +63,7 @@ public final class MessageDaoImpl implements MessageDao {
             resultSet.close();
             return messages;
         } catch (SQLException | MalformedMessageParameterException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
         return null;
     }
@@ -87,7 +91,7 @@ public final class MessageDaoImpl implements MessageDao {
             resultSet.close();
             return messages;
         } catch (SQLException | MalformedMessageParameterException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
         return null;
     }
@@ -116,7 +120,7 @@ public final class MessageDaoImpl implements MessageDao {
             resultSet.close();
             return messageList;
         } catch (SQLException | MalformedMessageParameterException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
         return null;
     }
@@ -135,12 +139,11 @@ public final class MessageDaoImpl implements MessageDao {
             preparedStatement.setTimestamp(3, new Timestamp(message.getDate().getTime()));
 
             int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0){
-                System.out.println("A new message has been inserted successfully.");
-            }
+            if (rowsInserted > 0)
+                logger.log("A new message has been inserted successfully.", Level.INFO);
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
     }
 
@@ -157,13 +160,12 @@ public final class MessageDaoImpl implements MessageDao {
             preparedStatement.setString(2, timestamp.toString().split("\\.",2)[0]);
             preparedStatement.setString(3, message.getUserPseudo());
 
-            int rowsDeleted = preparedStatement.executeUpdate();
-            if (rowsDeleted > 0) {
-                System.out.println("A message has been deleted successfully.");
-            }
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0)
+                logger.log("A new message has been inserted successfully.", Level.INFO);
             preparedStatement.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(e.getMessage(), Level.ERROR);
         }
     }
 }
