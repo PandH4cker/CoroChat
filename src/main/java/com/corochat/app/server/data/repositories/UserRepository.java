@@ -1,11 +1,11 @@
 package com.corochat.app.server.data.repositories;
 
-import com.corochat.app.client.models.UserModel;
+import com.corochat.app.server.models.UserModel;
 import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.implementations.CorochatDatabase;
-import com.corochat.app.utils.logger.Logger;
-import com.corochat.app.utils.logger.LoggerFactory;
-import com.corochat.app.utils.logger.level.Level;
+import com.corochat.app.server.utils.logger.Logger;
+import com.corochat.app.server.utils.logger.LoggerFactory;
+import com.corochat.app.server.utils.logger.level.Level;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;

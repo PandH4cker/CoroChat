@@ -1,9 +1,9 @@
 package com.corochat.app.server;
 
 import com.corochat.app.server.handlers.ClientHandler;
-import com.corochat.app.utils.logger.Logger;
-import com.corochat.app.utils.logger.LoggerFactory;
-import com.corochat.app.utils.logger.level.Level;
+import com.corochat.app.server.utils.logger.Logger;
+import com.corochat.app.server.utils.logger.LoggerFactory;
+import com.corochat.app.server.utils.logger.level.Level;
 import sun.misc.Signal;
 
 import java.io.PrintWriter;

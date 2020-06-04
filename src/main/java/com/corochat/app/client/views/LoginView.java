@@ -1,9 +1,9 @@
 package com.corochat.app.client.views;
 
 import animatefx.animation.*;
-import com.corochat.app.utils.logger.Logger;
-import com.corochat.app.utils.logger.LoggerFactory;
-import com.corochat.app.utils.logger.level.Level;
+import com.corochat.app.client.utils.logger.Logger;
+import com.corochat.app.client.utils.logger.LoggerFactory;
+import com.corochat.app.client.utils.logger.level.Level;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

@@ -1,14 +1,13 @@
 package com.corochat.app.server.data.implementations;
 
-import com.corochat.app.client.models.Message;
-import com.corochat.app.client.models.exceptions.MalformedMessageParameterException;
+import com.corochat.app.server.models.Message;
+import com.corochat.app.server.models.exceptions.MalformedMessageParameterException;
 import com.corochat.app.server.data.AbstractCorochatDatabase;
 import com.corochat.app.server.data.daos.MessageDao;
-import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.names.DataMessageName;
-import com.corochat.app.utils.logger.Logger;
-import com.corochat.app.utils.logger.LoggerFactory;
-import com.corochat.app.utils.logger.level.Level;
+import com.corochat.app.server.utils.logger.Logger;
+import com.corochat.app.server.utils.logger.LoggerFactory;
+import com.corochat.app.server.utils.logger.level.Level;
 
 import java.sql.*;
 import java.util.ArrayList;

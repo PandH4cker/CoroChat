@@ -6,9 +6,9 @@ import com.corochat.app.server.data.daos.MessageDao;
 import com.corochat.app.server.data.daos.UserDao;
 import com.corochat.app.server.data.names.DataMessageName;
 import com.corochat.app.server.data.names.DataUserName;
-import com.corochat.app.utils.logger.Logger;
-import com.corochat.app.utils.logger.LoggerFactory;
-import com.corochat.app.utils.logger.level.Level;
+import com.corochat.app.server.utils.logger.Logger;
+import com.corochat.app.server.utils.logger.LoggerFactory;
+import com.corochat.app.server.utils.logger.level.Level;
 
 import java.sql.Connection;
 import java.sql.SQLException;

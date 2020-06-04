@@ -1,15 +1,14 @@
 package com.corochat.app.client.controllers;
 
 import animatefx.animation.ZoomOutDown;
-import com.corochat.app.client.communication.ClientCommand;
-import com.corochat.app.client.models.Message;
+import com.corochat.app.client.communications.ClientCommand;
 import com.corochat.app.client.views.ChatView;
 import com.corochat.app.client.views.LoginView;
-import com.corochat.app.server.handlers.ServerCommand;
-import com.corochat.app.utils.logger.Logger;
-import com.corochat.app.utils.logger.LoggerFactory;
-import com.corochat.app.utils.logger.level.Level;
-import com.corochat.app.utils.setters.ImageSetter;
+import com.corochat.app.client.communications.ServerCommand;
+import com.corochat.app.client.utils.logger.Logger;
+import com.corochat.app.client.utils.logger.LoggerFactory;
+import com.corochat.app.client.utils.logger.level.Level;
+import com.corochat.app.client.utils.setters.ImageSetter;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,7 +32,6 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

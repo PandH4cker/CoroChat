@@ -1,14 +1,12 @@
 package com.corochat.app.client.models;
 
-import com.corochat.app.utils.logger.Logger;
-import com.corochat.app.utils.logger.LoggerFactory;
-import com.corochat.app.utils.logger.level.Level;
+import com.corochat.app.client.utils.logger.Logger;
+import com.corochat.app.client.utils.logger.LoggerFactory;
+import com.corochat.app.client.utils.logger.level.Level;
 
 import com.corochat.app.client.models.exceptions.MalformedUserModelParameterException;
-import com.corochat.app.utils.validations.EmailValidator;
-import com.corochat.app.utils.validations.PasswordValidator;
-import com.corochat.app.utils.validations.StringContaining;
-import org.mindrot.jbcrypt.BCrypt;
+import com.corochat.app.client.utils.validations.EmailValidator;
+import com.corochat.app.client.utils.validations.StringContaining;
 
 import java.util.ArrayList;
 import java.util.List;

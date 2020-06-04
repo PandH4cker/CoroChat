@@ -1,8 +1,6 @@
 package com.corochat.app.server.data.daos;
 
-import com.corochat.app.client.models.Message;
-import com.corochat.app.client.models.UserModel;
-import com.corochat.app.server.data.exception.AlreadyExistsException;
+import com.corochat.app.server.models.Message;
 
 import java.util.ArrayList;
 

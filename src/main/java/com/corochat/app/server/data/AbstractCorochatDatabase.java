@@ -2,7 +2,7 @@ package com.corochat.app.server.data;
 
 import com.corochat.app.server.data.daos.MessageDao;
 import com.corochat.app.server.data.daos.UserDao;
-import com.corochat.app.utils.validations.OSValidator;
+import com.corochat.app.server.utils.validations.OSValidator;
 import oracle.jdbc.driver.OracleDriver;
 
 import java.sql.Connection;
