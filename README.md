@@ -70,7 +70,7 @@ If an user tries to create an account with an existing email or pseudo, a pop up
 
 Data are stored in the Oracle Database.
 
-<img align="center" width="900" height="560" src="./files/pictures/2SignUp/5DatabaseAddedUsers.png"/>
+<img align="center" width="900" height="170" src="./files/pictures/2SignUp/5DatabaseAddedUsers.png"/>
 > 3 lines has been added for our three users
 > Password are secure thanks to the blowfish encryption
 ---
@@ -78,11 +78,12 @@ Data are stored in the Oracle Database.
 ### Connect from the login view
 For an existing account, the user can connect on the CoroChat room from the Login View thanks to his email and password.
 
-<img align="center" width="900" height="560" src="./files/pictures/3ConnectLoginView/1SignIn.png"/>
+<img align="center" width="900" height="600" src="./files/pictures/3ConnectLoginView/1SignIn.png"/>
 
 If an user with the same email is already connected a pop up appears to alert the user.
 
-<img align="center" width="900" height="560" src="./files/pictures/3ConnectLoginView/2PopUpSignIn.png"/>
+<img align="center" width="900" height="600" src="./files/pictures/3ConnectLoginView/2PopUpSignIn.png"/>
+
 ---
  
 ### CoroChat Room
@@ -92,18 +93,18 @@ Our three users are now connected on the CoroChat room. They will now try to com
 
 FeliciaIonascu starts by sending a message. 
 
-<img align="center" width="900" height="560" src="./files/pictures/4ChatView/2.png"/>
+<img align="center" width="900" height="600" src="./files/pictures/4ChatView/2.png"/>
 
 Then Yulypso and MrrRaph reply. 
 
-<img align="center" width="900" height="560" src="./files/pictures/4ChatView/3.png"/>
+<img align="center" width="900" height="600" src="./files/pictures/4ChatView/3.png"/>
 > You can use emoticon to communicate your feeling like MrrRaph!
 
 FeliciaIonascu wrote something wrong by mistake: "OrientEEEE" and now she is trying to delete the message.
 
-<img align="center" width="900" height="560" src="./files/pictures/4ChatView/4.png"/>
+<img align="center" width="900" height="600" src="./files/pictures/4ChatView/4.png"/>
 
-<img align="center" width="1200" height="700" src="./files/pictures/4ChatView/6.png"/>
+<img align="center" width="900" height="600" src="./files/pictures/4ChatView/6.png"/>
 
 Here we can find out that the message has been correctly deleted from the database.
 
@@ -124,7 +125,7 @@ Now the users would like to disconnect from the CoroChat room.
 
 After this, disconnected users are back to the Login panel.
 
-<img align="center" width="900" height="560" src="./files/pictures/5DisconnectLoginView/1.png"/>
+<img align="center" width="900" height="600" src="./files/pictures/5DisconnectLoginView/1.png"/>
 
 ---
 
