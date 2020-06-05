@@ -18,7 +18,7 @@ import java.util.Properties;
  * //TODO Include diagram of AbstractCorochatDatabase
  *
  * @author Raphael Dray
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.1
  * @see Connection
  * @see UserDao

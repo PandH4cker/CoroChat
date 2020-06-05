@@ -49,8 +49,8 @@ import java.util.*;
  *
  * @author Raphael Dray
  * @author Thierry Khamphousone
- * @version 0.0.4
- * @since 0.0.4
+ * @version 0.0.8
+ * @since 0.0.3
  * @see Initializable
  * @see LoginView
  * @see AnchorPane

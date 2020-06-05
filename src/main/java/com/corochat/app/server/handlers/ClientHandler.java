@@ -35,7 +35,7 @@ import java.util.concurrent.ExecutionException;
  *
  * @author Raphael Dray
  * @author Thierry Khamphousone
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.1
  * @see Runnable
  * @see Socket

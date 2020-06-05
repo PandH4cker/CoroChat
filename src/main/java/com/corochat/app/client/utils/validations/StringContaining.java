@@ -8,7 +8,7 @@ package com.corochat.app.client.utils.validations;
  * //TODO Include diagram of StringContaining
  *
  * @author Raphael Dray
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.1
  */
 public class StringContaining {

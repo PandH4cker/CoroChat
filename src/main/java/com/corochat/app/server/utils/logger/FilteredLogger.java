@@ -14,7 +14,7 @@ import java.util.function.Predicate;
  * //TODO Include diagram of FilteredLogger
  *
  * @author Raphael Dray
- * @version 0.0.5
+ * @version 0.0.8
  * @since 0.0.5
  * @see Logger
  * @see Predicate<Level>

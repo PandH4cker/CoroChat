@@ -10,7 +10,7 @@ import com.corochat.app.client.utils.logger.level.Level;
  * //TODO Include diagram of Logger
  *
  * @author Raphael Dray
- * @version 0.0.5
+ * @version 0.0.8
  * @since 0.0.5
  * @see Level
  */

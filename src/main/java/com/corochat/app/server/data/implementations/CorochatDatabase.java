@@ -23,7 +23,7 @@ import java.sql.Statement;
  * //TODO Include diagram of UserModel
  *
  * @author Raphael Dray
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.2
  * @see AbstractCorochatDatabase
  * @see UserDao

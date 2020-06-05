@@ -26,7 +26,7 @@ import java.util.Objects;
  * //TODO Include diagram of UserModel
  *
  * @author Raphael Dray
- * @version 0.0.3
+ * @version 0.0.8
  * @since 0.0.1
  */
 public class UserModel implements Model<MalformedUserModelParameterException> {

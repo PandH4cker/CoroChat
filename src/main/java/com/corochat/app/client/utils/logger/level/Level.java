@@ -11,7 +11,7 @@ package com.corochat.app.client.utils.logger.level;
  * //TODO Include diagram of Level
  *
  * @author Dray Raphael
- * @version 0.0.5
+ * @version 0.0.8
  * @since 0.0.5
  */
 public enum Level {

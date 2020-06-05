@@ -13,7 +13,7 @@ import java.nio.file.Paths;
  * //TODO Include diagram of UserModel
  *
  * @author Raphael Dray
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.1
  */
 public class ImageSetter {

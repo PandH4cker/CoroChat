@@ -15,7 +15,7 @@ import java.util.Date;
  * //TODO Include diagram of ContextualLogger
  *
  * @author Raphael Dray
- * @version 0.0.5
+ * @version 0.0.8
  * @since 0.0.5
  * @see Logger
  * @see SimpleDateFormat

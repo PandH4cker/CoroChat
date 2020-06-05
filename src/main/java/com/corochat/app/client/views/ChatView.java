@@ -24,8 +24,8 @@ import java.nio.file.Paths;
  * //TODO Include diagram of UserModel
  *
  * @author Thierry Khamphousone
- * @version 0.0.4
- * @since 0.0.3
+ * @version 0.0.8
+ * @since 0.0.8
  * @see UserModel
  * @see Socket
  * @see PrintWriter

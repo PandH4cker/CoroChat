@@ -19,8 +19,8 @@ package com.corochat.app.client.communications;
  *
  * @author Raphael Dray
  * @author Thierry Khamphousone
- * @version 0.0.4
- * @since 0.0.4
+ * @version 0.0.8
+ * @since 0.0.8
  */
 public enum ServerCommand {
     /**
