@@ -1,6 +1,7 @@
 # CoroChat
 ---
-## Authors: <br /> <br /> Raphael Dray, Thierry Khamphousone, Alexandre De Sevin, Diane Martin, Eythan Dahan, Boris Houessou
+## Authors: <br /> <br /> Raphael Dray, Thierry Khamphousone <br /> 
+##### Alexandre De Sevin, Diane Martin, Eythan Dahan, Boris Houessou
 ---
 > This program is a desktop application. <br />
 > It integrates the client and the server which are communicating each other through HTTP Routes. <br />
@@ -8,7 +9,6 @@
 > The client is a Whatsapp-Like application.
 
 > It's written in __Java programming language including some libraries like so:__
-+ [RxJava 2](https://github.com/ReactiveX/RxJava)
 + [JDBC Oracle DB](https://www.oracle.com/fr/database/technologies/appdev/jdbc.html)
 + [Java FX 11](https://openjfx.io/)
 + [JUnit 5](https://junit.org/junit5/)
