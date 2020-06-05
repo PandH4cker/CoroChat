@@ -40,9 +40,13 @@ We chose to show an use case where three users will connect and chat together.
 > Raphaël Dray : MrrRaph
 > Felicia Ionascu : FeliciaIonascu
 
+---
+
 ### Main menu
 Here is the main menu where users can sign in or go to sign up panel. 
 <img align="center" width="900" height="560" src="./files/pictures/1MainMenu/LoginView.png"/>
+
+---
 
 ### Sign up 
 Thierry would like to access the CoroChat room. Firstly, he has to sign up. 
@@ -71,8 +75,10 @@ If an user tries to create an account with an existing email or pseudo, a pop up
 Data are stored in the Oracle Database.
 
 <img align="center" width="900" height="170" src="./files/pictures/2SignUp/5DatabaseAddedUsers.png"/>
+
 > 3 lines has been added for our three users
 > Password are secure thanks to the blowfish encryption
+
 ---
 
 ### Connect from the login view
@@ -80,7 +86,7 @@ For an existing account, the user can connect on the CoroChat room from the Logi
 
 <img align="center" width="900" height="600" src="./files/pictures/3ConnectLoginView/1SignIn.png"/>
 
-If an user with the same email is already connected a pop up appears to alert the user.
+> If an user with the same email is already connected a pop up appears to alert the user.
 
 <img align="center" width="900" height="600" src="./files/pictures/3ConnectLoginView/2PopUpSignIn.png"/>
 
@@ -91,16 +97,17 @@ Our three users are now connected on the CoroChat room. They will now try to com
  
 <img align="center" width="600" height="700" src="./files/pictures/4ChatView/1.png"/>
 
-FeliciaIonascu starts by sending a message. 
+> FeliciaIonascu starts by sending a message. 
 
 <img align="center" width="900" height="600" src="./files/pictures/4ChatView/2.png"/>
 
-Then Yulypso and MrrRaph reply. 
+> Then Yulypso and MrrRaph reply. 
 
 <img align="center" width="900" height="600" src="./files/pictures/4ChatView/3.png"/>
-> You can use emoticon to communicate your feeling like MrrRaph!
 
-FeliciaIonascu wrote something wrong by mistake: "OrientEEEE" and now she is trying to delete the message.
+> You can use emoticon to communicate your feeling like MrrRaph!
+>
+> FeliciaIonascu wrote something wrong by mistake: "OrientEEEE" and now she is trying to delete the message.
 
 <img align="center" width="900" height="600" src="./files/pictures/4ChatView/4.png"/>
 
@@ -133,7 +140,7 @@ After this, disconnected users are back to the Login panel.
 Within our project source code, we added a logger to log every information, warning or errors. 
 Here are some examples. 
 
-<img align="center" width="550" height="50" src="./files/pictures/6Log/Log1.png"/>
+<img align="center" width="550" height="30" src="./files/pictures/6Log/Log1.png"/>
 
 > logger in the server INFO
 > INFO: information about what happened
@@ -144,7 +151,7 @@ Here are some examples.
 > INFO: information about what happened
 > WARGNIN: Client error
 
-<img align="center" width="1310" height="300" src="./files/pictures/6Log/Log3.png"/>
+<img align="center" width="1310" height="275" src="./files/pictures/6Log/Log3.png"/>
 
 > logger in the client INFO, WARNING and ERROR
 > INFO: information about what happened
