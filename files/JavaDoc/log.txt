@@ -1,0 +1,12 @@
+WARNING: [0;32m2020-06-05 17:48:37.397 [0;33mLoginController[0m:  "An user with the same pseudo is already connected!"
+ERROR: [0;32m2020-06-05 17:59:01.305 [0;33mUserDaoImpl[0m: ORA-00001: unique constraint (C##COROCHAT.UNIDX_USER_EMAIL) violated
+
+WARNING: [0;32m2020-06-05 17:59:01.313 [0;33mUserDaoImpl[0m: Email already exists
+WARNING: [0;32m2020-06-05 17:59:01.316 [0;33mClientHandler[0m: Error during sign up request: com.corochat.app.server.data.exception.AlreadyExistsException: Email already exists
+WARNING: [0;32m2020-06-05 17:59:01.316 [0;33mLoginController[0m:  "Email already exists"
+ERROR: [0;32m2020-06-05 17:59:46.112 [0;33mUserDaoImpl[0m: ORA-00001: unique constraint (C##COROCHAT.UNIDX_USER_PSEUDO) violated
+
+WARNING: [0;32m2020-06-05 17:59:46.114 [0;33mUserDaoImpl[0m: Pseudo already exists
+WARNING: [0;32m2020-06-05 17:59:46.115 [0;33mClientHandler[0m: Error during sign up request: com.corochat.app.server.data.exception.AlreadyExistsException: Pseudo already exists
+WARNING: [0;32m2020-06-05 17:59:46.115 [0;33mLoginController[0m:  "Pseudo already exists"
+WARNING: [0;32m2020-06-05 18:07:14.997 [0;33mLoginController[0m:  "An user with the same pseudo is already connected!"
