@@ -164,6 +164,13 @@ Here are some examples.
 + We could not implement the .jar executable from the mvnw script, so we provided it with the IntellJ build.
 
 ---
+### UML Class Diagram
+
+<img src="./files/pictures/classes.png"
+     alt="Project UML"
+     style="float: left; margin-right: 10px"/>
+     
+---
 ## Last Release Version: 0.0.8
 ### Changelog:
 > #### Version 0.0.8

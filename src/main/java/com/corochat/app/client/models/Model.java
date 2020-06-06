@@ -9,7 +9,6 @@ import java.util.List;
  *     a Throwable class in order to throw it in method the {@code void validate()}
  *     By default, it implements two methods for facilitating the validation of the data
  * </p>
- * <img src="../../../../uml/ModelDiagram.jpg" />
  *
  * @author Dray Raphael
  * @version 1.0.0
