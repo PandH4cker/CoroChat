@@ -171,8 +171,15 @@ Here are some examples.
      style="float: left; margin-right: 10px"/>
      
 ---
-## Last Release Version: 0.0.8
+## Last Release Version: 1.0.0
 ### Changelog:
+> #### Version 1.0.0
+> Added JavaDoc in files directory <br />
+> Added JavaFx into lib directory <br />
+> Added client and server artifacts <br />
+> Added UML Diagram in the README.md <br />
+> Added bash script to run client and server <br />
+---
 > #### Version 0.0.8
 > Refactored modules between client and server.
 ---
