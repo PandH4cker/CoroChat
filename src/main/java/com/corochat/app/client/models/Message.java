@@ -23,8 +23,8 @@ import java.util.List;
  *
  * @author Raphael Dray
  * @author Thierry Khamphousone
- * @version 0.0.4
- * @since 0.0.4
+ * @version 0.0.8
+ * @since 0.0.3
  * @see Date
  */
 public class Message implements Model<MalformedMessageParameterException> {

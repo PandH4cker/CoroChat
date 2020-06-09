@@ -10,8 +10,8 @@ package com.corochat.app.server.data.names;
  *
  * @author Raphael Dray
  * @author Thierry Khamphousone
- * @version 0.0.4
- * @since 0.0.4
+ * @version 0.0.8
+ * @since 0.0.8
  */
 public final class DataMessageName {
     public static final String TABLE_NAME = "corochat_message";

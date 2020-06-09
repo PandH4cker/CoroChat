@@ -13,7 +13,7 @@ import javafx.scene.paint.Paint;
  *
  * @author Raphael Dray
  * @author Thierry Khamphousone
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.2
  */
 public class LinkSetter {

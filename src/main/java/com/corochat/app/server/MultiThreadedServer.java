@@ -20,7 +20,7 @@ import java.util.Set;
  * //TODO Include diagram of MultiThreadedServer
  *
  * @author Raphael Dray
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.1
  * @see Set
  * @see PrintWriter

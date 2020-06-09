@@ -50,7 +50,7 @@ import static javafx.scene.control.Alert.AlertType;
  *
  * @author Dray Raphael
  * @author Thierry Khamphousone
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.1
  * @see Initializable
  * @see FXML

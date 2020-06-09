@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * //TODO Include diagram of UserModel
  *
  * @author Raphael Dray
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.2
  * @see UserModel
  * @see AlreadyExistsException

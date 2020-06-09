@@ -9,7 +9,7 @@ package com.corochat.app.server.data.names;
  * //TODO Include diagram of UserModel
  *
  * @author Raphael Dray
- * @version 0.0.4
+ * @version 0.0.8
  * @since 0.0.2
  */
 public final class DataUserName {

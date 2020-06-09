@@ -22,8 +22,8 @@ import java.util.Date;
  *
  * @author Raphael Dray
  * @author Thierry Khamphousone
- * @version 0.0.4
- * @since 0.0.4
+ * @version 0.0.8
+ * @since 0.0.8
  * @see MessageDao
  * @see AbstractCorochatDatabase
  * @see Connection

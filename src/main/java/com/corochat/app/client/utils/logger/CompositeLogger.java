@@ -13,7 +13,7 @@ import com.corochat.app.client.utils.logger.level.Level;
  * //TODO Include diagram of CompositeLogger
  *
  * @author Dray Raphael
- * @version 0.0.5
+ * @version 0.0.8
  * @since 0.0.5
  * @see Logger
  */
